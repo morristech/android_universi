@@ -42,7 +42,7 @@ import universum.studios.android.dialog.manage.DialogXmlFactory;
  * <p>
  * A the current version this context delegate supports features described below:
  *
- * <h4>1) {@link DialogFragment DialogFragments} management</h4>
+ * <h3>1) {@link DialogFragment DialogFragments} management</h3>
  * This feature is supported using {@link DialogController}. This controller can be accessed via
  * {@link #getDialogController()} and custom controller can be specified via {@link #setDialogController(DialogController)}.
  * <p>
@@ -62,7 +62,7 @@ import universum.studios.android.dialog.manage.DialogXmlFactory;
  * If the associated context is paused (indicated via {@link #setPaused(boolean)}), invoking one of
  * {@code showDialog(...)} methods will be ignored.
  *
- * <h4>2) Connection checking</h4>
+ * <h3>2) Connection checking</h3>
  * Check whether there is some network connection established or not can be done via {@link #isActiveNetworkConnected()}
  * or for a specific connection type via {@link #isNetworkConnected(int)} for that matter.
  *

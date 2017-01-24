@@ -42,7 +42,7 @@ import universum.studios.android.fragment.ActionBarFragment;
  * An {@link ActionBarFragment} implementation that provides <b>Universi context</b> features via
  * {@link UniversiFragmentDelegate} including other features described below.
  *
- * <h4>1) Data binding</h4>
+ * <h3>1) Data binding</h3>
  * Whether it is used data binding provided by <a href="http://developer.android.com/tools/data-binding/guide.html">Google</a>
  * to bind application logic and layouts or some custom data binding logic, this fragment class provides
  * a simple way to manage data binding requests and to perform actual binding. Whether a new data need
@@ -51,7 +51,7 @@ import universum.studios.android.fragment.ActionBarFragment;
  * been registered, UniversiFragment will invoke {@link #onBindData()} method whenever its view
  * hierarchy is already created or waits until it is created.
  *
- * <h4>1) Permissions</h4>
+ * <h3>1) Permissions</h3>
  * This fragment class has support for a new permissions management model introduced in the
  * {@link Build.VERSION_CODES#M Marshmallow} Android version. Permissions related methods like
  * {@link #checkSelfPermission(String)} or {@link #supportRequestPermissions(String[], int)} can be
@@ -184,7 +184,6 @@ public abstract class UniversiFragment extends ActionBarFragment {
 		this.ensureContextDelegate();
 		mContextDelegate.setViewCreated(true);
 		onBindViews(view, savedInstanceState);
-
 		// Check if there was requested data binding before view creation, if it was, perform binding now.
 		if (mContextDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {
 			mContextDelegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
