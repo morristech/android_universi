@@ -16,8 +16,9 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.universi;
+package universum.studios.android.support.universi;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -26,9 +27,8 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.XmlRes;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.Activity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.XmlDialog;
@@ -166,7 +166,7 @@ abstract class UniversiContextDelegate {
 	 * @return Ready to use context delegate.
 	 */
 	@NonNull
-	public static UniversiActivityDelegate create(@NonNull Activity activity) {
+	public static UniversiActivityDelegate create(@NonNull FragmentActivity activity) {
 		return new UniversiActivityDelegate(activity);
 	}
 

@@ -19,4 +19,4 @@
 /**
  * @author Martin Albedinsky
  */
-package universum.studios.android.samples.universi;
+package universum.studios.android.support.samples.universi;

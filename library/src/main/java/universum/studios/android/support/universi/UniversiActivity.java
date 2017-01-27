@@ -16,13 +16,10 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.universi;
+package universum.studios.android.support.universi;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,20 +30,24 @@ import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 import android.support.annotation.XmlRes;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.Menu;
 import android.widget.Toolbar;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.manage.DialogController;
-import universum.studios.android.fragment.ActionBarDelegate;
-import universum.studios.android.fragment.BackPressWatcher;
-import universum.studios.android.fragment.annotation.ActionBarOptions;
-import universum.studios.android.fragment.annotation.FragmentAnnotations;
-import universum.studios.android.fragment.annotation.MenuOptions;
-import universum.studios.android.fragment.annotation.handler.ActionBarAnnotationHandlers;
-import universum.studios.android.fragment.annotation.handler.ActionBarFragmentAnnotationHandler;
-import universum.studios.android.fragment.manage.FragmentController;
-import universum.studios.android.fragment.manage.FragmentFactory;
+import universum.studios.android.support.fragment.ActionBarDelegate;
+import universum.studios.android.support.fragment.BackPressWatcher;
+import universum.studios.android.support.fragment.annotation.ActionBarOptions;
+import universum.studios.android.support.fragment.annotation.FragmentAnnotations;
+import universum.studios.android.support.fragment.annotation.MenuOptions;
+import universum.studios.android.support.fragment.annotation.handler.ActionBarAnnotationHandlers;
+import universum.studios.android.support.fragment.annotation.handler.ActionBarFragmentAnnotationHandler;
+import universum.studios.android.support.fragment.manage.FragmentController;
+import universum.studios.android.support.fragment.manage.FragmentFactory;
 import universum.studios.android.transition.BaseNavigationalTransition;
 
 /**
@@ -72,7 +73,7 @@ import universum.studios.android.transition.BaseNavigationalTransition;
  * @see UniversiCompatActivity
  * @see UniversiFragment
  */
-public abstract class UniversiActivity extends Activity implements UniversiActivityContext {
+public abstract class UniversiActivity extends FragmentActivity implements UniversiActivityContext {
 
 	/**
 	 * Interface ===================================================================================
@@ -178,7 +179,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@Nullable
 	@Override
-	public <D> Loader<D> startLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	public <D> Loader<D> startLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
 		this.ensureContextDelegate();
 		return mContextDelegate.startLoader(id, params, callbacks);
 	}
@@ -187,7 +188,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@Nullable
 	@Override
-	public <D> Loader<D> initLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	public <D> Loader<D> initLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
 		this.ensureContextDelegate();
 		return mContextDelegate.initLoader(id, params, callbacks);
 	}
@@ -196,7 +197,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@Nullable
 	@Override
-	public <D> Loader<D> restartLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	public <D> Loader<D> restartLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
 		this.ensureContextDelegate();
 		return mContextDelegate.restartLoader(id, params, callbacks);
 	}
@@ -204,7 +205,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	/**
 	 */
 	@Override
-	public void destroyLoader(@IntRange(from = 0) int id) {
+	public void destroyLoader(int id) {
 		this.ensureContextDelegate();
 		mContextDelegate.destroyLoader(id);
 	}

@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.samples.universi.ui;
+package universum.studios.android.support.samples.universi.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;

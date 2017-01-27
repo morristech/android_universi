@@ -1,4 +1,4 @@
-package universum.studios.android.universi;
+package universum.studios.android.support.universi;
 
 import org.junit.Test;
 

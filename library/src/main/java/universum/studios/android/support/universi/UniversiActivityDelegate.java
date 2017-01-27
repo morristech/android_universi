@@ -16,26 +16,26 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.universi;
+package universum.studios.android.support.universi;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 
 import universum.studios.android.dialog.manage.DialogController;
-import universum.studios.android.fragment.manage.FragmentController;
-import universum.studios.android.fragment.manage.FragmentFactory;
+import universum.studios.android.support.fragment.manage.FragmentController;
+import universum.studios.android.support.fragment.manage.FragmentFactory;
 import universum.studios.android.transition.BaseNavigationalTransition;
 
 /**
- * An {@link UniversiContextDelegate} implementation that can be used within context of {@link Activity}.
+ * An {@link UniversiContextDelegate} implementation that can be used within context of {@link FragmentActivity}.
  * Activity delegate has additional support for {@link Fragment Fragments} management via {@link FragmentController}.
  * Fragment controller can be accessed via {@link #getFragmentController()} and custom controller can
  * be specified via {@link #setFragmentController(FragmentController)}. Fragment factory that provides
@@ -95,7 +95,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 *
 	 * @see UniversiContextDelegate#UniversiContextDelegate(Context)
 	 */
-	UniversiActivityDelegate(@NonNull Activity context) {
+	UniversiActivityDelegate(@NonNull FragmentActivity context) {
 		super(context);
 	}
 
@@ -118,7 +118,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 */
 	@Nullable
 	public <D> Loader<D> startLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
-		final LoaderManager manager = ((Activity) mContext).getLoaderManager();
+		final LoaderManager manager = ((FragmentActivity) mContext).getSupportLoaderManager();
 		if (manager.getLoader(id) == null) return initLoader(id, params, callbacks);
 		else return restartLoader(id, params, callbacks);
 	}
@@ -138,7 +138,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 */
 	@Nullable
 	public <D> Loader<D> initLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
-		return ((Activity) mContext).getLoaderManager().initLoader(id, params, callbacks);
+		return ((FragmentActivity) mContext).getSupportLoaderManager().initLoader(id, params, callbacks);
 	}
 
 	/**
@@ -156,7 +156,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 */
 	@Nullable
 	public <D> Loader<D> restartLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
-		return ((Activity) mContext).getLoaderManager().restartLoader(id, params, callbacks);
+		return ((FragmentActivity) mContext).getSupportLoaderManager().restartLoader(id, params, callbacks);
 	}
 
 	/**
@@ -168,7 +168,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @see LoaderManager#destroyLoader(int)
 	 */
 	public void destroyLoader(@IntRange(from = 0) int id) {
-		((Activity) mContext).getLoaderManager().destroyLoader(id);
+		((FragmentActivity) mContext).getSupportLoaderManager().destroyLoader(id);
 	}
 
 	/**
@@ -202,7 +202,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 */
 	public boolean finishWithNavigationalTransition() {
 		if (mNavigationalTransition != null) {
-			mNavigationalTransition.finish((Activity) mContext);
+			mNavigationalTransition.finish((FragmentActivity) mContext);
 			return true;
 		}
 		return false;
@@ -277,7 +277,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 */
 	@NonNull
 	FragmentController instantiateFragmentController() {
-		return new FragmentController((Activity) mContext);
+		return new FragmentController((FragmentActivity) mContext);
 	}
 
 	/**
@@ -286,7 +286,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @return {@code True} if the stack has ben popped, {@code false} otherwise.
 	 */
 	public boolean popFragmentsBackStack() {
-		final FragmentManager fragmentManager = ((Activity) mContext).getFragmentManager();
+		final FragmentManager fragmentManager = ((FragmentActivity) mContext).getSupportFragmentManager();
 		if (fragmentManager.getBackStackEntryCount() > 0) {
 			fragmentManager.popBackStack();
 			return true;
@@ -311,7 +311,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	@NonNull
 	@Override
 	DialogController instantiateDialogController() {
-		return new DialogController((Activity) mContext);
+		return new DialogController((FragmentActivity) mContext);
 	}
 
 	/**

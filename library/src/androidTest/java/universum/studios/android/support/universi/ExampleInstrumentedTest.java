@@ -1,4 +1,4 @@
-package universum.studios.android.universi;
+package universum.studios.android.support.universi;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
 		// Context of the app under test.
 		Context appContext = InstrumentationRegistry.getTargetContext();
 
-		assertEquals("universum.studios.android.universi.test", appContext.getPackageName());
+		assertEquals("universum.studios.android.support.universi.test", appContext.getPackageName());
 	}
 }

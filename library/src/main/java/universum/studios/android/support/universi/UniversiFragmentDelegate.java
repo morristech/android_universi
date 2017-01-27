@@ -16,11 +16,11 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.universi;
+package universum.studios.android.support.universi;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import universum.studios.android.dialog.manage.DialogController;
 

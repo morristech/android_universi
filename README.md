@@ -1,13 +1,13 @@
-Universi
+Universi (support)
 ===============
 
 ## Download ##
 
-Download the latest **[release](https://github.com/universum-studios/android_universi/releases/tag/1.0.0-beta1 "Latest Releases page")** or **add as dependency** in your project via:
+Download the latest **[release](https://github.com/universum-studios/android_universi/releases/tag/support-1.0.0-beta1 "Latest Releases page")** or **add as dependency** in your project via:
 
 ### Gradle ###
 
-    compile 'universum.studios.android:universi:1.0.0-beta1@aar'
+    compile 'universum.studios.android.support:support-universi:1.0.0-beta1@aar'
 
 ## Compatibility ##
 
@@ -26,4 +26,4 @@ Available from the **Android [API Level 14](http://developer.android.com/about/v
 
 Licensed under the **Apache License**: **[Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)** or later.
 
-> You can redistribute, modify or publish any part of the code presented within this repository but as it is described in the [**LICENSE**](https://github.com/universum-studios/android_universi/blob/master/LICENSE.md), the software distributed under the License is distributed on an **"AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND**.
+> You can redistribute, modify or publish any part of the code presented within this repository but as it is described in the [**LICENSE**](https://github.com/universum-studios/android_universi/blob/support-master/LICENSE.md), the software distributed under the License is distributed on an **"AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND**.

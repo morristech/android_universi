@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.universi;
+package universum.studios.android.support.universi;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -36,7 +36,7 @@ import android.view.View;
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.manage.DialogController;
 import universum.studios.android.dialog.manage.DialogXmlFactory;
-import universum.studios.android.fragment.ActionBarFragment;
+import universum.studios.android.support.fragment.ActionBarFragment;
 
 /**
  * An {@link ActionBarFragment} implementation that provides <b>Universi context</b> features via
