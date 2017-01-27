@@ -57,7 +57,7 @@ public interface UniversiActivityContext {
 	 * @see #destroyLoader(int)
 	 */
 	@Nullable
-	<D> Loader<D> startLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
+	<D> Loader<D> startLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
 
 	/**
 	 * Initializes a loader with the specified <var>id</var> for the given <var>callbacks</var>.
@@ -73,7 +73,7 @@ public interface UniversiActivityContext {
 	 * @see LoaderManager#initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 */
 	@Nullable
-	<D> Loader<D> initLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
+	<D> Loader<D> initLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
 
 	/**
 	 * Re-starts a loader with the specified <var>id</var> for the given <var>callbacks</var>.
@@ -89,7 +89,7 @@ public interface UniversiActivityContext {
 	 * @see LoaderManager#restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 */
 	@Nullable
-	<D> Loader<D> restartLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
+	<D> Loader<D> restartLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
 
 	/**
 	 * Destroys a loader with the specified <var>id</var>.
@@ -99,7 +99,7 @@ public interface UniversiActivityContext {
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see LoaderManager#destroyLoader(int)
 	 */
-	void destroyLoader(@IntRange(from = 0) int id);
+	void destroyLoader(int id);
 
 	/**
 	 * Sets a navigational transition that will be used to finish this activity context whenever

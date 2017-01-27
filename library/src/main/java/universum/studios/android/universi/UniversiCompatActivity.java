@@ -162,7 +162,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Nullable
 	@Override
-	public <D> Loader<D> startLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	public <D> Loader<D> startLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
 		this.ensureContextDelegate();
 		return mContextDelegate.startLoader(id, params, callbacks);
 	}
@@ -171,7 +171,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Nullable
 	@Override
-	public <D> Loader<D> initLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	public <D> Loader<D> initLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
 		this.ensureContextDelegate();
 		return mContextDelegate.initLoader(id, params, callbacks);
 	}
@@ -180,7 +180,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Nullable
 	@Override
-	public <D> Loader<D> restartLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	public <D> Loader<D> restartLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
 		this.ensureContextDelegate();
 		return mContextDelegate.restartLoader(id, params, callbacks);
 	}
@@ -188,7 +188,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	/**
 	 */
 	@Override
-	public void destroyLoader(@IntRange(from = 0) int id) {
+	public void destroyLoader(int id) {
 		this.ensureContextDelegate();
 		mContextDelegate.destroyLoader(id);
 	}
