@@ -44,10 +44,16 @@ task generateJavadoc(type: Javadoc) {
         //options.addStringOption('Xdoclint:none', '-quiet')
     }
     // Append class path with dependencies.
+    final String mavenLocalDir = project.property('maven.url.local')
     final String supportVersion = project.property('android.support.version')
     classpath += files(
             android.getBootClasspath(),
-            sdkDir + '\\extras\\android\\m2repository\\com\\android\\support\\support-annotations\\' + supportVersion + '\\support-annotations-' + supportVersion + '.jar'
+            sdkDir + '\\extras\\android\\m2repository\\com\\android\\support\\support-annotations\\' + supportVersion + '\\support-annotations-' + supportVersion + '.jar',
+            sdkDir + '\\extras\\android\\m2repository\\com\\android\\support\\support-v7\\' + supportVersion + '\\support-v7-' + supportVersion + '-sources.jar',
+            sdkDir + '\\extras\\android\\m2repository\\com\\android\\support\\recyclerview-v7\\' + supportVersion + '\\recyclerview-v7-' + supportVersion + '-sources.jar',
+            mavenLocalDir + '\\universum\\studios\\android\\transitions-navigational-base\\1.0.0\\transitions-navigational-base-1.0.0-sources.jar',
+            mavenLocalDir + '\\universum\\studios\\android\\fragments\\1.0.1\\fragments-1.0.1-sources.jar',
+            mavenLocalDir + '\\universum\\studios\\android\\dialogs\\0.9.0\\dialogs-0.9.0-sources.jar'
     )
     failOnError false
 }
