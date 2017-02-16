@@ -1,4 +1,6 @@
 // Global gradle configuration. This configuration will be used for all sub-projects.
+apply from: './dependencies.gradle'
+
 /**
  * Global build script configuration ===============================================================
  */
@@ -25,6 +27,31 @@ allprojects {
 /**
  * All projects global tasks =======================================================================
  */
+/**
+ * Task that cleans build directory of the root project.
+ */
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+/**
+ * Task that deploys (uploads) all library modules into Maven local repository.
+ */
+task deployToMavenLocal() {
+    subprojects.findAll {
+        if (it.name.startsWith("library")) {
+            dependsOn ':' + it.name + ':uploadArchives'
+        }
+    }
+}
+
+/**
+ * Task that deploys (uploads) all library modules up to the Bintray repository.
+ */
+task deployToBintray() {
+    subprojects.findAll {
+        if (it.name.startsWith("library")) {
+            dependsOn ':' + it.name + ':bintrayUpload'
+        }
+    }
 }

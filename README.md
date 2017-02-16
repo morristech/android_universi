@@ -1,17 +1,21 @@
 Universi
 ===============
 
-## Download ##
+[![Build Status](https://travis-ci.org/universum-studios/android_universi.svg?branch=master)](https://travis-ci.org/universum-studios/android_universi)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c485a93364074dc5a87c7cb43dce9c3f)](https://www.codacy.com/app/universum-studios/android_universi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_universi&amp;utm_campaign=Badge_Grade)
 
-Download the latest **[release](https://github.com/universum-studios/android_universi/releases/tag/1.0.0-beta1 "Latest Releases page")** or **add as dependency** in your project via:
+## Download ##
+[![Download](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Auniversi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Auniversi/_latestVersion)
+
+Download the latest **[release](https://github.com/universum-studios/android_universi/releases "Latest Releases page")** or **add as dependency** in your project via:
 
 ### Gradle ###
 
-    compile 'universum.studios.android:universi:1.0.0-beta1@aar'
+    compile "universum.studios.android:universi:${DESIRED_VERSION}@aar"
 
 ## Compatibility ##
 
-Available from the **Android [API Level 14](http://developer.android.com/about/versions/android-4.0.html "See API highlights")**.
+Supported down to the **Android [API Level 14](http://developer.android.com/about/versions/android-4.0.html "See API highlights")**.
 
 ### Dependencies ###
 

@@ -29,7 +29,7 @@ afterEvaluate { project ->
      */
     uploadArchives {
         repositories.mavenDeployer {
-            repository(url: 'file:///' + String.valueOf(project.property('maven.url.local')))
+            repository(url: 'file:///' + System.getenv('MAVEN_URL_LOCAL'))
             /**
              * Project artifact --------------------------------------------------------------------
              */
