@@ -48,8 +48,8 @@ task generateJavadoc(type: Javadoc) {
             "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\appcompat-v7\\${androidSupportVersion}\\appcompat-v7-${androidSupportVersion}-sources.jar",
             "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\recyclerview-v7\\${androidSupportVersion}\\recyclerview-v7-${androidSupportVersion}-sources.jar",
             "${mavenLocalDirectory}\\universum\\studios\\android\\transitions-navigational-base\\${androidUniversumTransitionsVersion}\\transitions-navigational-base-${androidUniversumTransitionsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\fragments\\${androidUniversumFragmentsVersion}\\fragments-${androidUniversumFragmentsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\dialogs\\${androidUniversumDialogsVersion}\\dialogs-${androidUniversumDialogsVersion}-sources.jar"
+            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\fragments\\${androidUniversumSupportFragmentsVersion}\\support-fragments-${androidUniversumSupportFragmentsVersion}-sources.jar",
+            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\dialogs\\${androidUniversumSupportDialogsVersion}\\support-dialogs-${androidUniversumSupportDialogsVersion}-sources.jar"
     )
     failOnError false
 }

@@ -4,8 +4,8 @@ ext {
     libraryVersion = '1.0.0-beta1'
     androidSupportVersion = '25.1.1'
     androidUniversumTransitionsVersion = '1.0.0'
-    androidUniversumFragmentsVersion = '1.0.1'
-    androidUniversumDialogsVersion = '0.9.0'
+    androidUniversumSupportFragmentsVersion = '1.0.1'
+    androidUniversumSupportDialogsVersion = '0.9.0'
     androidUniversumUiVersion = '0.9.0'
     androidTestVersion = '0.5'
     androidEspressoVersion = '2.2.2'
@@ -20,8 +20,8 @@ ext {
             androidSupportAppCompatV7: "com.android.support:appcompat-v7:${androidSupportVersion}",
             androidSupportRecyclerViewV7: "com.android.support:recyclerview-v7:${androidSupportVersion}",
             androidUniversumTransitionsNavigationalBase: "universum.studios.android:transitions-navigational-base:${androidUniversumTransitionsVersion}@aar",
-            androidUniversumFragments: "universum.studios.android:fragments:${androidUniversumFragmentsVersion}@aar",
-            androidUniversumDialogs: "universum.studios.android:dialogs:${androidUniversumDialogsVersion}@aar",
+            androidUniversumSupportFragments: "universum.studios.android.support:support.fragments:${androidUniversumSupportFragmentsVersion}@aar",
+            androidUniversumSupportDialogs: "universum.studios.android.support:support.dialogs:${androidUniversumSupportDialogsVersion}@aar",
             androidUniversumUi: "universum.studios.android:ui:${androidUniversumUiVersion}@aar"
     ]
 

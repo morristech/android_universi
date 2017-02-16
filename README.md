@@ -24,8 +24,8 @@ Supported down to the **Android [API Level 14](http://developer.android.com/abou
 - [`com.android.support:support-v7`](https://developer.android.com/topic/libraries/support-library/packages.html#v7)
 - [`com.android.support:recyclerview-v7`](https://developer.android.com/topic/libraries/support-library/packages.html#v7)
 - [`universum.studios.android:transitions-navigational-base`](https://github.com/universum-studios/android_transitions/MODULES.md)
-- [`universum.studios.android:fragments`](https://github.com/universum-studios/android_fragments/MODULES.md)
-- [`universum.studios.android:dialogs`](https://github.com/universum-studios/android_dialogs/MODULES.md)
+- [`universum.studios.android.support:support-fragments`](https://github.com/universum-studios/android_fragments/MODULES.md)
+- [`universum.studios.android.support:support-dialogs`](https://github.com/universum-studios/android_dialogs/MODULES.md)
 
 ## License ##
 
