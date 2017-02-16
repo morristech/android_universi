@@ -1,0 +1,43 @@
+// Defines all dependencies used across the library project.
+ext {
+    // Versions.
+    libraryVersion = '1.0.0-beta1'
+    androidSupportVersion = '25.1.1'
+    androidUniversumTransitionsVersion = '1.0.0'
+    androidUniversumFragmentsVersion = '1.0.1'
+    androidUniversumDialogsVersion = '0.9.0'
+    androidUniversumUiVersion = '0.9.0'
+    androidTestVersion = '0.5'
+    androidEspressoVersion = '2.2.2'
+    junitVersion = '4.12'
+    mockitoVersion = '2.0.57-beta'
+
+    /**
+     * Release =====================================================================================
+     */
+    releaseDependencies = [
+            androidSupportAnnotations: "com.android.support:support-annotations:${androidSupportVersion}",
+            androidSupportAppCompatV7: "com.android.support:appcompat-v7:${androidSupportVersion}",
+            androidSupportRecyclerViewV7: "com.android.support:recyclerview-v7:${androidSupportVersion}",
+            androidUniversumTransitionsNavigationalBase: "universum.studios.android:transitions-navigational-base:${androidUniversumTransitionsVersion}@aar",
+            androidUniversumFragments: "universum.studios.android:fragments:${androidUniversumFragmentsVersion}@aar",
+            androidUniversumDialogs: "universum.studios.android:dialogs:${androidUniversumDialogsVersion}@aar",
+            androidUniversumUi: "universum.studios.android:ui:${androidUniversumUiVersion}@aar"
+    ]
+
+    /**
+     * Test ========================================================================================
+     */
+    testDependencies = [
+            // Android Instrumentation test dependencies.
+            androidSupportAnnotations: releaseDependencies.androidSupportAnnotations,
+            androidRunner: "com.android.support.test:runner:${androidTestVersion}",
+            androidRules: "com.android.support.test:rules:${androidTestVersion}",
+            androidEspressoCore: "com.android.support.test.espresso:espresso-core:${androidEspressoVersion}",
+            androidEspressoIntents: "com.android.support.test.espresso:espresso-intents:${androidEspressoVersion}",
+            androidEspressoContrib: "com.android.support.test.espresso:espresso-contrib:${androidEspressoVersion}",
+            // Local JUnit test dependencies.
+            junit: "junit:junit:${junitVersion}",
+            mockitoCore: "org.mockito:mockito-core:${mockitoVersion}"
+    ]
+}
