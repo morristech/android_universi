@@ -38,6 +38,7 @@ import android.view.Menu;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.dialog.manage.DialogFactory;
 import universum.studios.android.fragment.ActionBarDelegate;
 import universum.studios.android.fragment.BackPressWatcher;
 import universum.studios.android.fragment.annotation.ActionBarOptions;
@@ -340,7 +341,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	/**
 	 */
 	@Override
-	public void setDialogFactory(@Nullable DialogController.DialogFactory factory) {
+	public void setDialogFactory(@Nullable DialogFactory factory) {
 		this.ensureContextDelegate();
 		mContextDelegate.setDialogFactory(factory);
 	}
@@ -349,7 +350,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Override
 	@Nullable
-	public DialogController.DialogFactory getDialogFactory() {
+	public DialogFactory getDialogFactory() {
 		this.ensureContextDelegate();
 		return mContextDelegate.getDialogFactory();
 	}

@@ -35,6 +35,7 @@ import android.view.View;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.dialog.manage.DialogFactory;
 import universum.studios.android.dialog.manage.DialogXmlFactory;
 import universum.studios.android.fragment.ActionBarFragment;
 
@@ -159,7 +160,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @see #showDialogWithId(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
-	protected void setDialogFactory(@Nullable DialogController.DialogFactory factory) {
+	protected void setDialogFactory(@Nullable DialogFactory factory) {
 		this.ensureContextDelegate();
 		mContextDelegate.setDialogFactory(factory);
 	}
@@ -168,10 +169,10 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * Returns the current dialog factory specified for this fragment.
 	 *
 	 * @return Dialog factory or {@code null} if no factory has been specified yet.
-	 * @see #setDialogFactory(DialogController.DialogFactory)
+	 * @see #setDialogFactory(DialogFactory)
 	 */
 	@Nullable
-	protected DialogController.DialogFactory getDialogFactory() {
+	protected DialogFactory getDialogFactory() {
 		this.ensureContextDelegate();
 		return mContextDelegate.getDialogFactory();
 	}
@@ -340,7 +341,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @return {@code True} if dialog has been shown, {@code false} if this fragment is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
 	 * @see DialogController#showDialog(int, DialogOptions)
-	 * @see #setDialogFactory(DialogController.DialogFactory)
+	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
 	protected boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
@@ -378,7 +379,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param options Options for the dialog.
 	 * @return {@code True} if dialog has been successfully inflated and shown, {@code false} if
 	 * this fragment is currently <b>paused</b> or dialog failed to be inflated.
-	 * @see DialogXmlFactory#createDialogInstance(int, DialogOptions)
+	 * @see DialogXmlFactory#createDialog(int, DialogOptions)
 	 * @see #dismissXmlDialog(int)
 	 */
 	protected boolean showXmlDialog(@XmlRes int resId, @Nullable DialogOptions options) {

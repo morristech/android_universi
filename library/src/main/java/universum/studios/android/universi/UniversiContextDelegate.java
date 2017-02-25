@@ -18,6 +18,9 @@
  */
 package universum.studios.android.universi;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -26,13 +29,11 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.XmlRes;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.Activity;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.XmlDialog;
 import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.dialog.manage.DialogFactory;
 import universum.studios.android.dialog.manage.DialogXmlFactory;
 
 /**
@@ -53,8 +54,8 @@ import universum.studios.android.dialog.manage.DialogXmlFactory;
  * <p>
  * If the associated context wants to display XmlDialogs from an Xml file containing a
  * <b>set of multiple dialog entries</b> or just simple dialogs instantiated via plain Java code it
- * need to set instance of {@link DialogController.DialogFactory} that can provide that dialogs
- * via {@link #setDialogFactory(DialogController.DialogFactory)}. Such dialogs can be than displayed
+ * need to set instance of {@link DialogFactory} that can provide that dialogs
+ * via {@link #setDialogFactory(DialogFactory)}. Such dialogs can be than displayed
  * via {@link #showDialogWithId(int, DialogOptions)}.
  * <p>
  * Already showing dialogs can be dismissed via {@link #dismissDialogWithId(int)} or {@link #dismissXmlDialog(int)}.
@@ -97,7 +98,7 @@ abstract class UniversiContextDelegate {
 	/**
 	 * Flag indicating whether the wrapped context is paused or not.
 	 */
-	private static final int PFLAG_PAUSED = 0x00000002;
+	private static final int PFLAG_PAUSED = 0x00000001 << 1;
 
 	/**
 	 * Static members ==============================================================================
@@ -130,7 +131,7 @@ abstract class UniversiContextDelegate {
 	/**
 	 * Factory providing dialog instances for the {@link #mDialogController}.
 	 */
-	private DialogController.DialogFactory mDialogFactory;
+	private DialogFactory mDialogFactory;
 
 	/**
 	 * Dialog factory used to inflate dialog instances presented within a single Xml file.
@@ -227,8 +228,8 @@ abstract class UniversiContextDelegate {
 	abstract DialogController instantiateDialogController();
 
 	/**
-	 * Same as {@link #setDialogFactory(DialogController.DialogFactory)} where will be passed
-	 * instance of {@link DialogXmlFactory} with the specified <var>xmlDialogsSet</var>.
+	 * Same as {@link #setDialogFactory(DialogFactory)} where will be passed instance of
+	 * {@link DialogXmlFactory} with the specified <var>xmlDialogsSet</var>.
 	 *
 	 * @param xmlDialogsSet Resource id of the desired Xml file containing Xml dialogs that the
 	 *                      factory should provide. May be {@code 0} to remove the current one.
@@ -246,7 +247,7 @@ abstract class UniversiContextDelegate {
 	 * @see #showDialogWithId(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
-	public void setDialogFactory(@Nullable DialogController.DialogFactory factory) {
+	public void setDialogFactory(@Nullable DialogFactory factory) {
 		this.mDialogFactory = factory;
 		this.ensureDialogController();
 		mDialogController.setDialogFactory(factory);
@@ -256,10 +257,10 @@ abstract class UniversiContextDelegate {
 	 * Returns the current dialog factory specified for this delegate.
 	 *
 	 * @return Dialog factory or {@code null} if no factory has been specified yet.
-	 * @see #setDialogFactory(DialogController.DialogFactory)
+	 * @see #setDialogFactory(DialogFactory)
 	 */
 	@Nullable
-	public DialogController.DialogFactory getDialogFactory() {
+	public DialogFactory getDialogFactory() {
 		return mDialogFactory;
 	}
 
@@ -278,7 +279,7 @@ abstract class UniversiContextDelegate {
 	 * @return {@code True} if dialog has been shown, {@code false} if context that uses this delegate
 	 * is currently <b>paused</b> or does not have its dialog factory specified.
 	 * @see DialogController#showDialog(int, DialogOptions)
-	 * @see #setDialogFactory(DialogController.DialogFactory)
+	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
 	public boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
@@ -318,15 +319,15 @@ abstract class UniversiContextDelegate {
 	 * @param options Options for the dialog.
 	 * @return {@code True} if dialog has been successfully inflated and shown, {@code false} if
 	 * context that uses this delegate is currently <b>paused</b> or dialog failed to be inflated.
-	 * @see DialogXmlFactory#createDialogInstance(int, DialogOptions)
+	 * @see DialogXmlFactory#createDialog(int, DialogOptions)
 	 * @see #dismissXmlDialog(int)
 	 */
 	public boolean showXmlDialog(@XmlRes int resId, @Nullable DialogOptions options) {
 		if (hasPrivateFlag(PFLAG_PAUSED)) return false;
 		final DialogXmlFactory dialogFactory = accessDialogXmlFactory();
-		final DialogFragment dialog = dialogFactory.createDialogInstance(resId, options);
+		final DialogFragment dialog = dialogFactory.createDialog(resId, options);
 		if (dialog != null) {
-			final String dialogTag = dialogFactory.getDialogTag(resId);
+			final String dialogTag = dialogFactory.createDialogTag(resId);
 			this.ensureDialogController();
 			return mDialogController.showDialog(dialog, dialogTag);
 		}
@@ -344,7 +345,7 @@ abstract class UniversiContextDelegate {
 	public boolean dismissXmlDialog(@XmlRes int resId) {
 		if (hasPrivateFlag(PFLAG_PAUSED)) return false;
 		this.ensureDialogController();
-		return mDialogController.dismissDialog(accessDialogXmlFactory().getDialogTag(resId));
+		return mDialogController.dismissDialog(accessDialogXmlFactory().createDialogTag(resId));
 	}
 
 	/**

@@ -264,10 +264,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * Ensures that the fragment controller is initialized.
 	 */
 	private void ensureFragmentController() {
-		if (mFragmentController == null) {
-			this.mFragmentController = instantiateFragmentController();
-			this.mFragmentController.setViewContainerId(R.id.ui_container);
-		}
+		if (mFragmentController == null) this.mFragmentController = instantiateFragmentController();
 	}
 
 	/**
