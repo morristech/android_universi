@@ -287,10 +287,6 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 		return mFragmentController != null ? mFragmentController.findCurrentFragment() : null;
 	}
 
-	boolean dispatchBackPressToFragments() {
-		return false;
-	}
-
 	/**
 	 * Pops stack with fragments of the associated activity via {@link FragmentManager#popBackStack()}
 	 *

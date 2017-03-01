@@ -522,17 +522,60 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 * Invoked from {@link #onBackPressed()} to give a chance to this activity instance to consume
-	 * the back press event before its parent.
+	 * the back press event before it is delivered to its parent.
 	 * <p>
-	 * This implementation first tries to dispatch this event to the current fragment via
-	 * {@link #dispatchBackPressToCurrentFragment()} and if that method does not consume the event
-	 * a stack with fragments will be tried to popped via {@link #popFragmentsBackStack()}.
+	 * This implementation first tries to dispatch this event to one of its visible fragment via
+	 * {@link #dispatchBackPressToFragments()} and if none of the currently visible fragments does
+	 * not consume the event a stack with fragments will be popped via {@link #popFragmentsBackStack()}.
 	 *
 	 * @return {@code True} if the back press event has been consumed here, {@code false} otherwise.
 	 */
 	protected boolean onBackPress() {
 		this.ensureContextDelegate();
-		return !mContextDelegate.isPaused() && (dispatchBackPressToCurrentFragment() || popFragmentsBackStack());
+		return !mContextDelegate.isPaused() && (dispatchBackPressToFragments() || popFragmentsBackStack());
+	}
+
+	/**
+	 * Dispatches back press event to all currently visible fragments displayed in context of this
+	 * activity.
+	 * <p>
+	 * This implementation calls {@link #dispatchBackPressToCurrentFragment()} and returns its result.
+	 *
+	 * @return {@code True} if some of the visible fragments has consumed the back press event,
+	 * {@code false} otherwise.
+	 * @see BackPressWatcher#dispatchBackPress()
+	 */
+	protected boolean dispatchBackPressToFragments() {
+		return dispatchBackPressToCurrentFragment();
+	}
+
+	/**
+	 * Dispatches back press event to the current fragment displayed in context of this activity.
+	 *
+	 * @return {@code True} if the current fragment has consumed the back press event, {@code false}
+	 * otherwise.
+	 * @see #findCurrentFragment()
+	 * @see BackPressWatcher#dispatchBackPress()
+	 */
+	protected boolean dispatchBackPressToCurrentFragment() {
+		final Fragment fragment = findCurrentFragment();
+		return fragment instanceof BackPressWatcher && ((BackPressWatcher) fragment).dispatchBackPress();
+	}
+
+	/**
+	 * Finds currently visible fragment that is displayed in context of this activity.
+	 * <p>
+	 * <b>Note, that implementation of this method assumes that this activity uses {@link FragmentController}
+	 * to display its related fragments and that there may be only one fragment visible at a time,
+	 * that is in a full screen container.</b>
+	 *
+	 * @return Current fragment of this activity (that is at this time visible), or {@code null} if
+	 * there is no fragment presented within fragment container of this activity at all.
+	 */
+	@Nullable
+	protected Fragment findCurrentFragment() {
+		this.ensureContextDelegate();
+		return mContextDelegate.findCurrentFragment();
 	}
 
 	/**
@@ -544,32 +587,6 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	protected boolean popFragmentsBackStack() {
 		this.ensureContextDelegate();
 		return mContextDelegate.popFragmentsBackStack();
-	}
-
-	/**
-	 * Dispatches back press event to the current fragment of this activity.
-	 *
-	 * @return {@code True} if there is presented some fragment that consumed the back press event,
-	 * {@code false} otherwise.
-	 * @see #findCurrentFragment()
-	 * @see BackPressWatcher#dispatchBackPress()
-	 */
-	protected boolean dispatchBackPressToCurrentFragment() {
-		final Fragment fragment = findCurrentFragment();
-		return fragment instanceof BackPressWatcher && ((BackPressWatcher) fragment).dispatchBackPress();
-	}
-
-	/**
-	 * Invoked whenever an event need to be dispatched to the current fragment that is presented
-	 * within context of this activity.
-	 *
-	 * @return Current fragment of this activity (that is at this time visible), or {@code null} if
-	 * there are no fragments presented within this activity at all.
-	 */
-	@Nullable
-	protected Fragment findCurrentFragment() {
-		this.ensureContextDelegate();
-		return mContextDelegate.findCurrentFragment();
 	}
 
 	/**
