@@ -284,7 +284,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 */
 	@Nullable
 	Fragment findCurrentFragment() {
-		return mFragmentController != null ? mFragmentController.findCurrentFragment() : null;
+		return mFragmentController == null ? null : mFragmentController.findCurrentFragment();
 	}
 
 	/**
