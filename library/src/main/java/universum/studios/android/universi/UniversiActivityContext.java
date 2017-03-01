@@ -31,6 +31,7 @@ import android.support.annotation.XmlRes;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.dialog.manage.DialogFactory;
 import universum.studios.android.dialog.manage.DialogXmlFactory;
 import universum.studios.android.fragment.manage.FragmentController;
 import universum.studios.android.fragment.manage.FragmentFactory;
@@ -187,7 +188,7 @@ public interface UniversiActivityContext {
 	 * @param xmlDialogsSet Resource id of the desired Xml file containing Xml dialogs that the
 	 *                      factory should provide for this activity. May be {@code 0} to remove the
 	 *                      current one.
-	 * @see #setDialogFactory(DialogController.DialogFactory)
+	 * @see #setDialogFactory(DialogFactory)
 	 */
 	void setDialogXmlFactory(@XmlRes int xmlDialogsSet);
 
@@ -199,16 +200,16 @@ public interface UniversiActivityContext {
 	 * @see #showDialogWithId(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
-	void setDialogFactory(@Nullable DialogController.DialogFactory factory);
+	void setDialogFactory(@Nullable DialogFactory factory);
 
 	/**
 	 * Returns the current dialog factory specified for this activity.
 	 *
 	 * @return Dialog factory or {@code null} if no factory has been specified yet.
-	 * @see #setDialogFactory(DialogController.DialogFactory)
+	 * @see #setDialogFactory(DialogFactory)
 	 */
 	@Nullable
-	DialogController.DialogFactory getDialogFactory();
+	DialogFactory getDialogFactory();
 
 	/**
 	 * Same as {@link #showDialogWithId(int, DialogOptions)} with {@code null} options.
@@ -223,7 +224,7 @@ public interface UniversiActivityContext {
 	 * @return {@code True} if dialog has been shown, {@code false} if this activity is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
 	 * @see DialogController#showDialog(int, DialogOptions)
-	 * @see #setDialogFactory(DialogController.DialogFactory)
+	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
 	boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options);
@@ -253,7 +254,7 @@ public interface UniversiActivityContext {
 	 * @param options Options for the dialog.
 	 * @return {@code True} if dialog has been successfully inflated and shown, {@code false} if
 	 * this activity is currently <b>paused</b> or dialog failed to be inflated.
-	 * @see DialogXmlFactory#createDialogInstance(int, DialogOptions)
+	 * @see DialogXmlFactory#createDialog(int, DialogOptions)
 	 * @see #dismissXmlDialog(int)
 	 */
 	boolean showXmlDialog(@XmlRes int resId, @Nullable DialogOptions options);
