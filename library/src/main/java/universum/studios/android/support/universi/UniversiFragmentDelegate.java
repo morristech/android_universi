@@ -33,10 +33,6 @@ import universum.studios.android.dialog.manage.DialogController;
 final class UniversiFragmentDelegate extends UniversiContextDelegate {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -44,6 +40,10 @@ final class UniversiFragmentDelegate extends UniversiContextDelegate {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "UniversiFragmentDelegate";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -56,7 +56,7 @@ final class UniversiFragmentDelegate extends UniversiContextDelegate {
 	/**
 	 * Fragment instance for which has been this delegate created.
 	 */
-	final Fragment fragment;
+	private final Fragment mFragment;
 
 	/**
 	 * Constructors ================================================================================
@@ -69,7 +69,7 @@ final class UniversiFragmentDelegate extends UniversiContextDelegate {
 	 */
 	UniversiFragmentDelegate(@NonNull Fragment context) {
 		super(context.getActivity());
-		this.fragment = context;
+		this.mFragment = context;
 	}
 
 	/**
@@ -81,7 +81,7 @@ final class UniversiFragmentDelegate extends UniversiContextDelegate {
 	@NonNull
 	@Override
 	DialogController instantiateDialogController() {
-		return new DialogController(fragment);
+		return new DialogController(mFragment);
 	}
 
 	/**

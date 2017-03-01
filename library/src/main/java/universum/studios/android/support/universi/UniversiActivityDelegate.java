@@ -51,10 +51,6 @@ import universum.studios.android.transition.BaseNavigationalTransition;
 final class UniversiActivityDelegate extends UniversiContextDelegate {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -62,6 +58,10 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "UniversiActivityDelegate";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -104,6 +104,14 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 */
 
 	/**
+	 */
+	@NonNull
+	@Override
+	DialogController instantiateDialogController() {
+		return new DialogController((FragmentActivity) mContext);
+	}
+
+	/**
 	 * Starts a loader with the specified <var>id</var>. If there was already started loader with the
 	 * same id before, such a loader will be <b>re-started</b>, otherwise new loader will be <b>initialized</b>.
 	 *
@@ -117,7 +125,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @see #destroyLoader(int)
 	 */
 	@Nullable
-	public <D> Loader<D> startLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	<D> Loader<D> startLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
 		final LoaderManager manager = ((FragmentActivity) mContext).getSupportLoaderManager();
 		if (manager.getLoader(id) == null) return initLoader(id, params, callbacks);
 		else return restartLoader(id, params, callbacks);
@@ -137,7 +145,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @see LoaderManager#initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 */
 	@Nullable
-	public <D> Loader<D> initLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	<D> Loader<D> initLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
 		return ((FragmentActivity) mContext).getSupportLoaderManager().initLoader(id, params, callbacks);
 	}
 
@@ -155,7 +163,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @see LoaderManager#restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 */
 	@Nullable
-	public <D> Loader<D> restartLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	<D> Loader<D> restartLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
 		return ((FragmentActivity) mContext).getSupportLoaderManager().restartLoader(id, params, callbacks);
 	}
 
@@ -167,7 +175,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see LoaderManager#destroyLoader(int)
 	 */
-	public void destroyLoader(@IntRange(from = 0) int id) {
+	void destroyLoader(@IntRange(from = 0) int id) {
 		((FragmentActivity) mContext).getSupportLoaderManager().destroyLoader(id);
 	}
 
@@ -178,7 +186,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @param transition The desired transition. Can be {@code null} to clear the current one.
 	 * @see #getNavigationalTransition()
 	 */
-	public void setNavigationalTransition(@Nullable BaseNavigationalTransition transition) {
+	void setNavigationalTransition(@Nullable BaseNavigationalTransition transition) {
 		this.mNavigationalTransition = transition;
 	}
 
@@ -190,7 +198,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @see #setNavigationalTransition(BaseNavigationalTransition)
 	 */
 	@Nullable
-	public BaseNavigationalTransition getNavigationalTransition() {
+	BaseNavigationalTransition getNavigationalTransition() {
 		return mNavigationalTransition;
 	}
 
@@ -200,7 +208,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 *
 	 * @return {@code True} if transition has been started, {@code false} otherwise.
 	 */
-	public boolean finishWithNavigationalTransition() {
+	boolean finishWithNavigationalTransition() {
 		if (mNavigationalTransition != null) {
 			mNavigationalTransition.finish((FragmentActivity) mContext);
 			return true;
@@ -215,7 +223,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @see #getFragmentController()
 	 * @see #setFragmentFactory(FragmentFactory)
 	 */
-	public void setFragmentController(@Nullable FragmentController controller) {
+	void setFragmentController(@Nullable FragmentController controller) {
 		this.mFragmentController = controller;
 		if (mFragmentFactory != null) {
 			this.ensureFragmentController();
@@ -230,7 +238,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @return Fragment controller instance ready to show/hide fragment instances.
 	 */
 	@NonNull
-	public FragmentController getFragmentController() {
+	FragmentController getFragmentController() {
 		this.ensureFragmentController();
 		return mFragmentController;
 	}
@@ -243,7 +251,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @see #getFragmentController()
 	 * @see #getFragmentFactory()
 	 */
-	public void setFragmentFactory(@Nullable FragmentFactory factory) {
+	void setFragmentFactory(@Nullable FragmentFactory factory) {
 		this.mFragmentFactory = factory;
 		this.ensureFragmentController();
 		mFragmentController.setFactory(factory);
@@ -256,7 +264,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @see #setFragmentFactory(FragmentFactory)
 	 */
 	@Nullable
-	public FragmentFactory getFragmentFactory() {
+	FragmentFactory getFragmentFactory() {
 		return mFragmentFactory;
 	}
 
@@ -264,20 +272,19 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * Ensures that the fragment controller is initialized.
 	 */
 	private void ensureFragmentController() {
-		if (mFragmentController == null) {
-			this.mFragmentController = instantiateFragmentController();
-			this.mFragmentController.setViewContainerId(R.id.ui_container);
-		}
+		if (mFragmentController == null) this.mFragmentController = new FragmentController((FragmentActivity) mContext);
 	}
 
 	/**
-	 * Creates a new instance of FragmentController for the context that uses this delegate.
+	 * Searches for current fragment displayed in container that is used by {@link FragmentController}
+	 * of this delegate to show fragments in the context of the associated activity.
 	 *
-	 * @return New FragmentController instance.
+	 * @return Instance of current fragment found via {@link FragmentController#findCurrentFragment()}
+	 * or {@code null} if there is no fragment displayed.
 	 */
-	@NonNull
-	FragmentController instantiateFragmentController() {
-		return new FragmentController((FragmentActivity) mContext);
+	@Nullable
+	public Fragment findCurrentFragment() {
+		return mFragmentController == null ? null : mFragmentController.findCurrentFragment();
 	}
 
 	/**
@@ -292,26 +299,6 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Searches for current fragment displayed in container that is used by {@link FragmentController}
-	 * of this delegate to show fragments in the context of the associated activity.
-	 *
-	 * @return Instance of current fragment found via {@link FragmentController#findCurrentFragment()}
-	 * or {@code null} if there is no fragment displayed.
-	 */
-	@Nullable
-	public Fragment findCurrentFragment() {
-		return mFragmentController != null ? mFragmentController.findCurrentFragment() : null;
-	}
-
-	/**
-	 */
-	@NonNull
-	@Override
-	DialogController instantiateDialogController() {
-		return new DialogController((FragmentActivity) mContext);
 	}
 
 	/**
