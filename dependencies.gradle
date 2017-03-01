@@ -20,12 +20,12 @@ ext {
             androidSupportAppCompatV7: "com.android.support:appcompat-v7:${androidSupportVersion}",
             androidSupportRecyclerViewV7: "com.android.support:recyclerview-v7:${androidSupportVersion}",
             androidUniversumTransitionsNavigationalBase: "universum.studios.android:transitions-navigational-base:${androidUniversumTransitionsVersion}@aar",
-            androidUniversumSupportFragmentsCore: "universum.studios.android.support:support.fragments-core:${androidUniversumSupportFragmentsVersion}@aar",
-            androidUniversumSupportFragmentsBase: "universum.studios.android.support:support.fragments-base:${androidUniversumSupportFragmentsVersion}@aar",
-            androidUniversumSupportFragmentsCommon: "universum.studios.android.support:support.fragments-common:${androidUniversumSupportFragmentsVersion}@aar",
-            androidUniversumSupportFragmentsManageCore: "universum.studios.android.support:support.fragments-manage-core:${androidUniversumSupportFragmentsVersion}@aar",
-            androidUniversumSupportDialogsCore: "universum.studios.android.support:support.dialogs-core:${androidUniversumSupportDialogsVersion}@aar",
-            androidUniversumSupportDialogsManage: "universum.studios.android.support:support.dialogs-manage:${androidUniversumSupportDialogsVersion}@aar"
+            androidUniversumSupportFragmentsCore: "universum.studios.android.support:support-fragments-core:${androidUniversumSupportFragmentsVersion}@aar",
+            androidUniversumSupportFragmentsBase: "universum.studios.android.support:support-fragments-base:${androidUniversumSupportFragmentsVersion}@aar",
+            androidUniversumSupportFragmentsCommon: "universum.studios.android.support:support-fragments-common:${androidUniversumSupportFragmentsVersion}@aar",
+            androidUniversumSupportFragmentsManageCore: "universum.studios.android.support:support-fragments-manage-core:${androidUniversumSupportFragmentsVersion}@aar",
+            androidUniversumSupportDialogsCore: "universum.studios.android.support:support-dialogs-core:${androidUniversumSupportDialogsVersion}@aar",
+            androidUniversumSupportDialogsManage: "universum.studios.android.support:support-dialogs-manage:${androidUniversumSupportDialogsVersion}@aar"
     ]
 
     /**
