@@ -76,10 +76,6 @@ import universum.studios.android.transition.BaseNavigationalTransition;
 public abstract class UniversiActivity extends Activity implements UniversiActivityContext {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -89,14 +85,8 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	// private static final String TAG = "UniversiActivity";
 
 	/**
-	 * Flag indicating whether the output trough log-cat is enabled or not.
+	 * Interface ===================================================================================
 	 */
-	// private static final boolean LOG_ENABLED = true;
-
-	/**
-	 * Flag indicating whether the debug output trough log-cat is enabled or not.
-	 */
-	// private static final boolean DEBUG_ENABLED = true;
 
 	/**
 	 * Static members ==============================================================================
@@ -105,6 +95,19 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	/**
 	 * Members =====================================================================================
 	 */
+
+	/**
+	 * Runnable that calls {@link #requestBindDataInner()} method.
+	 */
+	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
+
+		/**
+		 */
+		@Override
+		public void run() {
+			requestBindDataInner();
+		}
+	};
 
 	/**
 	 * Handler responsible for processing of all annotations of this class and also for handling all
@@ -119,11 +122,6 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	private UniversiActivityDelegate mContextDelegate;
 
 	/**
-	 * Runnable invoking {@link #requestBindDataInner()} method.
-	 */
-	private Runnable mRequestBindDataInner;
-
-	/**
 	 * Constructors ================================================================================
 	 */
 
@@ -133,6 +131,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 * be later used.
 	 */
 	public UniversiActivity() {
+		super();
 		this.mAnnotationHandler = onCreateAnnotationHandler();
 	}
 
@@ -160,6 +159,13 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	protected ActionBarFragmentAnnotationHandler getAnnotationHandler() {
 		FragmentAnnotations.checkIfEnabledOrThrow();
 		return mAnnotationHandler;
+	}
+
+	/**
+	 * Ensures that the context delegate is initialized for this activity.
+	 */
+	private void ensureContextDelegate() {
+		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
 	}
 
 	/**
@@ -248,6 +254,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 * activity.
 	 */
 	protected void onBindViews() {
+		// Inheritance hierarchies may perform here views binding/injection.
 	}
 
 	/**
@@ -269,6 +276,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 					super.onCreateOptionsMenu(menu);
 					break;
 				case MenuOptions.DEFAULT:
+				default:
 					super.onCreateOptionsMenu(menu);
 					getMenuInflater().inflate(menuResource, menu);
 					break;
@@ -376,22 +384,14 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 * If this activity has its view hierarchy already created {@link #onBindData()} will be invoked
 	 * immediately, otherwise will wait until {@link #onContentChanged()} is invoked.
 	 * <p>
-	 * <b>This method can be invoked from a background-thread</b>.
+	 * <b>This method may be invoked also from a background-thread</b>.
 	 */
 	protected void requestBindData() {
 		// Check whether this call has been made on the UI thread, if not post on the UI thread the request runnable.
 		if (Looper.getMainLooper().equals(Looper.myLooper())) {
 			this.requestBindDataInner();
 		} else {
-			if (mRequestBindDataInner == null) {
-				this.mRequestBindDataInner = new Runnable() {
-					@Override
-					public void run() {
-						requestBindDataInner();
-					}
-				};
-			}
-			runOnUiThread(mRequestBindDataInner);
+			runOnUiThread(REQUEST_BIND_DATA_INNER);
 		}
 	}
 
@@ -416,6 +416,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@UiThread
 	protected void onBindData() {
+		// Inheritance hierarchies may perform theirs specific data binding logic here.
 	}
 
 	/**
@@ -604,13 +605,6 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 		}
 		ActivityCompat.finishAfterTransition(this);
 		return false;
-	}
-
-	/**
-	 * Ensures that the context delegate is initialized for this activity.
-	 */
-	private void ensureContextDelegate() {
-		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
 	}
 
 	/**

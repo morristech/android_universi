@@ -51,10 +51,6 @@ import universum.studios.android.transition.BaseNavigationalTransition;
 final class UniversiActivityDelegate extends UniversiContextDelegate {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -62,6 +58,10 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "UniversiActivityDelegate";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================

@@ -60,10 +60,6 @@ import universum.studios.android.transition.BaseNavigationalTransition;
 public abstract class UniversiCompatActivity extends AppCompatActivity implements UniversiActivityContext {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -73,14 +69,8 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	// private static final String TAG = "UniversiCompatActivity";
 
 	/**
-	 * Flag indicating whether the output trough log-cat is enabled or not.
+	 * Interface ===================================================================================
 	 */
-	// private static final boolean LOG_ENABLED = true;
-
-	/**
-	 * Flag indicating whether the debug output trough log-cat is enabled or not.
-	 */
-	// private static final boolean DEBUG_ENABLED = true;
 
 	/**
 	 * Static members ==============================================================================
@@ -89,6 +79,19 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	/**
 	 * Members =====================================================================================
 	 */
+
+	/**
+	 * Runnable that calls {@link #requestBindDataInner()} method.
+	 */
+	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
+
+		/**
+		 */
+		@Override
+		public void run() {
+			requestBindDataInner();
+		}
+	};
 
 	/**
 	 * Handler responsible for processing of all annotations of this class and also for handling all
@@ -103,11 +106,6 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	private UniversiActivityDelegate mContextDelegate;
 
 	/**
-	 * Runnable invoking {@link #requestBindDataInner()} method.
-	 */
-	private Runnable mRequestBindDataInner;
-
-	/**
 	 * Constructors ================================================================================
 	 */
 
@@ -117,6 +115,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * be later used.
 	 */
 	public UniversiCompatActivity() {
+		super();
 		this.mAnnotationHandler = onCreateAnnotationHandler();
 	}
 
@@ -144,6 +143,13 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	protected ActionBarFragmentAnnotationHandler getAnnotationHandler() {
 		FragmentAnnotations.checkIfEnabledOrThrow();
 		return mAnnotationHandler;
+	}
+
+	/**
+	 * Ensures that the context delegate is initialized for this fragment.
+	 */
+	private void ensureContextDelegate() {
+		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
 	}
 
 	/**
@@ -232,6 +238,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * activity.
 	 */
 	protected void onBindViews() {
+		// Inheritance hierarchies may perform here views binding/injection.
 	}
 
 	/**
@@ -253,6 +260,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 					super.onCreateOptionsMenu(menu);
 					break;
 				case MenuOptions.DEFAULT:
+				default:
 					super.onCreateOptionsMenu(menu);
 					getMenuInflater().inflate(menuResource, menu);
 					break;
@@ -360,22 +368,14 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * If this activity has its view hierarchy already created {@link #onBindData()} will be invoked
 	 * immediately, otherwise will wait until {@link #onContentChanged()} is invoked.
 	 * <p>
-	 * <b>This method can be invoked from a background-thread</b>.
+	 * <b>This method may be invoked also from a background-thread</b>.
 	 */
 	protected void requestBindData() {
 		// Check whether this call has been made on the UI thread, if not post on the UI thread the request runnable.
 		if (Looper.getMainLooper().equals(Looper.myLooper())) {
 			this.requestBindDataInner();
 		} else {
-			if (mRequestBindDataInner == null) {
-				this.mRequestBindDataInner = new Runnable() {
-					@Override
-					public void run() {
-						requestBindDataInner();
-					}
-				};
-			}
-			runOnUiThread(mRequestBindDataInner);
+			runOnUiThread(REQUEST_BIND_DATA_INNER);
 		}
 	}
 
@@ -400,6 +400,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@UiThread
 	protected void onBindData() {
+		// Inheritance hierarchies may perform theirs specific data binding logic here.
 	}
 
 	/**
@@ -455,7 +456,8 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @param requestCode Code to identify this request in {@link #onRequestPermissionsResult(int, String[], int[])}.
 	 */
 	public void supportRequestPermissions(@NonNull String[] permissions, int requestCode) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) requestPermissions(permissions, requestCode);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+			requestPermissions(permissions, requestCode);
 	}
 
 	/**
@@ -589,13 +591,6 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 		}
 		supportFinishAfterTransition();
 		return false;
-	}
-
-	/**
-	 * Ensures that the context delegate is initialized for this fragment.
-	 */
-	private void ensureContextDelegate() {
-		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
 	}
 
 	/**

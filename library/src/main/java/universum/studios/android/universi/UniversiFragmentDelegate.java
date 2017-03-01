@@ -33,10 +33,6 @@ import universum.studios.android.dialog.manage.DialogController;
 final class UniversiFragmentDelegate extends UniversiContextDelegate {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -44,6 +40,10 @@ final class UniversiFragmentDelegate extends UniversiContextDelegate {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "UniversiFragmentDelegate";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
