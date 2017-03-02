@@ -223,7 +223,7 @@ public interface UniversiActivityContext {
 	 * @param options  Options for the dialog.
 	 * @return {@code True} if dialog has been shown, {@code false} if this activity is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
-	 * @see DialogController#newRequest(int, DialogOptions)
+	 * @see DialogController#newRequest(int)
 	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
