@@ -223,7 +223,7 @@ public interface UniversiActivityContext {
 	 * @param options  Options for the dialog.
 	 * @return {@code True} if dialog has been shown, {@code false} if this activity is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
-	 * @see DialogController#showDialog(int, DialogOptions)
+	 * @see DialogController#newRequest(int, DialogOptions)
 	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
@@ -235,7 +235,7 @@ public interface UniversiActivityContext {
 	 * @param dialogId Id of the desired dialog to dismiss.
 	 * @return {@code True} if dialog has been dismissed, {@code false} if this activity is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
-	 * @see DialogController#dismissDialog(int)
+	 * @see DialogController#newRequest(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	boolean dismissDialogWithId(@IntRange(from = 0) int dialogId);

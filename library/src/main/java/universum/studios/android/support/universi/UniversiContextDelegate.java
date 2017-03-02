@@ -33,6 +33,7 @@ import universum.studios.android.support.dialog.DialogOptions;
 import universum.studios.android.support.dialog.XmlDialog;
 import universum.studios.android.support.dialog.manage.DialogController;
 import universum.studios.android.support.dialog.manage.DialogFactory;
+import universum.studios.android.support.dialog.manage.DialogRequest;
 import universum.studios.android.support.dialog.manage.DialogXmlFactory;
 
 /**
@@ -192,7 +193,7 @@ abstract class UniversiContextDelegate {
 		this.mDialogController = controller;
 		if (mDialogFactory != null) {
 			this.ensureDialogController();
-			mDialogController.setDialogFactory(mDialogFactory);
+			mDialogController.setFactory(mDialogFactory);
 		}
 	}
 
@@ -248,7 +249,7 @@ abstract class UniversiContextDelegate {
 	void setDialogFactory(@Nullable DialogFactory factory) {
 		this.mDialogFactory = factory;
 		this.ensureDialogController();
-		mDialogController.setDialogFactory(factory);
+		mDialogController.setFactory(factory);
 	}
 
 	/**
@@ -269,14 +270,14 @@ abstract class UniversiContextDelegate {
 	 * @param options  Options for the dialog.
 	 * @return {@code True} if dialog has been shown, {@code false} if context that uses this delegate
 	 * is currently <b>paused</b> or does not have its dialog factory specified.
-	 * @see DialogController#showDialog(int, DialogOptions)
+	 * @see DialogController#newRequest(int)
 	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
 	boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
 		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;
 		this.ensureDialogController();
-		return mDialogController.showDialog(dialogId, options);
+		return mDialogController.newRequest(dialogId).dialogOptions(options).execute() != null;
 	}
 
 	/**
@@ -285,13 +286,13 @@ abstract class UniversiContextDelegate {
 	 * @param dialogId Id of the desired dialog to dismiss.
 	 * @return {@code True} if dialog has been dismissed, {@code false} if context that uses this
 	 * delegate is currently <b>paused</b> or does not have its dialog factory specified.
-	 * @see DialogController#dismissDialog(int)
+	 * @see DialogController#newRequest(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	boolean dismissDialogWithId(@IntRange(from = 0) int dialogId) {
 		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;
 		this.ensureDialogController();
-		return mDialogController.dismissDialog(dialogId);
+		return mDialogController.newRequest(dialogId).intent(DialogRequest.DISMISS).execute() != null;
 	}
 
 	/**
@@ -311,9 +312,8 @@ abstract class UniversiContextDelegate {
 		final DialogXmlFactory dialogFactory = accessDialogXmlFactory();
 		final DialogFragment dialog = dialogFactory.createDialog(resId, options);
 		if (dialog != null) {
-			final String dialogTag = dialogFactory.createDialogTag(resId);
 			this.ensureDialogController();
-			return mDialogController.showDialog(dialog, dialogTag);
+			return mDialogController.newRequest(dialog).tag(dialogFactory.createDialogTag(resId)).execute() != null;
 		}
 		return false;
 	}
@@ -329,7 +329,8 @@ abstract class UniversiContextDelegate {
 	boolean dismissXmlDialog(@XmlRes int resId) {
 		if (hasPrivateFlag(PFLAG_PAUSED)) return false;
 		this.ensureDialogController();
-		return mDialogController.dismissDialog(accessDialogXmlFactory().createDialogTag(resId));
+		final Fragment fragment = mDialogController.getFragmentManager().findFragmentByTag(accessDialogXmlFactory().createDialogTag(resId));
+		return fragment instanceof DialogFragment && mDialogController.newRequest((DialogFragment) fragment).intent(DialogRequest.DISMISS).execute() != null;
 	}
 
 	/**
@@ -371,6 +372,7 @@ abstract class UniversiContextDelegate {
 	 * @see ConnectivityManager#getNetworkInfo(int)
 	 * @see NetworkInfo#isConnected()
 	 */
+	@SuppressWarnings("deprecation")
 	boolean isNetworkConnected(int networkType) {
 		this.ensureConnectivityManager();
 		final NetworkInfo info = mConnectivityManager.getNetworkInfo(networkType);
