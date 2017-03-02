@@ -339,7 +339,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param options  Options for the dialog.
 	 * @return {@code True} if dialog has been shown, {@code false} if this fragment is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
-	 * @see DialogController#showDialog(int, DialogOptions)
+	 * @see DialogController#newRequest(int)
 	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
@@ -354,7 +354,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param dialogId Id of the desired dialog to dismiss.
 	 * @return {@code True} if dialog has been dismissed, {@code false} if this fragment is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
-	 * @see DialogController#dismissDialog(int)
+	 * @see DialogController#newRequest(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	protected boolean dismissDialogWithId(@IntRange(from = 0) int dialogId) {
