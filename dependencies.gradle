@@ -6,7 +6,6 @@ ext {
     androidUniversumTransitionsVersion = '1.0.0'
     androidUniversumFragmentsVersion = '1.0.1'
     androidUniversumDialogsVersion = '0.9.1'
-    androidUniversumUiVersion = '0.9.0'
     androidTestVersion = '0.5'
     androidEspressoVersion = '2.2.2'
     junitVersion = '4.12'
