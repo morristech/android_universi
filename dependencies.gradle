@@ -1,12 +1,11 @@
 // Defines all dependencies used across the library project.
 ext {
     // Versions.
-    libraryVersion = '1.0.0-beta1'
+    libraryVersion = '1.0.0-beta2'
     androidSupportVersion = '25.1.1'
     androidUniversumTransitionsVersion = '1.0.0'
     androidUniversumFragmentsVersion = '1.0.1'
-    androidUniversumDialogsVersion = '0.9.0'
-    androidUniversumUiVersion = '0.9.0'
+    androidUniversumDialogsVersion = '0.9.1'
     androidTestVersion = '0.5'
     androidEspressoVersion = '2.2.2'
     junitVersion = '4.12'
@@ -20,9 +19,12 @@ ext {
             androidSupportAppCompatV7: "com.android.support:appcompat-v7:${androidSupportVersion}",
             androidSupportRecyclerViewV7: "com.android.support:recyclerview-v7:${androidSupportVersion}",
             androidUniversumTransitionsNavigationalBase: "universum.studios.android:transitions-navigational-base:${androidUniversumTransitionsVersion}@aar",
-            androidUniversumFragments: "universum.studios.android:fragments:${androidUniversumFragmentsVersion}@aar",
-            androidUniversumDialogs: "universum.studios.android:dialogs:${androidUniversumDialogsVersion}@aar",
-            androidUniversumUi: "universum.studios.android:ui:${androidUniversumUiVersion}@aar"
+            androidUniversumFragmentsCore: "universum.studios.android:fragments-core:${androidUniversumFragmentsVersion}@aar",
+            androidUniversumFragmentsBase: "universum.studios.android:fragments-base:${androidUniversumFragmentsVersion}@aar",
+            androidUniversumFragmentsCommon: "universum.studios.android:fragments-common:${androidUniversumFragmentsVersion}@aar",
+            androidUniversumFragmentsManageCore: "universum.studios.android:fragments-manage-core:${androidUniversumFragmentsVersion}@aar",
+            androidUniversumDialogsCore: "universum.studios.android:dialogs-core:${androidUniversumDialogsVersion}@aar",
+            androidUniversumDialogsManage: "universum.studios.android:dialogs-manage:${androidUniversumDialogsVersion}@aar"
     ]
 
     /**

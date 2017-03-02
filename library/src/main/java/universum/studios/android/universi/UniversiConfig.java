@@ -25,7 +25,7 @@ import android.util.Log;
  *
  * @author Martin Albedinsky
  */
-public class UniversiConfig {
+public final class UniversiConfig {
 
 	/**
 	 * Flag indicating whether the <b>verbose</b> output for the Universi library trough log-cat is
@@ -42,4 +42,10 @@ public class UniversiConfig {
 	 * @see Log#d(String, String)
 	 */
 	public static boolean DEBUG_LOG_ENABLED = false;
+
+	/**
+	 */
+	private UniversiConfig() {
+		// Creation of instances of this class is not publicly allowed.
+	}
 }

@@ -35,6 +35,7 @@ import android.view.View;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.dialog.manage.DialogFactory;
 import universum.studios.android.dialog.manage.DialogXmlFactory;
 import universum.studios.android.fragment.ActionBarFragment;
 
@@ -62,10 +63,6 @@ import universum.studios.android.fragment.ActionBarFragment;
 public abstract class UniversiFragment extends ActionBarFragment {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -75,14 +72,8 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	// private static final String TAG = "UniversiFragment";
 
 	/**
-	 * Flag indicating whether the output trough log-cat is enabled or not.
+	 * Interface ===================================================================================
 	 */
-	// private final boolean LOG_ENABLED = true;
-
-	/**
-	 * Flag indicating whether the debug output trough log-cat is enabled or not.
-	 */
-	// private final boolean DEBUG_ENABLED = true;
 
 	/**
 	 * Static members ==============================================================================
@@ -93,15 +84,23 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 */
 
 	/**
+	 * Runnable that calls {@link #requestBindDataInner()} method.
+	 */
+	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
+
+		/**
+		 */
+		@Override
+		public void run() {
+			requestBindDataInner();
+		}
+	};
+
+	/**
 	 * Delegate that is used to handle requests specific for the Universi context made upon this
 	 * fragment like showing and dismissing of dialogs.
 	 */
 	private UniversiFragmentDelegate mContextDelegate;
-
-	/**
-	 * Runnable invoking {@link #requestBindDataInner()} method.
-	 */
-	private Runnable mRequestBindDataInner;
 
 	/**
 	 * Constructors ================================================================================
@@ -110,6 +109,13 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	/**
 	 * Methods =====================================================================================
 	 */
+
+	/**
+	 * Ensures that the context delegate is initialized for this fragment.
+	 */
+	private void ensureContextDelegate() {
+		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
+	}
 
 	/**
 	 * Sets a controller that should be used to show and dismiss dialogs within context of this fragment.
@@ -159,7 +165,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @see #showDialogWithId(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
-	protected void setDialogFactory(@Nullable DialogController.DialogFactory factory) {
+	protected void setDialogFactory(@Nullable DialogFactory factory) {
 		this.ensureContextDelegate();
 		mContextDelegate.setDialogFactory(factory);
 	}
@@ -168,10 +174,10 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * Returns the current dialog factory specified for this fragment.
 	 *
 	 * @return Dialog factory or {@code null} if no factory has been specified yet.
-	 * @see #setDialogFactory(DialogController.DialogFactory)
+	 * @see #setDialogFactory(DialogFactory)
 	 */
 	@Nullable
-	protected DialogController.DialogFactory getDialogFactory() {
+	protected DialogFactory getDialogFactory() {
 		this.ensureContextDelegate();
 		return mContextDelegate.getDialogFactory();
 	}
@@ -198,6 +204,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param rootView The root view of this fragment.
 	 */
 	protected void onBindViews(@NonNull View rootView, @Nullable Bundle savedInstanceState) {
+		// Inheritance hierarchies may perform here views binding/injection.
 	}
 
 	/**
@@ -214,22 +221,14 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * If this fragment has its view hierarchy already created {@link #onBindData()} will be invoked
 	 * immediately, otherwise will wait until {@link #onViewCreated(View, Bundle)} is invoked.
 	 * <p>
-	 * <b>This method can be invoked from a background-thread</b>.
+	 * <b>This method may be invoked also from a background-thread</b>.
 	 */
 	protected void requestBindData() {
 		// Check whether this call has been made on the UI thread, if not post on the UI thread the request runnable.
 		if (Looper.getMainLooper().equals(Looper.myLooper())) {
 			this.requestBindDataInner();
 		} else {
-			if (mRequestBindDataInner == null) {
-				this.mRequestBindDataInner = new Runnable() {
-					@Override
-					public void run() {
-						requestBindDataInner();
-					}
-				};
-			}
-			runOnUiThread(mRequestBindDataInner);
+			runOnUiThread(REQUEST_BIND_DATA_INNER);
 		}
 	}
 
@@ -254,6 +253,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 */
 	@UiThread
 	protected void onBindData() {
+		// Inheritance hierarchies may perform theirs specific data binding logic here.
 	}
 
 	/**
@@ -339,8 +339,8 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param options  Options for the dialog.
 	 * @return {@code True} if dialog has been shown, {@code false} if this fragment is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
-	 * @see DialogController#showDialog(int, DialogOptions)
-	 * @see #setDialogFactory(DialogController.DialogFactory)
+	 * @see DialogController#newRequest(int)
+	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
 	protected boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
@@ -354,7 +354,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param dialogId Id of the desired dialog to dismiss.
 	 * @return {@code True} if dialog has been dismissed, {@code false} if this fragment is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
-	 * @see DialogController#dismissDialog(int)
+	 * @see DialogController#newRequest(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	protected boolean dismissDialogWithId(@IntRange(from = 0) int dialogId) {
@@ -378,7 +378,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param options Options for the dialog.
 	 * @return {@code True} if dialog has been successfully inflated and shown, {@code false} if
 	 * this fragment is currently <b>paused</b> or dialog failed to be inflated.
-	 * @see DialogXmlFactory#createDialogInstance(int, DialogOptions)
+	 * @see DialogXmlFactory#createDialog(int, DialogOptions)
 	 * @see #dismissXmlDialog(int)
 	 */
 	protected boolean showXmlDialog(@XmlRes int resId, @Nullable DialogOptions options) {
@@ -415,13 +415,6 @@ public abstract class UniversiFragment extends ActionBarFragment {
 		super.onDestroyView();
 		this.ensureContextDelegate();
 		mContextDelegate.setViewCreated(false);
-	}
-
-	/**
-	 * Ensures that the context delegate is initialized for this fragment.
-	 */
-	private void ensureContextDelegate() {
-		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
 	}
 
 	/**

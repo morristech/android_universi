@@ -38,6 +38,7 @@ import android.widget.Toolbar;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.dialog.manage.DialogFactory;
 import universum.studios.android.fragment.ActionBarDelegate;
 import universum.studios.android.fragment.BackPressWatcher;
 import universum.studios.android.fragment.annotation.ActionBarOptions;
@@ -75,10 +76,6 @@ import universum.studios.android.transition.BaseNavigationalTransition;
 public abstract class UniversiActivity extends Activity implements UniversiActivityContext {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -88,14 +85,8 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	// private static final String TAG = "UniversiActivity";
 
 	/**
-	 * Flag indicating whether the output trough log-cat is enabled or not.
+	 * Interface ===================================================================================
 	 */
-	// private static final boolean LOG_ENABLED = true;
-
-	/**
-	 * Flag indicating whether the debug output trough log-cat is enabled or not.
-	 */
-	// private static final boolean DEBUG_ENABLED = true;
 
 	/**
 	 * Static members ==============================================================================
@@ -104,6 +95,19 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	/**
 	 * Members =====================================================================================
 	 */
+
+	/**
+	 * Runnable that calls {@link #requestBindDataInner()} method.
+	 */
+	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
+
+		/**
+		 */
+		@Override
+		public void run() {
+			requestBindDataInner();
+		}
+	};
 
 	/**
 	 * Handler responsible for processing of all annotations of this class and also for handling all
@@ -118,11 +122,6 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	private UniversiActivityDelegate mContextDelegate;
 
 	/**
-	 * Runnable invoking {@link #requestBindDataInner()} method.
-	 */
-	private Runnable mRequestBindDataInner;
-
-	/**
 	 * Constructors ================================================================================
 	 */
 
@@ -132,6 +131,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 * be later used.
 	 */
 	public UniversiActivity() {
+		super();
 		this.mAnnotationHandler = onCreateAnnotationHandler();
 	}
 
@@ -159,6 +159,13 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	protected ActionBarFragmentAnnotationHandler getAnnotationHandler() {
 		FragmentAnnotations.checkIfEnabledOrThrow();
 		return mAnnotationHandler;
+	}
+
+	/**
+	 * Ensures that the context delegate is initialized for this activity.
+	 */
+	private void ensureContextDelegate() {
+		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
 	}
 
 	/**
@@ -247,6 +254,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 * activity.
 	 */
 	protected void onBindViews() {
+		// Inheritance hierarchies may perform here views binding/injection.
 	}
 
 	/**
@@ -268,6 +276,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 					super.onCreateOptionsMenu(menu);
 					break;
 				case MenuOptions.DEFAULT:
+				default:
 					super.onCreateOptionsMenu(menu);
 					getMenuInflater().inflate(menuResource, menu);
 					break;
@@ -356,7 +365,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	/**
 	 */
 	@Override
-	public void setDialogFactory(@Nullable DialogController.DialogFactory factory) {
+	public void setDialogFactory(@Nullable DialogFactory factory) {
 		this.ensureContextDelegate();
 		mContextDelegate.setDialogFactory(factory);
 	}
@@ -365,7 +374,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@Override
 	@Nullable
-	public DialogController.DialogFactory getDialogFactory() {
+	public DialogFactory getDialogFactory() {
 		this.ensureContextDelegate();
 		return mContextDelegate.getDialogFactory();
 	}
@@ -375,22 +384,14 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 * If this activity has its view hierarchy already created {@link #onBindData()} will be invoked
 	 * immediately, otherwise will wait until {@link #onContentChanged()} is invoked.
 	 * <p>
-	 * <b>This method can be invoked from a background-thread</b>.
+	 * <b>This method may be invoked also from a background-thread</b>.
 	 */
 	protected void requestBindData() {
 		// Check whether this call has been made on the UI thread, if not post on the UI thread the request runnable.
 		if (Looper.getMainLooper().equals(Looper.myLooper())) {
 			this.requestBindDataInner();
 		} else {
-			if (mRequestBindDataInner == null) {
-				this.mRequestBindDataInner = new Runnable() {
-					@Override
-					public void run() {
-						requestBindDataInner();
-					}
-				};
-			}
-			runOnUiThread(mRequestBindDataInner);
+			runOnUiThread(REQUEST_BIND_DATA_INNER);
 		}
 	}
 
@@ -415,6 +416,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@UiThread
 	protected void onBindData() {
+		// Inheritance hierarchies may perform theirs specific data binding logic here.
 	}
 
 	/**
@@ -534,17 +536,60 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 
 	/**
 	 * Invoked from {@link #onBackPressed()} to give a chance to this activity instance to consume
-	 * the back press event before its parent.
+	 * the back press event before it is delivered to its parent.
 	 * <p>
-	 * This implementation first tries to dispatch this event to the current fragment via
-	 * {@link #dispatchBackPressToCurrentFragment()} and if that method does not consume the event
-	 * a stack with fragments will be tried to popped via {@link #popFragmentsBackStack()}.
+	 * This implementation first tries to dispatch this event to one of its visible fragment via
+	 * {@link #dispatchBackPressToFragments()} and if none of the currently visible fragments does
+	 * not consume the event a stack with fragments will be popped via {@link #popFragmentsBackStack()}.
 	 *
 	 * @return {@code True} if the back press event has been consumed here, {@code false} otherwise.
 	 */
 	protected boolean onBackPress() {
 		this.ensureContextDelegate();
-		return !mContextDelegate.isPaused() && (dispatchBackPressToCurrentFragment() || popFragmentsBackStack());
+		return !mContextDelegate.isPaused() && (dispatchBackPressToFragments() || popFragmentsBackStack());
+	}
+
+	/**
+	 * Dispatches back press event to all currently visible fragments displayed in context of this
+	 * activity.
+	 * <p>
+	 * This implementation calls {@link #dispatchBackPressToCurrentFragment()} and returns its result.
+	 *
+	 * @return {@code True} if some of the visible fragments has consumed the back press event,
+	 * {@code false} otherwise.
+	 * @see BackPressWatcher#dispatchBackPress()
+	 */
+	protected boolean dispatchBackPressToFragments() {
+		return dispatchBackPressToCurrentFragment();
+	}
+
+	/**
+	 * Dispatches back press event to the current fragment displayed in context of this activity.
+	 *
+	 * @return {@code True} if the current fragment has consumed the back press event, {@code false}
+	 * otherwise.
+	 * @see #findCurrentFragment()
+	 * @see BackPressWatcher#dispatchBackPress()
+	 */
+	protected boolean dispatchBackPressToCurrentFragment() {
+		final Fragment fragment = findCurrentFragment();
+		return fragment instanceof BackPressWatcher && ((BackPressWatcher) fragment).dispatchBackPress();
+	}
+
+	/**
+	 * Finds currently visible fragment that is displayed in context of this activity.
+	 * <p>
+	 * <b>Note, that implementation of this method assumes that this activity uses {@link FragmentController}
+	 * to display its related fragments and that there may be only one fragment visible at a time,
+	 * that is in a full screen container.</b>
+	 *
+	 * @return Current fragment of this activity (that is at this time visible), or {@code null} if
+	 * there is no fragment presented within fragment container of this activity at all.
+	 */
+	@Nullable
+	protected Fragment findCurrentFragment() {
+		this.ensureContextDelegate();
+		return mContextDelegate.findCurrentFragment();
 	}
 
 	/**
@@ -556,32 +601,6 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	protected boolean popFragmentsBackStack() {
 		this.ensureContextDelegate();
 		return mContextDelegate.popFragmentsBackStack();
-	}
-
-	/**
-	 * Dispatches back press event to the current fragment of this activity.
-	 *
-	 * @return {@code True} if there is presented some fragment that consumed the back press event,
-	 * {@code false} otherwise.
-	 * @see #findCurrentFragment()
-	 * @see BackPressWatcher#dispatchBackPress()
-	 */
-	protected boolean dispatchBackPressToCurrentFragment() {
-		final Fragment fragment = findCurrentFragment();
-		return fragment instanceof BackPressWatcher && ((BackPressWatcher) fragment).dispatchBackPress();
-	}
-
-	/**
-	 * Invoked whenever an event need to be dispatched to the current fragment that is presented
-	 * within context of this activity.
-	 *
-	 * @return Current fragment of this activity (that is at this time visible), or {@code null} if
-	 * there are no fragments presented within this activity at all.
-	 */
-	@Nullable
-	protected Fragment findCurrentFragment() {
-		this.ensureContextDelegate();
-		return mContextDelegate.findCurrentFragment();
 	}
 
 	/**
@@ -603,13 +622,6 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 		}
 		ActivityCompat.finishAfterTransition(this);
 		return false;
-	}
-
-	/**
-	 * Ensures that the context delegate is initialized for this activity.
-	 */
-	private void ensureContextDelegate() {
-		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
 	}
 
 	/**

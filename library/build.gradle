@@ -66,9 +66,12 @@ dependencies {
     compile releaseDependencies.androidSupportAppCompatV7
     compile releaseDependencies.androidSupportRecyclerViewV7
     compile releaseDependencies.androidUniversumTransitionsNavigationalBase
-    compile releaseDependencies.androidUniversumFragments
-    compile releaseDependencies.androidUniversumDialogs
-    compile releaseDependencies.androidUniversumUi
+    compile releaseDependencies.androidUniversumFragmentsCore
+    compile releaseDependencies.androidUniversumFragmentsBase
+    compile releaseDependencies.androidUniversumFragmentsCommon
+    compile releaseDependencies.androidUniversumFragmentsManageCore
+    compile releaseDependencies.androidUniversumDialogsCore
+    compile releaseDependencies.androidUniversumDialogsManage
 
     /*
      * TEST DEPENDENCIES ---------------------------------------------------------------------------
