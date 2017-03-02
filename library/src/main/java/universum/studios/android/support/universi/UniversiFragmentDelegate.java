@@ -22,7 +22,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
-import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.support.dialog.manage.DialogController;
 
 /**
  * An {@link UniversiContextDelegate} implementation that can be used within context of {@link Fragment}.

@@ -36,8 +36,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
-import universum.studios.android.dialog.DialogOptions;
-import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.support.dialog.DialogOptions;
+import universum.studios.android.support.dialog.manage.DialogController;
 import universum.studios.android.support.fragment.ActionBarDelegate;
 import universum.studios.android.support.fragment.BackPressWatcher;
 import universum.studios.android.support.fragment.annotation.ActionBarOptions;

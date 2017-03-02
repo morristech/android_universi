@@ -29,11 +29,11 @@ import android.support.annotation.XmlRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
-import universum.studios.android.dialog.DialogOptions;
-import universum.studios.android.dialog.XmlDialog;
-import universum.studios.android.dialog.manage.DialogController;
-import universum.studios.android.dialog.manage.DialogFactory;
-import universum.studios.android.dialog.manage.DialogXmlFactory;
+import universum.studios.android.support.dialog.DialogOptions;
+import universum.studios.android.support.dialog.XmlDialog;
+import universum.studios.android.support.dialog.manage.DialogController;
+import universum.studios.android.support.dialog.manage.DialogFactory;
+import universum.studios.android.support.dialog.manage.DialogXmlFactory;
 
 /**
  * Context delegate of which implementations are used by {@link UniversiActivity}, {@link UniversiCompatActivity}

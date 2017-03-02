@@ -29,10 +29,10 @@ import android.support.annotation.XmlRes;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import universum.studios.android.dialog.DialogOptions;
-import universum.studios.android.dialog.manage.DialogController;
-import universum.studios.android.dialog.manage.DialogFactory;
-import universum.studios.android.dialog.manage.DialogXmlFactory;
+import universum.studios.android.support.dialog.DialogOptions;
+import universum.studios.android.support.dialog.manage.DialogController;
+import universum.studios.android.support.dialog.manage.DialogFactory;
+import universum.studios.android.support.dialog.manage.DialogXmlFactory;
 import universum.studios.android.support.fragment.manage.FragmentController;
 import universum.studios.android.support.fragment.manage.FragmentFactory;
 import universum.studios.android.transition.BaseNavigationalTransition;
