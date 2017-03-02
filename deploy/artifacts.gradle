@@ -48,10 +48,12 @@ task generateJavadoc(type: Javadoc) {
             "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\appcompat-v7\\${androidSupportVersion}\\appcompat-v7-${androidSupportVersion}-sources.jar",
             "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\recyclerview-v7\\${androidSupportVersion}\\recyclerview-v7-${androidSupportVersion}-sources.jar",
             "${mavenLocalDirectory}\\universum\\studios\\android\\transitions-navigational-base\\${androidUniversumTransitionsVersion}\\transitions-navigational-base-${androidUniversumTransitionsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-fragments-core\\${androidUniversumSupportFragmentsVersion}\\support-fragments-core-${androidUniversumSupportFragmentsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-fragments-manage-core\\${androidUniversumSupportFragmentsVersion}\\support-fragments-manage-core${androidUniversumSupportFragmentsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-dialogs-core\\${androidUniversumSupportDialogsVersion}\\support-dialogs-core-${androidUniversumSupportDialogsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-dialogs-manage\\${androidUniversumSupportDialogsVersion}\\support-dialogs-manage-${androidUniversumSupportDialogsVersion}-sources.jar"
+            "${mavenLocalDirectory}\\universum\\studios\\android\\fragments-core\\${androidUniversumFragmentsVersion}\\fragments-core-${androidUniversumFragmentsVersion}-sources.jar",
+            "${mavenLocalDirectory}\\universum\\studios\\android\\fragments-base\\${androidUniversumFragmentsVersion}\\fragments-base-${androidUniversumFragmentsVersion}-sources.jar",
+            "${mavenLocalDirectory}\\universum\\studios\\android\\fragments-common\\${androidUniversumFragmentsVersion}\\fragments-common-${androidUniversumFragmentsVersion}-sources.jar",
+            "${mavenLocalDirectory}\\universum\\studios\\android\\fragments-manage\\${androidUniversumFragmentsVersion}\\fragments-manage${androidUniversumFragmentsVersion}-sources.jar",
+            "${mavenLocalDirectory}\\universum\\studios\\android\\dialogs-core\\${androidUniversumDialogsVersion}\\dialogs-core-${androidUniversumDialogsVersion}-sources.jar",
+            "${mavenLocalDirectory}\\universum\\studios\\android\\dialogs-manage\\${androidUniversumDialogsVersion}\\dialogs-manage-${androidUniversumDialogsVersion}-sources.jar"
     )
     failOnError false
 }
