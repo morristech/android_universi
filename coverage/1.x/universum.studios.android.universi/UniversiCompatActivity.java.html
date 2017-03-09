@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>UniversiCompatActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">universum.studios.android.universi</a> &gt; <span class="el_source">UniversiCompatActivity.java</span></div><h1>UniversiCompatActivity.java</h1><pre class="source lang-java linenums">/*
+ * =================================================================================================
+ *                             Copyright (C) 2017 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further &quot;License&quot; only).
+ * -------------------------------------------------------------------------------------------------
+ * You may use this file only in compliance with the License. More details and copy of this License 
+ * you may obtain at
+ * 
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * You can redistribute, modify or publish any part of the code written within this file but as it 
+ * is described in the License, the software distributed under the License is distributed on an 
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * 
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+package universum.studios.android.universi;
+
+import android.app.Fragment;
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Looper;
+import android.support.annotation.CheckResult;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
+import android.support.annotation.XmlRes;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+
+import universum.studios.android.dialog.DialogOptions;
+import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.dialog.manage.DialogFactory;
+import universum.studios.android.fragment.ActionBarDelegate;
+import universum.studios.android.fragment.BackPressWatcher;
+import universum.studios.android.fragment.annotation.ActionBarOptions;
+import universum.studios.android.fragment.annotation.FragmentAnnotations;
+import universum.studios.android.fragment.annotation.MenuOptions;
+import universum.studios.android.fragment.annotation.handler.ActionBarAnnotationHandlers;
+import universum.studios.android.fragment.annotation.handler.ActionBarFragmentAnnotationHandler;
+import universum.studios.android.fragment.manage.FragmentController;
+import universum.studios.android.fragment.manage.FragmentFactory;
+import universum.studios.android.transition.BaseNavigationalTransition;
+
+/**
+ * An {@link AppCompatActivity} implementation with same &lt;b&gt;Universi context&lt;/b&gt; features provided
+ * as {@link UniversiActivity}.
+ *
+ * @author Martin Albedinsky
+ * @see UniversiFragment
+ */
+public abstract class UniversiCompatActivity extends AppCompatActivity implements UniversiActivityContext {
+
+	/**
+	 * Constants ===================================================================================
+	 */
+
+	/**
+	 * Log TAG.
+	 */
+	// private static final String TAG = &quot;UniversiCompatActivity&quot;;
+
+	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
+	 * Static members ==============================================================================
+	 */
+
+	/**
+	 * Members =====================================================================================
+	 */
+
+	/**
+	 * Runnable that calls {@link #requestBindDataInner()} method.
+	 */
+<span class="nc" id="L86">	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {</span>
+
+		/**
+		 */
+		@Override
+		public void run() {
+<span class="nc" id="L92">			requestBindDataInner();</span>
+<span class="nc" id="L93">		}</span>
+	};
+
+	/**
+	 * Handler responsible for processing of all annotations of this class and also for handling all
+	 * annotations related operations for this class.
+	 */
+	final ActionBarFragmentAnnotationHandler mAnnotationHandler;
+
+	/**
+	 * Delegate that is used to handle requests specific for the Universi context made upon this activity
+	 * like showing and dismissing of dialogs or showing and hiding of fragments.
+	 */
+	private UniversiActivityDelegate mContextDelegate;
+
+	/**
+	 * Constructors ================================================================================
+	 */
+
+	/**
+	 * Creates a new instance of UniversiActivity. If annotations processing is enabled via {@link UniversiConfig}
+	 * all annotations supported by this activity class will be processed/obtained here so they can
+	 * be later used.
+	 */
+	public UniversiCompatActivity() {
+<span class="nc" id="L118">		super();</span>
+<span class="nc" id="L119">		this.mAnnotationHandler = onCreateAnnotationHandler();</span>
+<span class="nc" id="L120">	}</span>
+
+	/**
+	 * Methods =====================================================================================
+	 */
+
+	/**
+	 * Invoked to create annotations handler for this instance.
+	 *
+	 * @return Annotations handler specific for this class.
+	 */
+	ActionBarFragmentAnnotationHandler onCreateAnnotationHandler() {
+<span class="nc" id="L132">		return ActionBarAnnotationHandlers.obtainActionBarFragmentHandler(getClass());</span>
+	}
+
+	/**
+	 * Returns handler that is responsible for annotations processing of this class and also for
+	 * handling all annotations related operations for this class.
+	 *
+	 * @return Annotations handler specific for this class.
+	 * @throws IllegalStateException If annotations processing is not enabled for the Fragments library.
+	 */
+	@NonNull
+	protected ActionBarFragmentAnnotationHandler getAnnotationHandler() {
+<span class="nc" id="L144">		FragmentAnnotations.checkIfEnabledOrThrow();</span>
+<span class="nc" id="L145">		return mAnnotationHandler;</span>
+	}
+
+	/**
+	 * Ensures that the context delegate is initialized for this fragment.
+	 */
+	private void ensureContextDelegate() {
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);</span>
+<span class="nc" id="L153">	}</span>
+
+	/**
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+<span class="nc" id="L159">		super.onCreate(savedInstanceState);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (mAnnotationHandler != null) {</span>
+<span class="nc" id="L161">			final int viewResource = mAnnotationHandler.getContentViewResource(-1);</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">			if (viewResource != -1) {</span>
+<span class="nc" id="L163">				setContentView(viewResource);</span>
+			}
+		}
+<span class="nc" id="L166">	}</span>
+
+	/**
+	 */
+	@Nullable
+	@Override
+	public &lt;D&gt; Loader&lt;D&gt; startLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
+<span class="nc" id="L173">		this.ensureContextDelegate();</span>
+<span class="nc" id="L174">		return mContextDelegate.startLoader(id, params, callbacks);</span>
+	}
+
+	/**
+	 */
+	@Nullable
+	@Override
+	public &lt;D&gt; Loader&lt;D&gt; initLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
+<span class="nc" id="L182">		this.ensureContextDelegate();</span>
+<span class="nc" id="L183">		return mContextDelegate.initLoader(id, params, callbacks);</span>
+	}
+
+	/**
+	 */
+	@Nullable
+	@Override
+	public &lt;D&gt; Loader&lt;D&gt; restartLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
+<span class="nc" id="L191">		this.ensureContextDelegate();</span>
+<span class="nc" id="L192">		return mContextDelegate.restartLoader(id, params, callbacks);</span>
+	}
+
+	/**
+	 */
+	@Override
+	public void destroyLoader(int id) {
+<span class="nc" id="L199">		this.ensureContextDelegate();</span>
+<span class="nc" id="L200">		mContextDelegate.destroyLoader(id);</span>
+<span class="nc" id="L201">	}</span>
+
+	/**
+	 */
+	@Override
+	public void onContentChanged() {
+<span class="nc" id="L207">		super.onContentChanged();</span>
+<span class="nc" id="L208">		this.ensureContextDelegate();</span>
+<span class="nc" id="L209">		mContextDelegate.setViewCreated(true);</span>
+<span class="nc" id="L210">		this.configureActionBar(getSupportActionBar());</span>
+<span class="nc" id="L211">		onBindViews();</span>
+		// Check if there was requested data binding before view creation, if it was, perform binding now.
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (mContextDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {</span>
+<span class="nc" id="L214">			mContextDelegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
+<span class="nc" id="L215">			onBindData();</span>
+		}
+<span class="nc" id="L217">	}</span>
+
+	/**
+	 */
+	@Override
+	public void setSupportActionBar(@Nullable Toolbar toolbar) {
+<span class="nc" id="L223">		super.setSupportActionBar(toolbar);</span>
+<span class="nc" id="L224">		this.configureActionBar(getSupportActionBar());</span>
+<span class="nc" id="L225">	}</span>
+
+	/**
+	 * Called to configure the given &lt;var&gt;actionBar&lt;/var&gt; according to the {@link ActionBarOptions @ActionBarOptions}
+	 * annotation (if presented).
+	 */
+	private void configureActionBar(ActionBar actionBar) {
+<span class="nc bnc" id="L232" title="All 4 branches missed.">		if (actionBar == null || mAnnotationHandler == null) return;</span>
+<span class="nc" id="L233">		mAnnotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));</span>
+<span class="nc" id="L234">	}</span>
+
+	/**
+	 * Invoked from {@link #onContentChanged()} to bind all views presented within context of this
+	 * activity.
+	 */
+	protected void onBindViews() {
+		// Inheritance hierarchies may perform here views binding/injection.
+<span class="nc" id="L242">	}</span>
+
+	/**
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+<span class="nc bnc" id="L248" title="All 4 branches missed.">		if (mAnnotationHandler == null || !mAnnotationHandler.hasOptionsMenu()) return false;</span>
+<span class="nc" id="L249">		final int menuResource = mAnnotationHandler.getOptionsMenuResource(-1);</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (menuResource != -1) {</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">			if (mAnnotationHandler.shouldClearOptionsMenu()) {</span>
+<span class="nc" id="L252">				menu.clear();</span>
+			}
+<span class="nc bnc" id="L254" title="All 3 branches missed.">			switch (mAnnotationHandler.getOptionsMenuFlags(0)) {</span>
+				case MenuOptions.IGNORE_SUPER:
+<span class="nc" id="L256">					getMenuInflater().inflate(menuResource, menu);</span>
+<span class="nc" id="L257">					break;</span>
+				case MenuOptions.BEFORE_SUPER:
+<span class="nc" id="L259">					getMenuInflater().inflate(menuResource, menu);</span>
+<span class="nc" id="L260">					super.onCreateOptionsMenu(menu);</span>
+<span class="nc" id="L261">					break;</span>
+				case MenuOptions.DEFAULT:
+				default:
+<span class="nc" id="L264">					super.onCreateOptionsMenu(menu);</span>
+<span class="nc" id="L265">					getMenuInflater().inflate(menuResource, menu);</span>
+					break;
+			}
+<span class="nc" id="L268">			return true;</span>
+		}
+<span class="nc" id="L270">		return super.onCreateOptionsMenu(menu);</span>
+	}
+
+	/**
+	 */
+	@Override
+	public void setNavigationalTransition(@Nullable BaseNavigationalTransition transition) {
+<span class="nc" id="L277">		this.ensureContextDelegate();</span>
+<span class="nc" id="L278">		mContextDelegate.setNavigationalTransition(transition);</span>
+<span class="nc" id="L279">	}</span>
+
+	/**
+	 */
+	@Override
+	@Nullable
+	public BaseNavigationalTransition getNavigationalTransition() {
+<span class="nc" id="L286">		this.ensureContextDelegate();</span>
+<span class="nc" id="L287">		return mContextDelegate.getNavigationalTransition();</span>
+	}
+
+	/**
+	 */
+	@Override
+	@NonNull
+	public FragmentController getFragmentController() {
+<span class="nc" id="L295">		this.ensureContextDelegate();</span>
+<span class="nc" id="L296">		return mContextDelegate.getFragmentController();</span>
+	}
+
+	/**
+	 */
+	@Override
+	public void setFragmentController(@Nullable FragmentController controller) {
+<span class="nc" id="L303">		this.ensureContextDelegate();</span>
+<span class="nc" id="L304">		mContextDelegate.setFragmentController(controller);</span>
+<span class="nc" id="L305">	}</span>
+
+	/**
+	 */
+	@Override
+	public void setFragmentFactory(@Nullable FragmentFactory factory) {
+<span class="nc" id="L311">		this.ensureContextDelegate();</span>
+<span class="nc" id="L312">		mContextDelegate.setFragmentFactory(factory);</span>
+<span class="nc" id="L313">	}</span>
+
+	/**
+	 */
+	@Override
+	@Nullable
+	public FragmentFactory getFragmentFactory() {
+<span class="nc" id="L320">		this.ensureContextDelegate();</span>
+<span class="nc" id="L321">		return mContextDelegate.getFragmentFactory();</span>
+	}
+
+	/**
+	 */
+	@Override
+	public void setDialogController(@Nullable DialogController controller) {
+<span class="nc" id="L328">		this.ensureContextDelegate();</span>
+<span class="nc" id="L329">		mContextDelegate.setDialogController(controller);</span>
+<span class="nc" id="L330">	}</span>
+
+	/**
+	 */
+	@Override
+	@NonNull
+	public DialogController getDialogController() {
+<span class="nc" id="L337">		this.ensureContextDelegate();</span>
+<span class="nc" id="L338">		return mContextDelegate.getDialogController();</span>
+	}
+
+	/**
+	 */
+	@Override
+	public void setDialogXmlFactory(@XmlRes int xmlDialogsSet) {
+<span class="nc" id="L345">		this.ensureContextDelegate();</span>
+<span class="nc" id="L346">		mContextDelegate.setDialogXmlFactory(xmlDialogsSet);</span>
+<span class="nc" id="L347">	}</span>
+
+	/**
+	 */
+	@Override
+	public void setDialogFactory(@Nullable DialogFactory factory) {
+<span class="nc" id="L353">		this.ensureContextDelegate();</span>
+<span class="nc" id="L354">		mContextDelegate.setDialogFactory(factory);</span>
+<span class="nc" id="L355">	}</span>
+
+	/**
+	 */
+	@Override
+	@Nullable
+	public DialogFactory getDialogFactory() {
+<span class="nc" id="L362">		this.ensureContextDelegate();</span>
+<span class="nc" id="L363">		return mContextDelegate.getDialogFactory();</span>
+	}
+
+	/**
+	 * Requests performing of data binding specific for this activity via {@link #onBindData()}.
+	 * If this activity has its view hierarchy already created {@link #onBindData()} will be invoked
+	 * immediately, otherwise will wait until {@link #onContentChanged()} is invoked.
+	 * &lt;p&gt;
+	 * &lt;b&gt;This method may be invoked also from a background-thread&lt;/b&gt;.
+	 */
+	protected void requestBindData() {
+		// Check whether this call has been made on the UI thread, if not post on the UI thread the request runnable.
+<span class="nc bnc" id="L375" title="All 2 branches missed.">		if (Looper.getMainLooper().equals(Looper.myLooper())) {</span>
+<span class="nc" id="L376">			this.requestBindDataInner();</span>
+		} else {
+<span class="nc" id="L378">			runOnUiThread(REQUEST_BIND_DATA_INNER);</span>
+		}
+<span class="nc" id="L380">	}</span>
+
+	/**
+	 * Performs data binding of this activity. Will invoke {@link #onBindData()} if view hierarchy of
+	 * this activity is already created, otherwise will register a binding request via {@link UniversiContextDelegate#registerRequest(int)}.
+	 */
+	final void requestBindDataInner() {
+<span class="nc" id="L387">		this.ensureContextDelegate();</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">		if (mContextDelegate.isViewCreated()) {</span>
+<span class="nc" id="L389">			onBindData();</span>
+<span class="nc" id="L390">			return;</span>
+		}
+<span class="nc" id="L392">		mContextDelegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
+<span class="nc" id="L393">	}</span>
+
+	/**
+	 * Invoked due to call to {@link #requestBindData()} to perform data binding specific for this
+	 * activity instance.
+	 * &lt;p&gt;
+	 * &lt;b&gt;This is always invoked on the UI thread.&lt;/b&gt;
+	 */
+	@UiThread
+	protected void onBindData() {
+		// Inheritance hierarchies may perform theirs specific data binding logic here.
+<span class="nc" id="L404">	}</span>
+
+	/**
+	 */
+	@Override
+	protected void onResume() {
+<span class="nc" id="L410">		super.onResume();</span>
+<span class="nc" id="L411">		this.ensureContextDelegate();</span>
+<span class="nc" id="L412">		mContextDelegate.setPaused(false);</span>
+<span class="nc" id="L413">	}</span>
+
+	/**
+	 */
+	@CheckResult
+	@Override
+	public boolean isActiveNetworkConnected() {
+<span class="nc" id="L420">		this.ensureContextDelegate();</span>
+<span class="nc" id="L421">		return mContextDelegate.isActiveNetworkConnected();</span>
+	}
+
+	/**
+	 */
+	@CheckResult
+	@Override
+	public boolean isNetworkConnected(int networkType) {
+<span class="nc" id="L429">		this.ensureContextDelegate();</span>
+<span class="nc" id="L430">		return mContextDelegate.isNetworkConnected(networkType);</span>
+	}
+
+	/**
+	 */
+	@Override
+	public int checkSelfPermission(@NonNull String permission) {
+<span class="nc bnc" id="L437" title="All 2 branches missed.">		return Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M ?</span>
+<span class="nc" id="L438">				super.checkSelfPermission(permission) :</span>
+				PackageManager.PERMISSION_GRANTED;
+	}
+
+	/**
+	 */
+	@Override
+	public boolean shouldShowRequestPermissionRationale(@NonNull String permission) {
+<span class="nc bnc" id="L446" title="All 4 branches missed.">		return Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M &amp;&amp; super.shouldShowRequestPermissionRationale(permission);</span>
+	}
+
+	/**
+	 * Invokes {@link #requestPermissions(String[], int)} on Android versions above {@link Build.VERSION_CODES#M Marshmallow}
+	 * (including).
+	 * &lt;p&gt;
+	 * Calling this method on Android versions before &lt;b&gt;MARSHMALLOW&lt;/b&gt; will be ignored.
+	 *
+	 * @param permissions The desired set of permissions to request.
+	 * @param requestCode Code to identify this request in {@link #onRequestPermissionsResult(int, String[], int[])}.
+	 */
+	public void supportRequestPermissions(@NonNull String[] permissions, int requestCode) {
+<span class="nc bnc" id="L459" title="All 2 branches missed.">		if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M)</span>
+<span class="nc" id="L460">			requestPermissions(permissions, requestCode);</span>
+<span class="nc" id="L461">	}</span>
+
+	/**
+	 */
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+<span class="nc" id="L467">		super.onRequestPermissionsResult(requestCode, permissions, grantResults);</span>
+<span class="nc" id="L468">	}</span>
+
+	/**
+	 */
+	@Override
+	public boolean showDialogWithId(int dialogId) {
+<span class="nc" id="L474">		return showDialogWithId(dialogId, null);</span>
+	}
+
+	/**
+	 */
+	@Override
+	public boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
+<span class="nc" id="L481">		this.ensureContextDelegate();</span>
+<span class="nc" id="L482">		return mContextDelegate.showDialogWithId(dialogId, options);</span>
+	}
+
+	/**
+	 */
+	@Override
+	public boolean dismissDialogWithId(@IntRange(from = 0) int dialogId) {
+<span class="nc" id="L489">		this.ensureContextDelegate();</span>
+<span class="nc" id="L490">		return mContextDelegate.dismissDialogWithId(dialogId);</span>
+	}
+
+	/**
+	 */
+	@Override
+	public boolean showXmlDialog(@XmlRes int resId) {
+<span class="nc" id="L497">		return showXmlDialog(resId, null);</span>
+	}
+
+	/**
+	 */
+	@Override
+	public boolean showXmlDialog(@XmlRes int resId, @Nullable DialogOptions options) {
+<span class="nc" id="L504">		this.ensureContextDelegate();</span>
+<span class="nc" id="L505">		return mContextDelegate.showXmlDialog(resId, options);</span>
+	}
+
+	/**
+	 */
+	@Override
+	public boolean dismissXmlDialog(@XmlRes int resId) {
+<span class="nc" id="L512">		this.ensureContextDelegate();</span>
+<span class="nc" id="L513">		return mContextDelegate.dismissXmlDialog(resId);</span>
+	}
+
+	/**
+	 */
+	@Override
+	public void onBackPressed() {
+<span class="nc bnc" id="L520" title="All 2 branches missed.">		if (!onBackPress()) finishWithNavigationalTransition();</span>
+<span class="nc" id="L521">	}</span>
+
+	/**
+	 * Invoked from {@link #onBackPressed()} to give a chance to this activity instance to consume
+	 * the back press event before it is delivered to its parent.
+	 * &lt;p&gt;
+	 * This implementation first tries to dispatch this event to one of its visible fragment via
+	 * {@link #dispatchBackPressToFragments()} and if none of the currently visible fragments does
+	 * not consume the event a stack with fragments will be popped via {@link #popFragmentsBackStack()}.
+	 *
+	 * @return {@code True} if the back press event has been consumed here, {@code false} otherwise.
+	 */
+	protected boolean onBackPress() {
+<span class="nc" id="L534">		this.ensureContextDelegate();</span>
+<span class="nc bnc" id="L535" title="All 6 branches missed.">		return !mContextDelegate.isPaused() &amp;&amp; (dispatchBackPressToFragments() || popFragmentsBackStack());</span>
+	}
+
+	/**
+	 * Dispatches back press event to all currently visible fragments displayed in context of this
+	 * activity.
+	 * &lt;p&gt;
+	 * This implementation calls {@link #dispatchBackPressToCurrentFragment()} and returns its result.
+	 *
+	 * @return {@code True} if some of the visible fragments has consumed the back press event,
+	 * {@code false} otherwise.
+	 * @see BackPressWatcher#dispatchBackPress()
+	 */
+	protected boolean dispatchBackPressToFragments() {
+<span class="nc" id="L549">		return dispatchBackPressToCurrentFragment();</span>
+	}
+
+	/**
+	 * Dispatches back press event to the current fragment displayed in context of this activity.
+	 *
+	 * @return {@code True} if the current fragment has consumed the back press event, {@code false}
+	 * otherwise.
+	 * @see #findCurrentFragment()
+	 * @see BackPressWatcher#dispatchBackPress()
+	 */
+	protected boolean dispatchBackPressToCurrentFragment() {
+<span class="nc" id="L561">		final Fragment fragment = findCurrentFragment();</span>
+<span class="nc bnc" id="L562" title="All 4 branches missed.">		return fragment instanceof BackPressWatcher &amp;&amp; ((BackPressWatcher) fragment).dispatchBackPress();</span>
+	}
+
+	/**
+	 * Finds currently visible fragment that is displayed in context of this activity.
+	 * &lt;p&gt;
+	 * &lt;b&gt;Note, that implementation of this method assumes that this activity uses {@link FragmentController}
+	 * to display its related fragments and that there may be only one fragment visible at a time,
+	 * that is in a full screen container.&lt;/b&gt;
+	 *
+	 * @return Current fragment of this activity (that is at this time visible), or {@code null} if
+	 * there is no fragment presented within fragment container of this activity at all.
+	 */
+	@Nullable
+	protected Fragment findCurrentFragment() {
+<span class="nc" id="L577">		this.ensureContextDelegate();</span>
+<span class="nc" id="L578">		return mContextDelegate.findCurrentFragment();</span>
+	}
+
+	/**
+	 * Pops stack with fragments of this activity.
+	 *
+	 * @return {@code True} if there was some fragment popped from the stack, {@code false} if there
+	 * were no fragments to pop from.
+	 */
+	protected boolean popFragmentsBackStack() {
+<span class="nc" id="L588">		this.ensureContextDelegate();</span>
+<span class="nc" id="L589">		return mContextDelegate.popFragmentsBackStack();</span>
+	}
+
+	/**
+	 */
+	@Override
+	protected void onPause() {
+<span class="nc" id="L596">		super.onPause();</span>
+<span class="nc" id="L597">		this.ensureContextDelegate();</span>
+<span class="nc" id="L598">		mContextDelegate.setPaused(true);</span>
+<span class="nc" id="L599">	}</span>
+
+	/**
+	 */
+	@Override
+	public boolean finishWithNavigationalTransition() {
+<span class="nc" id="L605">		this.ensureContextDelegate();</span>
+<span class="nc bnc" id="L606" title="All 2 branches missed.">		if (mContextDelegate.finishWithNavigationalTransition()) {</span>
+<span class="nc" id="L607">			return true;</span>
+		}
+<span class="nc" id="L609">		supportFinishAfterTransition();</span>
+<span class="nc" id="L610">		return false;</span>
+	}
+
+	/**
+	 * Inner classes ===============================================================================
+	 */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>

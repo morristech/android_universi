@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>UniversiContextDelegate.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">universum.studios.android.universi</a> &gt; <span class="el_source">UniversiContextDelegate.java</span></div><h1>UniversiContextDelegate.java</h1><pre class="source lang-java linenums">/*
+ * =================================================================================================
+ *                             Copyright (C) 2017 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further &quot;License&quot; only).
+ * -------------------------------------------------------------------------------------------------
+ * You may use this file only in compliance with the License. More details and copy of this License 
+ * you may obtain at
+ * 
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * You can redistribute, modify or publish any part of the code written within this file but as it 
+ * is described in the License, the software distributed under the License is distributed on an 
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * 
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+package universum.studios.android.universi;
+
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.XmlRes;
+
+import universum.studios.android.dialog.DialogOptions;
+import universum.studios.android.dialog.XmlDialog;
+import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.dialog.manage.DialogFactory;
+import universum.studios.android.dialog.manage.DialogRequest;
+import universum.studios.android.dialog.manage.DialogXmlFactory;
+
+/**
+ * Context delegate of which implementations are used by {@link UniversiActivity}, {@link UniversiCompatActivity}
+ * and {@link UniversiActivity} to provide features in unified 'fashion' regardless of context in
+ * which are these features supported.
+ * &lt;p&gt;
+ * A the current version this context delegate supports features described below:
+ *
+ * &lt;h3&gt;1) {@link DialogFragment DialogFragments} management&lt;/h3&gt;
+ * This feature is supported using {@link DialogController}. This controller can be accessed via
+ * {@link #getDialogController()} and custom controller can be specified via {@link #setDialogController(DialogController)}.
+ * &lt;p&gt;
+ * Without any set up this delegate can be used to show any implementation of {@link XmlDialog} via
+ * {@link #showXmlDialog(int, DialogOptions)} where for such case will be created internal instance
+ * of {@link DialogXmlFactory} used to inflate such dialogs from an Xml file containing a
+ * &lt;b&gt;single dialog entry&lt;/b&gt;.
+ * &lt;p&gt;
+ * If the associated context wants to display XmlDialogs from an Xml file containing a
+ * &lt;b&gt;set of multiple dialog entries&lt;/b&gt; or just simple dialogs instantiated via plain Java code it
+ * need to set instance of {@link DialogFactory} that can provide that dialogs
+ * via {@link #setDialogFactory(DialogFactory)}. Such dialogs can be than displayed
+ * via {@link #showDialogWithId(int, DialogOptions)}.
+ * &lt;p&gt;
+ * Already showing dialogs can be dismissed via {@link #dismissDialogWithId(int)} or {@link #dismissXmlDialog(int)}.
+ * &lt;p&gt;
+ * If the associated context is paused (indicated via {@link #setPaused(boolean)}), invoking one of
+ * {@code showDialog(...)} methods will be ignored.
+ *
+ * &lt;h3&gt;2) Connection checking&lt;/h3&gt;
+ * Check whether there is some network connection established or not can be done via {@link #isActiveNetworkConnected()}
+ * or for a specific connection type via {@link #isNetworkConnected(int)} for that matter.
+ *
+ * @author Martin Albedinsky
+ */
+abstract class UniversiContextDelegate {
+
+	/**
+	 * Constants ===================================================================================
+	 */
+
+	/**
+	 * Log TAG.
+	 */
+	// private static final String TAG = &quot;UniversiContextDelegate&quot;;
+
+	/**
+	 * Request flag indicating whether the wrapped context requested binding of its data to its view
+	 * hierarchy or not.
+	 */
+	static final int REQUEST_BIND_DATA = 0x00000001;
+
+	/**
+	 * Flag indicating whether the wrapped context has its view created or not.
+	 */
+	private static final int PFLAG_VIEW_CREATED = 0x00000001;
+
+	/**
+	 * Flag indicating whether the wrapped context is paused or not.
+	 */
+	private static final int PFLAG_PAUSED = 0x00000001 &lt;&lt; 1;
+
+	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
+	 * Static members ==============================================================================
+	 */
+
+	/**
+	 * Members =====================================================================================
+	 */
+
+	/**
+	 * Context that is used to access some application data and services.
+	 */
+	final Context mContext;
+
+	/**
+	 * Set of private flags specified for this delegate.
+	 */
+	private int mPrivateFlags;
+
+	/**
+	 * Set of request flags.
+	 */
+	private int mRequestFlags;
+
+	/**
+	 * Controller that is used to show and dismiss dialogs within context that uses this delegate.
+	 */
+	private DialogController mDialogController;
+
+	/**
+	 * Factory providing dialog instances for the {@link #mDialogController}.
+	 */
+	private DialogFactory mDialogFactory;
+
+	/**
+	 * Dialog factory used to inflate dialog instances presented within a single Xml file.
+	 */
+	private DialogXmlFactory mDialogXmlFactory;
+
+	/**
+	 * Manager used to check for established/available connections.
+	 */
+	private ConnectivityManager mConnectivityManager;
+
+	/**
+	 * Constructors ================================================================================
+	 */
+
+	/**
+	 * Creates a new instance of UniversiContextDelegate.
+	 *
+	 * @param context Context that is used to access some application data and services.
+	 */
+<span class="nc" id="L155">	UniversiContextDelegate(@NonNull Context context) {</span>
+<span class="nc" id="L156">		this.mContext = context;</span>
+<span class="nc" id="L157">	}</span>
+
+	/**
+	 * Methods =====================================================================================
+	 */
+
+	/**
+	 * Creates a new instance of UniversiActivityDelegate for the given &lt;var&gt;activity&lt;/var&gt;.
+	 *
+	 * @param activity The activity context in which will be the new delegate used.
+	 * @return Ready to use context delegate.
+	 */
+	@NonNull
+	public static UniversiActivityDelegate create(@NonNull Activity activity) {
+<span class="nc" id="L171">		return new UniversiActivityDelegate(activity);</span>
+	}
+
+	/**
+	 * Creates a new instance of UniversiFragmentDelegate for the given &lt;var&gt;fragment&lt;/var&gt;.
+	 *
+	 * @param fragment The fragment context in which will be the new delegate used.
+	 * @return Ready to use context delegate.
+	 */
+	@NonNull
+	public static UniversiFragmentDelegate create(@NonNull Fragment fragment) {
+<span class="nc" id="L182">		return new UniversiFragmentDelegate(fragment);</span>
+	}
+
+	/**
+	 * Sets a controller that should be used to show and dismiss dialogs within context that uses
+	 * this delegate.
+	 *
+	 * @param controller The desired controller. Can be {@code null} to use the default one.
+	 * @see #getDialogController()
+	 */
+	void setDialogController(@Nullable DialogController controller) {
+<span class="nc" id="L193">		this.mDialogController = controller;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (mDialogFactory != null) {</span>
+<span class="nc" id="L195">			this.ensureDialogController();</span>
+<span class="nc" id="L196">			mDialogController.setFactory(mDialogFactory);</span>
+		}
+<span class="nc" id="L198">	}</span>
+
+	/**
+	 * Returns the controller that can be used to show and dismiss dialogs within context that uses
+	 * this delegate
+	 * &lt;p&gt;
+	 * If not specified, instance of {@link DialogController} is instantiated by default.
+	 *
+	 * @return The dialog controller of this delegate.
+	 * @see #setDialogController(DialogController)
+	 */
+	@NonNull
+	DialogController getDialogController() {
+<span class="nc" id="L211">		this.ensureDialogController();</span>
+<span class="nc" id="L212">		return mDialogController;</span>
+	}
+
+	/**
+	 * Ensures that the dialog controller is initialized.
+	 */
+	private void ensureDialogController() {
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (mDialogController == null) this.mDialogController = instantiateDialogController();</span>
+<span class="nc" id="L220">	}</span>
+
+	/**
+	 * Creates a new instance of DialogController for the context that uses this delegate.
+	 *
+	 * @return New DialogController instance.
+	 */
+	@NonNull
+	abstract DialogController instantiateDialogController();
+
+	/**
+	 * Same as {@link #setDialogFactory(DialogFactory)} where will be passed instance of
+	 * {@link DialogXmlFactory} with the specified &lt;var&gt;xmlDialogsSet&lt;/var&gt;.
+	 *
+	 * @param xmlDialogsSet Resource id of the desired Xml file containing Xml dialogs that the
+	 *                      factory should provide. May be {@code 0} to remove the current one.
+	 */
+	void setDialogXmlFactory(@XmlRes int xmlDialogsSet) {
+<span class="nc bnc" id="L238" title="All 2 branches missed.">		setDialogFactory(xmlDialogsSet == 0 ? null : new DialogXmlFactory(mContext, xmlDialogsSet));</span>
+<span class="nc" id="L239">	}</span>
+
+	/**
+	 * Specifies a factory that should provide dialog instances for {@link DialogController} of
+	 * this delegate.
+	 *
+	 * @param factory The desired factory. Can be {@code null} to remove the current one.
+	 * @see #getDialogFactory()
+	 * @see #showDialogWithId(int, DialogOptions)
+	 */
+	void setDialogFactory(@Nullable DialogFactory factory) {
+<span class="nc" id="L250">		this.mDialogFactory = factory;</span>
+<span class="nc" id="L251">		this.ensureDialogController();</span>
+<span class="nc" id="L252">		mDialogController.setFactory(factory);</span>
+<span class="nc" id="L253">	}</span>
+
+	/**
+	 * Returns the current dialog factory specified for this delegate.
+	 *
+	 * @return Dialog factory or {@code null} if no factory has been specified yet.
+	 * @see #setDialogFactory(DialogFactory)
+	 */
+	@Nullable
+	DialogFactory getDialogFactory() {
+<span class="nc" id="L263">		return mDialogFactory;</span>
+	}
+
+	/**
+	 * Shows a dialog that is provided by the current dialog factory under the specified &lt;var&gt;dialogId&lt;/var&gt;.
+	 *
+	 * @param dialogId Id of the desired dialog to show.
+	 * @param options  Options for the dialog.
+	 * @return {@code True} if dialog has been shown, {@code false} if context that uses this delegate
+	 * is currently &lt;b&gt;paused&lt;/b&gt; or does not have its dialog factory specified.
+	 * @see DialogController#newRequest(int)
+	 * @see #setDialogFactory(DialogFactory)
+	 * @see #dismissDialogWithId(int)
+	 */
+	boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
+<span class="nc bnc" id="L278" title="All 4 branches missed.">		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;</span>
+<span class="nc" id="L279">		this.ensureDialogController();</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">		return mDialogController.newRequest(dialogId).dialogOptions(options).execute() != null;</span>
+	}
+
+	/**
+	 * Dismisses a dialog that is provided by the current dialog factory under the specified &lt;var&gt;dialogId&lt;/var&gt;.
+	 *
+	 * @param dialogId Id of the desired dialog to dismiss.
+	 * @return {@code True} if dialog has been dismissed, {@code false} if context that uses this
+	 * delegate is currently &lt;b&gt;paused&lt;/b&gt; or does not have its dialog factory specified.
+	 * @see DialogController#newRequest(int)
+	 * @see #showDialogWithId(int, DialogOptions)
+	 */
+	boolean dismissDialogWithId(@IntRange(from = 0) int dialogId) {
+<span class="nc bnc" id="L293" title="All 4 branches missed.">		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;</span>
+<span class="nc" id="L294">		this.ensureDialogController();</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		return mDialogController.newRequest(dialogId).intent(DialogRequest.DISMISS).execute() != null;</span>
+	}
+
+	/**
+	 * Like {@link #showDialogWithId(int, DialogOptions)}, but in this case will be used internal
+	 * instance of {@link DialogXmlFactory} to create (inflate) the desired dialog instance to be
+	 * shown.
+	 *
+	 * @param resId   Resource id of Xml file containing the desired dialog (its specification) to show.
+	 * @param options Options for the dialog.
+	 * @return {@code True} if dialog has been successfully inflated and shown, {@code false} if
+	 * context that uses this delegate is currently &lt;b&gt;paused&lt;/b&gt; or dialog failed to be inflated.
+	 * @see DialogXmlFactory#createDialog(int, DialogOptions)
+	 * @see #dismissXmlDialog(int)
+	 */
+	boolean showXmlDialog(@XmlRes int resId, @Nullable DialogOptions options) {
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		if (hasPrivateFlag(PFLAG_PAUSED)) return false;</span>
+<span class="nc" id="L312">		final DialogXmlFactory dialogFactory = accessDialogXmlFactory();</span>
+<span class="nc" id="L313">		final DialogFragment dialog = dialogFactory.createDialog(resId, options);</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (dialog != null) {</span>
+<span class="nc" id="L315">			this.ensureDialogController();</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">			return mDialogController.newRequest(dialog).tag(dialogFactory.createDialogTag(resId)).execute() != null;</span>
+		}
+<span class="nc" id="L318">		return false;</span>
+	}
+
+	/**
+	 * Dismisses an Xml dialog that has been shown via {@link #showXmlDialog(int, DialogOptions)}.
+	 *
+	 * @param resId Resource id of Xml file containing the desired dialog (its specification) to dismiss.
+	 * @return {@code True} if dialog has been dismissed, {@code false} if context that uses this
+	 * delegate is currently &lt;b&gt;paused&lt;/b&gt;.
+	 * @see #showXmlDialog(int, DialogOptions)
+	 */
+	boolean dismissXmlDialog(@XmlRes int resId) {
+<span class="nc bnc" id="L330" title="All 2 branches missed.">		if (hasPrivateFlag(PFLAG_PAUSED)) return false;</span>
+<span class="nc" id="L331">		this.ensureDialogController();</span>
+<span class="nc" id="L332">		final Fragment fragment = mDialogController.getFragmentManager().findFragmentByTag(accessDialogXmlFactory().createDialogTag(resId));</span>
+<span class="nc bnc" id="L333" title="All 4 branches missed.">		return fragment instanceof DialogFragment &amp;&amp; mDialogController.newRequest((DialogFragment) fragment).intent(DialogRequest.DISMISS).execute() != null;</span>
+	}
+
+	/**
+	 * Ensures that the dialog Xml factory is initialized and returns it. If {@link #mDialogFactory}
+	 * is instance of {@link DialogXmlFactory} than it will be returned.
+	 *
+	 * @return Instance of DialogXmlFactory that can be used to create instances of Xml dialogs.
+	 */
+	private DialogXmlFactory accessDialogXmlFactory() {
+<span class="nc bnc" id="L343" title="All 2 branches missed.">		if (mDialogFactory instanceof DialogXmlFactory) {</span>
+<span class="nc" id="L344">			return (DialogXmlFactory) mDialogFactory;</span>
+		}
+<span class="nc bnc" id="L346" title="All 2 branches missed.">		if (mDialogXmlFactory == null) {</span>
+<span class="nc" id="L347">			mDialogXmlFactory = new DialogXmlFactory(mContext);</span>
+		}
+<span class="nc" id="L349">		return mDialogXmlFactory;</span>
+	}
+
+	/**
+	 * Checks whether the current active network is at this time connected or not.
+	 *
+	 * @return {@code True} if active network is connected, {@code false} otherwise.
+	 * @see ConnectivityManager#getActiveNetworkInfo()
+	 * @see NetworkInfo#isConnected()
+	 * @see #isNetworkConnected(int)
+	 */
+	boolean isActiveNetworkConnected() {
+<span class="nc" id="L361">		this.ensureConnectivityManager();</span>
+<span class="nc" id="L362">		final NetworkInfo info = mConnectivityManager.getActiveNetworkInfo();</span>
+<span class="nc bnc" id="L363" title="All 4 branches missed.">		return info != null &amp;&amp; info.isConnected();</span>
+	}
+
+	/**
+	 * Checks whether a network with the specified &lt;var&gt;networkType&lt;/var&gt; is at this time connected
+	 * or no.
+	 *
+	 * @param networkType The desired network type to check for connection.
+	 * @return {@code True} if the requested network is connected, {@code false} otherwise.
+	 * @see ConnectivityManager#getNetworkInfo(int)
+	 * @see NetworkInfo#isConnected()
+	 */
+	@SuppressWarnings(&quot;deprecation&quot;)
+	boolean isNetworkConnected(int networkType) {
+<span class="nc" id="L377">		this.ensureConnectivityManager();</span>
+<span class="nc" id="L378">		final NetworkInfo info = mConnectivityManager.getNetworkInfo(networkType);</span>
+<span class="nc bnc" id="L379" title="All 4 branches missed.">		return info != null &amp;&amp; info.isConnected();</span>
+	}
+
+	/**
+	 * Ensures that the connectivity manager is initialized.
+	 */
+	private void ensureConnectivityManager() {
+<span class="nc bnc" id="L386" title="All 2 branches missed.">		if (mConnectivityManager == null)</span>
+<span class="nc" id="L387">			this.mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);</span>
+<span class="nc" id="L388">	}</span>
+
+	/**
+	 * Sets a boolean flag indicating whether a view hierarchy of the related context is created or not.
+	 *
+	 * @param created {@code True} if view hierarchy is created, {@code false} otherwise.
+	 * @see #isViewCreated()
+	 */
+	void setViewCreated(boolean created) {
+<span class="nc" id="L397">		this.updatePrivateFlags(PFLAG_VIEW_CREATED, created);</span>
+<span class="nc" id="L398">	}</span>
+
+	/**
+	 * Returns the boolean flag indicating whether view hierarchy of the related context is created
+	 * or not.
+	 *
+	 * @return {@code True} if view is created, {@code false} otherwise.
+	 * @see #setViewCreated(boolean)
+	 */
+	boolean isViewCreated() {
+<span class="nc" id="L408">		return hasPrivateFlag(PFLAG_VIEW_CREATED);</span>
+	}
+
+	/**
+	 * Sets a boolean flag indicating whether the related context has been paused or not.
+	 *
+	 * @param paused {@code True} if context is paused, {@code false} otherwise.
+	 */
+	void setPaused(boolean paused) {
+<span class="nc" id="L417">		this.updatePrivateFlags(PFLAG_PAUSED, paused);</span>
+<span class="nc" id="L418">	}</span>
+
+	/**
+	 * Returns the boolean flag indicating whether the related context is paused or not.
+	 *
+	 * @return {@code True} if context is paused, {@code false} otherwise.
+	 */
+	boolean isPaused() {
+<span class="nc" id="L426">		return hasPrivateFlag(PFLAG_PAUSED);</span>
+	}
+
+	/**
+	 * Adds a request with the specified &lt;var&gt;request&lt;/var&gt; flag into the registered ones.
+	 *
+	 * @param request The request flag that should be registered.
+	 * @see #isRequestRegistered(int)
+	 * @see #unregisterRequest(int)
+	 */
+	void registerRequest(int request) {
+<span class="nc" id="L437">		this.mRequestFlags |= request;</span>
+<span class="nc" id="L438">	}</span>
+
+	/**
+	 * Removes request with the specified &lt;var&gt;request&lt;/var&gt; flag from the registered ones.
+	 *
+	 * @param request The request flag that should be unregistered.
+	 * @see #registerRequest(int)
+	 * @see #isRequestRegistered(int)
+	 */
+	void unregisterRequest(int request) {
+<span class="nc" id="L448">		this.mRequestFlags &amp;= ~request;</span>
+<span class="nc" id="L449">	}</span>
+
+	/**
+	 * Checks whether a request with the specified &lt;var&gt;request&lt;/var&gt; flag is registered or not.
+	 *
+	 * @param request The request flag for which to check if it is registered.
+	 * @return {@code True} if request is registered, {@code false} otherwise.
+	 * @see #registerRequest(int)
+	 * @see #unregisterRequest(int)
+	 */
+	boolean isRequestRegistered(int request) {
+<span class="nc bnc" id="L460" title="All 2 branches missed.">		return (mRequestFlags &amp; request) != 0;</span>
+	}
+
+	/**
+	 * Updates the current private flags.
+	 *
+	 * @param flag Value of the desired flag to add/remove to/from the current private flags.
+	 * @param add  Boolean flag indicating whether to add or remove the specified &lt;var&gt;flag&lt;/var&gt;.
+	 */
+	@SuppressWarnings(&quot;unused&quot;)
+	private void updatePrivateFlags(int flag, boolean add) {
+<span class="nc bnc" id="L471" title="All 2 branches missed.">		if (add) this.mPrivateFlags |= flag;</span>
+<span class="nc" id="L472">		else this.mPrivateFlags &amp;= ~flag;</span>
+<span class="nc" id="L473">	}</span>
+
+	/**
+	 * Returns a boolean flag indicating whether the specified &lt;var&gt;flag&lt;/var&gt; is contained within
+	 * the current private flags or not.
+	 *
+	 * @param flag Value of the flag to check.
+	 * @return {@code True} if the requested flag is contained, {@code false} otherwise.
+	 */
+	@SuppressWarnings(&quot;unused&quot;)
+	private boolean hasPrivateFlag(int flag) {
+<span class="nc bnc" id="L484" title="All 2 branches missed.">		return (mPrivateFlags &amp; flag) != 0;</span>
+	}
+
+	/**
+	 * Inner classes ===============================================================================
+	 */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
