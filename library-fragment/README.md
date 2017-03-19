@@ -15,4 +15,3 @@ This module contains ...
 Below are listed some of **primary components** that are available in this module:
 
 - [UniversiFragment](https://github.com/universum-studios/android_universi/blob/support-master/library-fragment/src/main/java/universum/studios/android/support/universi/UniversiFragment.java)
-- [UniversiFragmentDelegate](https://github.com/universum-studios/android_universi/blob/support-master/library-fragment/src/main/java/universum/studios/android/support/universi/UniversiFragmentDelegate.java)
