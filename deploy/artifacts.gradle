@@ -16,6 +16,8 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
+def boolean isModule = project.name.startsWith('library-') && !project.name.endsWith('_group')
+
 /**
  * Bundles project's classes into a .jar! file.
  */
@@ -28,11 +30,11 @@ task classesJar(type: Jar) {
  * Generates javadoc documentation for the current project.
  */
 task generateJavadoc(type: Javadoc) {
-    source android.sourceSets.main.java.sourceFiles
+    source isModule ? android.sourceSets.main.java.sourceFiles : android.sourceSets.release.java.sourceFiles
     options {
         author = true
         memberLevel = JavadocMemberLevel.PROTECTED
-        header = project.property('maven.pom.project.name') + ' ' + project.property('maven.pom.version') + ' Documentation'
+        header = config.maven.projectName + ' ' + config.maven.version + ' Documentation'
         links "http://docs.oracle.com/javase/8/docs/api/"
         linksOffline "http://developer.android.com/reference", "${android.sdkDirectory}\\docs\\reference"
     }
@@ -41,19 +43,18 @@ task generateJavadoc(type: Javadoc) {
         //options.addStringOption('Xdoclint:none', '-quiet')
     }
     // Append class path with dependencies.
-    final String mavenLocalDirectory = System.getenv('MAVEN_URL_LOCAL')
     classpath += files(
             android.getBootClasspath(),
-            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\support-annotations\\${androidSupportVersion}\\support-annotations-${androidSupportVersion}.jar",
-            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\appcompat-v7\\${androidSupportVersion}\\appcompat-v7-${androidSupportVersion}-sources.jar",
-            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\recyclerview-v7\\${androidSupportVersion}\\recyclerview-v7-${androidSupportVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\transitions-navigational-base\\${androidUniversumTransitionsVersion}\\transitions-navigational-base-${androidUniversumTransitionsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-fragments-core\\${androidUniversumSupportFragmentsVersion}\\support-fragments-core-${androidUniversumSupportFragmentsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-fragments-base\\${androidUniversumSupportFragmentsVersion}\\support-fragments-base-${androidUniversumSupportFragmentsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-fragments-common\\${androidUniversumSupportFragmentsVersion}\\support-fragments-common-${androidUniversumSupportFragmentsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-fragments-manage\\${androidUniversumSupportFragmentsVersion}\\support-fragments-manage${androidUniversumSupportFragmentsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-dialogs-core\\${androidUniversumSupportDialogsVersion}\\support-dialogs-core-${androidUniversumSupportDialogsVersion}-sources.jar",
-            "${mavenLocalDirectory}\\universum\\studios\\android\\support\\support-dialogs-manage\\${androidUniversumSupportDialogsVersion}\\support-dialogs-manage-${androidUniversumSupportDialogsVersion}-sources.jar"
+            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\support-annotations\\${versions.androidSupportVersion}\\support-annotations-${versions.androidSupportVersion}.jar",
+            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\appcompat-v7\\${versions.androidSupportVersion}\\appcompat-v7-${versions.androidSupportVersion}-sources.jar",
+            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\recyclerview-v7\\${versions.androidSupportVersion}\\recyclerview-v7-${versions.androidSupportVersion}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\transitions-navigational-base\\${versions.universumStudiosTransitionsVersion}\\transitions-navigational-base-${versions.universumStudiosTransitionsVersion}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\support\\support-fragments-core\\${versions.universumStudiosFragmentsVersion}\\fragments-core-${versions.universumStudiosFragmentsVersion}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\support\\support-fragments-base\\${versions.universumStudiosFragmentsVersion}\\fragments-base-${versions.universumStudiosFragmentsVersion}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\support\\support-fragments-common\\${versions.universumStudiosFragmentsVersion}\\fragments-common-${versions.universumStudiosFragmentsVersion}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\support\\support-fragments-manage\\${versions.universumStudiosFragmentsVersion}\\fragments-manage${versions.universumStudiosFragmentsVersion}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\support\\support-dialogs-core\\${versions.universumStudiosDialogsVersion}\\dialogs-core-${versions.universumStudiosDialogsVersion}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\support\\support-dialogs-manage\\${versions.universumStudiosDialogsVersion}\\dialogs-manage-${versions.universumStudiosDialogsVersion}-sources.jar"
     )
     failOnError false
 }
@@ -73,9 +74,9 @@ task javadocJar(type: Jar) {
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     description 'Bundles Raw sources into a .jar! file.'
-    from android.sourceSets.main.java.sourceFiles
+    from isModule ? android.sourceSets.main.java.sourceFiles : android.sourceSets.release.java.sourceFiles
     // Uncomment if this project contains res/ folder.
-    // from android.sourceSets.main.res.sourceFiles
+    // from isModule ? android.sourceSets.main.res.sourceFiles : android.sourceSets.release.res.sourceFiles
 }
 
 /**

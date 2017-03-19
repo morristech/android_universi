@@ -4,6 +4,11 @@ Universi (support)
 [![Build Status](https://travis-ci.org/universum-studios/android_universi.svg?branch=support-master)](https://travis-ci.org/universum-studios/android_universi)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c485a93364074dc5a87c7cb43dce9c3f)](https://www.codacy.com/app/universum-studios/android_universi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_universi&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c485a93364074dc5a87c7cb43dce9c3f)](https://www.codacy.com/app/universum-studios/android_universi?utm_source=github.com&utm_medium=referral&utm_content=universum-studios/android_universi&utm_campaign=Badge_Coverage)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universi-green.svg?style=flat)](https://android-arsenal.com/details/1/5412)
+
+Simple universal library for the Android platform providing components that may be used as base for Activities and Fragments in Android applications.
+
+For more information please visit the **[Wiki](https://github.com/universum-studios/android_universi/wiki)**.
 
 ## Download ##
 [![Download](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Auniversi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Auniversi/_latestVersion)
@@ -13,6 +18,10 @@ Download the latest **[release](https://github.com/universum-studios/android_uni
 ### Gradle ###
 
     compile "universum.studios.android.support:support-universi:${DESIRED_VERSION}@aar"
+
+## Modules ##
+
+This library may be also used via **separate modules**. For more information please see **[Modules](https://github.com/universum-studios/android_universi/blob/master/MODULES.md)**.
 
 ## Compatibility ##
 
