@@ -16,4 +16,3 @@ Below are listed some of **primary components** that are available in this modul
 
 - [UniversiActivity](https://github.com/universum-studios/android_universi/blob/master/library-activity/src/main/java/universum/studios/android/universi/UniversiActivity.java)
 - [UniversiCompatActivity](https://github.com/universum-studios/android_universi/blob/master/library-activity/src/main/java/universum/studios/android/universi/UniversiCompatActivity.java)
-- [UniversiActivityDelegate](https://github.com/universum-studios/android_universi/blob/master/library-activity/src/main/java/universum/studios/android/universi/UniversiActivityDelegate.java)
