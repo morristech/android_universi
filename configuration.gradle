@@ -16,8 +16,8 @@ def libraryConfig = [
 
 def mavenConfig = [
         localUrl                 : System.getenv('MAVEN_URL_LOCAL'),
-        groupId                  : 'universum.studios.android',
-        artifactId               : 'universi',
+        groupId                  : 'universum.studios.android.support',
+        artifactId               : 'support-universi',
         version                  : libraryConfig.version,
         packaging                : 'pom',
         projectName              : 'Android Universi',
@@ -32,8 +32,8 @@ def bintrayConfig = [
         packageName              : mavenConfig.groupId + ':' + mavenConfig.artifactId,
         packageLabels            : ['android', 'universal', 'activity', 'fragment'],
         packageVersionName       : mavenConfig.version,
-        packageVersionDescription: 'Version beta release.',
-        packageVersionTag        : mavenConfig.version
+        packageVersionDescription: 'Version beta support release.',
+        packageVersionTag        : 'support' + mavenConfig.version
 ]
 
 def codacyConfig = [

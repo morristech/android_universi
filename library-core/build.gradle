@@ -65,10 +65,10 @@ dependencies {
      */
     compile deps.androidSupport.annotations
     compile deps.universumStudios.transitionsNavigationalBase
-    compile deps.universumStudios.fragmentsCore
-    compile deps.universumStudios.fragmentsManageCore
-    compile deps.universumStudios.dialogsCore
-    compile deps.universumStudios.dialogsManage
+    compile deps.universumStudios.supportFragmentsCore
+    compile deps.universumStudios.supportFragmentsManageCore
+    compile deps.universumStudios.supportDialogsCore
+    compile deps.universumStudios.supportDialogsManage
 
     /*
      * TEST DEPENDENCIES ---------------------------------------------------------------------------

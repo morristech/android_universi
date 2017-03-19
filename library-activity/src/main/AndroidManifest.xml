@@ -19,6 +19,6 @@
  * =================================================================================================
  */
 -->
-<manifest package="universum.studios.android.universi.activity">
+<manifest package="universum.studios.android.support.universi.activity">
 	<application/>
 </manifest>

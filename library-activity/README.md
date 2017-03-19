@@ -1,14 +1,14 @@
-Universi-Activity
+Universi-Activity (support)
 ===============
 
 This module contains ...
 
 ## Download ##
-[![Download](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Auniversi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Auniversi/_latestVersion)
+[![Download](https://api.bintray.com/packages/universum-studios/android/universum.studios.android.support%3Asupport-universi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android.support%3Asupport-universi/_latestVersion)
 
 ### Gradle ###
 
-    compile "universum.studios.android:universi-activity:${DESIRED_VERSION}@aar"
+    compile "universum.studios.android.support:support-universi-activity:${DESIRED_VERSION}@aar"
 
 ## Components ##
 
