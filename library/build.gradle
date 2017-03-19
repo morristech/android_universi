@@ -22,12 +22,13 @@ apply plugin: 'com.android.library'
  * Library options =================================================================================
  */
 android {
-    compileSdkVersion Integer.valueOf((String) project.property('android.compileSdkVersion'))
-    buildToolsVersion project.property('android.buildToolsVersion')
+    compileSdkVersion config.build.compileSdkVersion
+    buildToolsVersion config.build.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion project.property('library.minSdkVersion')
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion config.build.minSdkVersion
+        targetSdkVersion config.build.targetSdkVersion
+        testInstrumentationRunner config.test.instrumentationRunner
     }
 
     buildTypes {
@@ -38,6 +39,16 @@ android {
             minifyEnabled false
             testCoverageEnabled true
         }
+    }
+
+    sourceSets {
+        release.java.srcDirs = [
+                '../library-core/src/main/java',
+                '../library-context/src/main/java',
+                '../library-activity/src/main/java',
+                '../library-fragment/src/main/java'
+        ]
+        debug.java.srcDirs = release.java.srcDirs
     }
 
     compileOptions {
@@ -55,43 +66,27 @@ android {
  */
 repositories {
     mavenLocal()
-    maven { url "http://dl.bintray.com/universum-studios/android" }
+    maven { url repos.bintray.universumStudiosAndroid }
 }
 
 dependencies {
     /*
      * RELEASE DEPENDENCIES ------------------------------------------------------------------------
      */
-    compile releaseDependencies.androidSupportAnnotations
-    compile releaseDependencies.androidSupportAppCompatV7
-    compile releaseDependencies.androidSupportRecyclerViewV7
-    compile releaseDependencies.androidUniversumTransitionsNavigationalBase
-    compile releaseDependencies.androidUniversumFragmentsCore
-    compile releaseDependencies.androidUniversumFragmentsBase
-    compile releaseDependencies.androidUniversumFragmentsCommon
-    compile releaseDependencies.androidUniversumFragmentsManageCore
-    compile releaseDependencies.androidUniversumDialogsCore
-    compile releaseDependencies.androidUniversumDialogsManage
+    compile deps.androidSupport.annotations
+    compile deps.androidSupport.appCompatV7
+    compile deps.universumStudios.transitionsNavigationalBase
+    compile deps.universumStudios.fragmentsCore
+    compile deps.universumStudios.fragmentsBase
+    compile deps.universumStudios.fragmentsCommon
+    compile deps.universumStudios.fragmentsManageCore
+    compile deps.universumStudios.dialogsCore
+    compile deps.universumStudios.dialogsManage
 
     /*
      * TEST DEPENDENCIES ---------------------------------------------------------------------------
      */
-    // Android Instrumentation test dependencies.
-    androidTestCompile testDependencies.androidSupportAnnotations
-    androidTestCompile testDependencies.androidRunner
-    androidTestCompile testDependencies.androidRules
-    androidTestCompile testDependencies.androidEspressoCore
-    androidTestCompile testDependencies.androidEspressoIntents
-    androidTestCompile(testDependencies.androidEspressoContrib) {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude group: 'com.android.support', module: 'appcompat-v7'
-        exclude group: 'com.android.support', module: 'design'
-        exclude group: 'com.android.support', module: 'recyclerview-v7'
-    }
-    // Local JUnit test dependencies.
-    testCompile testDependencies.junit
-    testCompile testDependencies.mockitoCore
+    androidTestCompile project(':test-core')
 }
 
 // Apply DEPLOY script.
