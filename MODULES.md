@@ -26,6 +26,5 @@ as usually.
 > Following modules are available in the [latest](https://github.com/universum-studios/android_universi/releases "Latest Releases page") release.
 
 - **[Core](https://github.com/universum-studios/android_universi/tree/master/library-core)**
-- **[Context](https://github.com/universum-studios/android_universi/tree/master/library-context)**
 - **[Activity](https://github.com/universum-studios/android_universi/tree/master/library-activity)**
 - **[Fragment](https://github.com/universum-studios/android_universi/tree/master/library-fragment)**
