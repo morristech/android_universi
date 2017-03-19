@@ -71,7 +71,7 @@ dependencies {
     compile deps.universumStudios.supportFragmentsCommon
     compile deps.universumStudios.supportDialogsCore
     compile deps.universumStudios.supportDialogsManage
-    // todo: releaseCompile "universum.studios.android.support:support-universi-core:${config.library.version}@aar"
+    releaseCompile "universum.studios.android.support:support-universi-core:${config.library.version}@aar"
 
     /*
      * DEBUG DEPENDENCIES --------------------------------------------------------------------------

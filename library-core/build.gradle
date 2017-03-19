@@ -64,6 +64,7 @@ dependencies {
      * RELEASE DEPENDENCIES ------------------------------------------------------------------------
      */
     compile deps.androidSupport.annotations
+    compile deps.androidSupport.v4
     compile deps.universumStudios.transitionsNavigationalBase
     compile deps.universumStudios.supportFragmentsCore
     compile deps.universumStudios.supportFragmentsManageCore
