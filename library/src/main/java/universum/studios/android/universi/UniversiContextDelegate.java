@@ -277,7 +277,7 @@ abstract class UniversiContextDelegate {
 	boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
 		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;
 		this.ensureDialogController();
-		return mDialogController.newRequest(dialogId).dialogOptions(options).execute() != null;
+		return mDialogController.newRequest(dialogId).options(options).execute() != null;
 	}
 
 	/**

@@ -1,0 +1,52 @@
+// Defines configuration used across the library project.
+def buildConfig = [
+        compileSdkVersion: 25,
+        minSdkVersion    : 14,
+        targetSdkVersion : 25,
+        buildToolsVersion: '25.0.2'
+]
+
+def testConfig = [
+        instrumentationRunner: 'android.support.test.runner.AndroidJUnitRunner'
+]
+
+def libraryConfig = [
+        version: '1.0.0-beta3'
+]
+
+def mavenConfig = [
+        localUrl                 : System.getenv('MAVEN_URL_LOCAL'),
+        groupId                  : 'universum.studios.android',
+        artifactId               : 'universi',
+        version                  : libraryConfig.version,
+        packaging                : 'pom',
+        projectName              : 'Android Universi',
+        projectDescription       : 'Simple universal library for the Android platform providing components that may be used as base for Activities and Fragments in Android applications.',
+        projectUrl               : 'https://github.com/universum-studios/android_universi',
+        projectInceptionYear     : '2017',
+        projectIssueManagementUrl: 'https://github.com/universum-studios/android_universi/issues'
+]
+
+def bintrayConfig = [
+        publish                  : false,
+        packageName              : mavenConfig.groupId + ':' + mavenConfig.artifactId,
+        packageLabels            : ['android', 'universal', 'activity', 'fragment'],
+        packageVersionName       : mavenConfig.version,
+        packageVersionDescription: 'Version beta release.',
+        packageVersionTag        : mavenConfig.version
+]
+
+def codacyConfig = [
+        // This path must be relative to the codacy.gradle file placed in the /library directory.
+        tokensPath : '../../codacy.tokens',
+        projectName: 'android_universi'
+]
+
+ext.config = [
+        "build"  : buildConfig,
+        "test"   : testConfig,
+        "library": libraryConfig,
+        "maven"  : mavenConfig,
+        "bintray": bintrayConfig,
+        "codacy" : codacyConfig
+]

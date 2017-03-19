@@ -9,7 +9,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/library" />
+            <option value="$PROJECT_DIR$/library-activity" />
+            <option value="$PROJECT_DIR$/library-context" />
+            <option value="$PROJECT_DIR$/library-core" />
+            <option value="$PROJECT_DIR$/library-fragment" />
             <option value="$PROJECT_DIR$/samples" />
+            <option value="$PROJECT_DIR$/test-core" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
