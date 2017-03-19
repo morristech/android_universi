@@ -38,12 +38,11 @@ def test = [
 
 def universumStudios = [
         transitionsNavigationalBase: "universum.studios.android:transitions-navigational-base:${versions.universumStudiosTransitionsVersion}@aar",
-        fragments                  : "universum.studios.android:fragments:${versions.universumStudiosFragmentsVersion}@aar",
         fragmentsCore              : "universum.studios.android:fragments-core:${versions.universumStudiosFragmentsVersion}@aar",
         fragmentsBase              : "universum.studios.android:fragments-base:${versions.universumStudiosFragmentsVersion}@aar",
         fragmentsCommon            : "universum.studios.android:fragments-common:${versions.universumStudiosFragmentsVersion}@aar",
         fragmentsManageCore        : "universum.studios.android:fragments-manage-core:${versions.universumStudiosFragmentsVersion}@aar",
-        dialogs                    : "universum.studios.android:dialogs:${versions.universumStudiosDialogsVersion}@aar",
+        fragmentsTransition        : "universum.studios.android:fragments-transition:${versions.universumStudiosFragmentsVersion}@aar",
         dialogsCore                : "universum.studios.android:dialogs-core:${versions.universumStudiosDialogsVersion}@aar",
         dialogsManage              : "universum.studios.android:dialogs-manage:${versions.universumStudiosDialogsVersion}@aar",
         samples                    : "universum.studios.android:samples:${versions.universumStudiosSupportSamplesVersion}@aar"

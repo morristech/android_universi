@@ -55,7 +55,8 @@ android {
  * Library dependencies ============================================================================
  */
 repositories {
-    maven { url repos.project.artifacts }
+    mavenLocal()
+    maven { url repos.bintray.universumStudiosAndroid }
 }
 
 dependencies {
@@ -63,6 +64,11 @@ dependencies {
      * RELEASE DEPENDENCIES ------------------------------------------------------------------------
      */
     compile deps.androidSupport.annotations
+    compile deps.universumStudios.transitionsNavigationalBase
+    compile deps.universumStudios.fragmentsCore
+    compile deps.universumStudios.fragmentsManageCore
+    compile deps.universumStudios.dialogsCore
+    compile deps.universumStudios.dialogsManage
 
     /*
      * TEST DEPENDENCIES ---------------------------------------------------------------------------

@@ -56,6 +56,8 @@ android {
  */
 repositories {
     maven { url repos.project.artifacts }
+    mavenLocal()
+    maven { url repos.bintray.universumStudiosAndroid }
 }
 
 dependencies {
@@ -63,6 +65,18 @@ dependencies {
      * RELEASE DEPENDENCIES ------------------------------------------------------------------------
      */
     compile deps.androidSupport.annotations
+    compile deps.androidSupport.appCompatV7
+    compile deps.universumStudios.fragmentsCore
+    compile deps.universumStudios.fragmentsBase
+    compile deps.universumStudios.fragmentsCommon
+    compile deps.universumStudios.dialogsCore
+    compile deps.universumStudios.dialogsManage
+    releaseCompile "universum.studios.android:universi-core:${config.library.version}@aar"
+
+    /*
+     * DEBUG DEPENDENCIES --------------------------------------------------------------------------
+     */
+    debugCompile project(':library-core')
 
     /*
      * TEST DEPENDENCIES ---------------------------------------------------------------------------

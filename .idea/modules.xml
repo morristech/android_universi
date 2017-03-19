@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/Universi.iml" filepath="$PROJECT_DIR$/Universi.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/library-activity/library-activity.iml" filepath="$PROJECT_DIR$/library-activity/library-activity.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library-context/library-context.iml" filepath="$PROJECT_DIR$/library-context/library-context.iml" />
       <module fileurl="file://$PROJECT_DIR$/library-core/library-core.iml" filepath="$PROJECT_DIR$/library-core/library-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/library-fragment/library-fragment.iml" filepath="$PROJECT_DIR$/library-fragment/library-fragment.iml" />
       <module fileurl="file://$PROJECT_DIR$/samples/samples.iml" filepath="$PROJECT_DIR$/samples/samples.iml" />

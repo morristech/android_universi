@@ -81,5 +81,5 @@ dependencies {
     compile deps.other.butterknife
     annotationProcessor deps.apt.butterknife
     compile deps.universumStudios.samples
-    compile deps.universumStudios.fragments
+    compile deps.universumStudios.fragmentsTransition
 }
