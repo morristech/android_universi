@@ -1,7 +1,7 @@
 Universi-Fragment
 ===============
 
-This module contains ...
+This module contains `Fragment` implementation providing features of the **Universi** context.
 
 ## Download ##
 [![Download](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Auniversi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Auniversi/_latestVersion)
