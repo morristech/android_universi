@@ -1,7 +1,8 @@
 Universi-Activity (support)
 ===============
 
-This module contains ...
+This module contains **framework** and **compatibility** `Activity` implementations providing features
+of the **Universi** context.
 
 ## Download ##
 [![Download](https://api.bintray.com/packages/universum-studios/android/universum.studios.android.support%3Asupport-universi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android.support%3Asupport-universi/_latestVersion)
