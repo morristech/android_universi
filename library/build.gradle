@@ -49,6 +49,13 @@ android {
                 '../library-fragment/src/main/java'
         ]
         debug.java.srcDirs = release.java.srcDirs
+        androidTest.java.srcDirs = [
+                '../library/src/androidTest/java',
+                '../library-core/src/androidTest/java',
+                '../library-context/src/androidTest/java',
+                '../library-activity/src/androidTest/java',
+                '../library-fragment/src/androidTest/java'
+        ]
     }
 
     compileOptions {
