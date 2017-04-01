@@ -23,7 +23,7 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.support.test.BaseInstrumentedTest;
 
 /**
  * @author Martin Albedinsky
