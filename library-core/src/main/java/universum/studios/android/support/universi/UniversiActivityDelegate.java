@@ -192,7 +192,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	void setNavigationalTransition(@Nullable final BaseNavigationalTransition transition) {
 		this.mNavigationalTransition = transition;
 		if (transition != null) {
-			transition.configureIncomingTransitions((Activity) mContext);
+			transition.configureIncomingTransitions((FragmentActivity) mContext);
 		}
 	}
 
