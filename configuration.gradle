@@ -11,14 +11,14 @@ def testConfig = [
 ]
 
 def libraryConfig = [
-        version: '1.0.0-beta3'
+        version: '1.0.0'
 ]
 
 def mavenConfig = [
         localUrl                 : System.getenv('MAVEN_URL_LOCAL'),
         groupId                  : 'universum.studios.android',
         artifactId               : 'universi',
-        version                  : /*libraryConfig.version*/'1.0.0',
+        version                  : libraryConfig.version,
         packaging                : 'pom',
         projectName              : 'Android Universi',
         projectDescription       : 'Simple universal library for the Android platform providing components that may be used as base for Activities and Fragments in Android applications.',
