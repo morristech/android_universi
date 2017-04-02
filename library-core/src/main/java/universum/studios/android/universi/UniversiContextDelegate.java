@@ -71,7 +71,7 @@ import universum.studios.android.dialog.manage.DialogXmlFactory;
  */
 abstract class UniversiContextDelegate {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -96,15 +96,15 @@ abstract class UniversiContextDelegate {
 	 */
 	private static final int PFLAG_PAUSED = 0x00000001 << 1;
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -143,7 +143,7 @@ abstract class UniversiContextDelegate {
 	 */
 	private ConnectivityManager mConnectivityManager;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
@@ -152,11 +152,11 @@ abstract class UniversiContextDelegate {
 	 *
 	 * @param context Context that is used to access some application data and services.
 	 */
-	UniversiContextDelegate(@NonNull Context context) {
+	UniversiContextDelegate(@NonNull final Context context) {
 		this.mContext = context;
 	}
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -167,7 +167,7 @@ abstract class UniversiContextDelegate {
 	 * @return Ready to use context delegate.
 	 */
 	@NonNull
-	public static UniversiActivityDelegate create(@NonNull Activity activity) {
+	public static UniversiActivityDelegate create(@NonNull final Activity activity) {
 		return new UniversiActivityDelegate(activity);
 	}
 
@@ -178,7 +178,7 @@ abstract class UniversiContextDelegate {
 	 * @return Ready to use context delegate.
 	 */
 	@NonNull
-	public static UniversiFragmentDelegate create(@NonNull Fragment fragment) {
+	public static UniversiFragmentDelegate create(@NonNull final Fragment fragment) {
 		return new UniversiFragmentDelegate(fragment);
 	}
 
@@ -186,10 +186,10 @@ abstract class UniversiContextDelegate {
 	 * Sets a controller that should be used to show and dismiss dialogs within context that uses
 	 * this delegate.
 	 *
-	 * @param controller The desired controller. Can be {@code null} to use the default one.
+	 * @param controller The desired controller. May be {@code null} to use the default one.
 	 * @see #getDialogController()
 	 */
-	void setDialogController(@Nullable DialogController controller) {
+	void setDialogController(@Nullable final DialogController controller) {
 		this.mDialogController = controller;
 		if (mDialogFactory != null) {
 			this.ensureDialogController();
@@ -234,7 +234,7 @@ abstract class UniversiContextDelegate {
 	 * @param xmlDialogsSet Resource id of the desired Xml file containing Xml dialogs that the
 	 *                      factory should provide. May be {@code 0} to remove the current one.
 	 */
-	void setDialogXmlFactory(@XmlRes int xmlDialogsSet) {
+	void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
 		setDialogFactory(xmlDialogsSet == 0 ? null : new DialogXmlFactory(mContext, xmlDialogsSet));
 	}
 
@@ -242,11 +242,11 @@ abstract class UniversiContextDelegate {
 	 * Specifies a factory that should provide dialog instances for {@link DialogController} of
 	 * this delegate.
 	 *
-	 * @param factory The desired factory. Can be {@code null} to remove the current one.
+	 * @param factory The desired factory. May be {@code null} to remove the current one.
 	 * @see #getDialogFactory()
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
-	void setDialogFactory(@Nullable DialogFactory factory) {
+	void setDialogFactory(@Nullable final DialogFactory factory) {
 		this.mDialogFactory = factory;
 		this.ensureDialogController();
 		mDialogController.setFactory(factory);
@@ -274,7 +274,7 @@ abstract class UniversiContextDelegate {
 	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
-	boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
+	boolean showDialogWithId(@IntRange(from = 0) final int dialogId, @Nullable final DialogOptions options) {
 		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;
 		this.ensureDialogController();
 		return mDialogController.newRequest(dialogId).options(options).execute() != null;
@@ -289,7 +289,7 @@ abstract class UniversiContextDelegate {
 	 * @see DialogController#newRequest(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
-	boolean dismissDialogWithId(@IntRange(from = 0) int dialogId) {
+	boolean dismissDialogWithId(@IntRange(from = 0) final int dialogId) {
 		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;
 		this.ensureDialogController();
 		return mDialogController.newRequest(dialogId).intent(DialogRequest.DISMISS).execute() != null;
@@ -307,7 +307,7 @@ abstract class UniversiContextDelegate {
 	 * @see DialogXmlFactory#createDialog(int, DialogOptions)
 	 * @see #dismissXmlDialog(int)
 	 */
-	boolean showXmlDialog(@XmlRes int resId, @Nullable DialogOptions options) {
+	boolean showXmlDialog(@XmlRes final int resId, @Nullable final DialogOptions options) {
 		if (hasPrivateFlag(PFLAG_PAUSED)) return false;
 		final DialogXmlFactory dialogFactory = accessDialogXmlFactory();
 		final DialogFragment dialog = dialogFactory.createDialog(resId, options);
@@ -326,7 +326,7 @@ abstract class UniversiContextDelegate {
 	 * delegate is currently <b>paused</b>.
 	 * @see #showXmlDialog(int, DialogOptions)
 	 */
-	boolean dismissXmlDialog(@XmlRes int resId) {
+	boolean dismissXmlDialog(@XmlRes final int resId) {
 		if (hasPrivateFlag(PFLAG_PAUSED)) return false;
 		this.ensureDialogController();
 		final Fragment fragment = mDialogController.getFragmentManager().findFragmentByTag(accessDialogXmlFactory().createDialogTag(resId));
@@ -373,7 +373,7 @@ abstract class UniversiContextDelegate {
 	 * @see NetworkInfo#isConnected()
 	 */
 	@SuppressWarnings("deprecation")
-	boolean isNetworkConnected(int networkType) {
+	boolean isNetworkConnected(final int networkType) {
 		this.ensureConnectivityManager();
 		final NetworkInfo info = mConnectivityManager.getNetworkInfo(networkType);
 		return info != null && info.isConnected();
@@ -393,7 +393,7 @@ abstract class UniversiContextDelegate {
 	 * @param created {@code True} if view hierarchy is created, {@code false} otherwise.
 	 * @see #isViewCreated()
 	 */
-	void setViewCreated(boolean created) {
+	void setViewCreated(final boolean created) {
 		this.updatePrivateFlags(PFLAG_VIEW_CREATED, created);
 	}
 
@@ -413,7 +413,7 @@ abstract class UniversiContextDelegate {
 	 *
 	 * @param paused {@code True} if context is paused, {@code false} otherwise.
 	 */
-	void setPaused(boolean paused) {
+	void setPaused(final boolean paused) {
 		this.updatePrivateFlags(PFLAG_PAUSED, paused);
 	}
 
@@ -433,7 +433,7 @@ abstract class UniversiContextDelegate {
 	 * @see #isRequestRegistered(int)
 	 * @see #unregisterRequest(int)
 	 */
-	void registerRequest(int request) {
+	void registerRequest(final int request) {
 		this.mRequestFlags |= request;
 	}
 
@@ -444,7 +444,7 @@ abstract class UniversiContextDelegate {
 	 * @see #registerRequest(int)
 	 * @see #isRequestRegistered(int)
 	 */
-	void unregisterRequest(int request) {
+	void unregisterRequest(final int request) {
 		this.mRequestFlags &= ~request;
 	}
 
@@ -456,7 +456,7 @@ abstract class UniversiContextDelegate {
 	 * @see #registerRequest(int)
 	 * @see #unregisterRequest(int)
 	 */
-	boolean isRequestRegistered(int request) {
+	boolean isRequestRegistered(final int request) {
 		return (mRequestFlags & request) != 0;
 	}
 
@@ -467,7 +467,7 @@ abstract class UniversiContextDelegate {
 	 * @param add  Boolean flag indicating whether to add or remove the specified <var>flag</var>.
 	 */
 	@SuppressWarnings("unused")
-	private void updatePrivateFlags(int flag, boolean add) {
+	private void updatePrivateFlags(final int flag, final boolean add) {
 		if (add) this.mPrivateFlags |= flag;
 		else this.mPrivateFlags &= ~flag;
 	}
@@ -480,11 +480,11 @@ abstract class UniversiContextDelegate {
 	 * @return {@code True} if the requested flag is contained, {@code false} otherwise.
 	 */
 	@SuppressWarnings("unused")
-	private boolean hasPrivateFlag(int flag) {
+	private boolean hasPrivateFlag(final int flag) {
 		return (mPrivateFlags & flag) != 0;
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

@@ -105,8 +105,11 @@ public interface UniversiActivityContext {
 	/**
 	 * Sets a navigational transition that will be used to finish this activity context whenever
 	 * its {@link Activity#finishAfterTransition()} is invoked.
+	 * <p>
+	 * If the given transition is not {@code null} this method will also configure incoming transitions
+	 * for this activity via {@link BaseNavigationalTransition#configureIncomingTransitions(Activity)}.
 	 *
-	 * @param transition The desired transition. Can be {@code null} to clear the current one.
+	 * @param transition The desired transition. May be {@code null} to clear the current one.
 	 * @see #getNavigationalTransition()
 	 */
 	void setNavigationalTransition(@Nullable BaseNavigationalTransition transition);
@@ -123,7 +126,7 @@ public interface UniversiActivityContext {
 	/**
 	 * Sets a controller that should be used to show and hide fragments within context of this activity.
 	 *
-	 * @param controller The desired controller. Can be {@code null} to use the default one.
+	 * @param controller The desired controller. May be {@code null} to use the default one.
 	 * @see #getFragmentController()
 	 * @see #setFragmentFactory(FragmentFactory)
 	 */
@@ -144,7 +147,7 @@ public interface UniversiActivityContext {
 	/**
 	 * Specifies a factory that provides fragment instances for {@link FragmentController} of his activity.
 	 *
-	 * @param factory The desired factory. Can be {@code null} to remove the current one.
+	 * @param factory The desired factory. May be {@code null} to remove the current one.
 	 * @see #getFragmentFactory()
 	 * @see #setFragmentController(FragmentController)
 	 * @see #getFragmentController()
@@ -163,7 +166,7 @@ public interface UniversiActivityContext {
 	/**
 	 * Sets a controller that should be used to show and dismiss dialogs within context of this activity.
 	 *
-	 * @param controller The desired controller. Can be {@code null} to use the default one.
+	 * @param controller The desired controller. May be {@code null} to use the default one.
 	 * @see #getDialogController()
 	 * @see #setFragmentFactory(FragmentFactory)
 	 */
@@ -195,7 +198,7 @@ public interface UniversiActivityContext {
 	/**
 	 * Specifies a factory that provides dialog instances for {@link DialogController} of this activity.
 	 *
-	 * @param factory The desired factory. Can be {@code null} to remove the current one.
+	 * @param factory The desired factory. May be {@code null} to remove the current one.
 	 * @see #getDialogFactory()
 	 * @see #showDialogWithId(int)
 	 * @see #showDialogWithId(int, DialogOptions)
