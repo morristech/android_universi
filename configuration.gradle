@@ -32,7 +32,7 @@ def bintrayConfig = [
         packageName              : mavenConfig.groupId + ':' + mavenConfig.artifactId,
         packageLabels            : ['android', 'universal', 'activity', 'fragment'],
         packageVersionName       : mavenConfig.version,
-        packageVersionDescription: 'Version beta release.',
+        packageVersionDescription: 'Major release.',
         packageVersionTag        : mavenConfig.version
 ]
 
