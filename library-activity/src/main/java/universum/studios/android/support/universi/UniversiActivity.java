@@ -42,6 +42,7 @@ import universum.studios.android.support.dialog.manage.DialogController;
 import universum.studios.android.support.dialog.manage.DialogFactory;
 import universum.studios.android.support.fragment.ActionBarDelegate;
 import universum.studios.android.support.fragment.BackPressWatcher;
+import universum.studios.android.support.fragment.FragmentsConfig;
 import universum.studios.android.support.fragment.annotation.ActionBarOptions;
 import universum.studios.android.support.fragment.annotation.FragmentAnnotations;
 import universum.studios.android.support.fragment.annotation.MenuOptions;
@@ -76,7 +77,7 @@ import universum.studios.android.transition.BaseNavigationalTransition;
  */
 public abstract class UniversiActivity extends FragmentActivity implements UniversiActivityContext {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -85,15 +86,15 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	 */
 	// private static final String TAG = "UniversiActivity";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -122,21 +123,21 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	 */
 	private UniversiActivityDelegate mContextDelegate;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
 	/**
-	 * Creates a new instance of UniversiActivity. If annotations processing is enabled via {@link UniversiConfig}
-	 * all annotations supported by this activity class will be processed/obtained here so they can
-	 * be later used.
+	 * Creates a new instance of UniversiActivity. If annotations processing is enabled via
+	 * {@link FragmentsConfig#ANNOTATIONS_PROCESSING_ENABLED} all annotations supported by this
+	 * activity class will be processed/obtained here so they can be later used.
 	 */
 	public UniversiActivity() {
 		super();
 		this.mAnnotationHandler = onCreateAnnotationHandler();
 	}
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -172,7 +173,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (mAnnotationHandler != null) {
 			final int viewResource = mAnnotationHandler.getContentViewResource(-1);
@@ -186,7 +187,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	 */
 	@Nullable
 	@Override
-	public <D> Loader<D> startLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	public <D> Loader<D> startLoader(final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
 		this.ensureContextDelegate();
 		return mContextDelegate.startLoader(id, params, callbacks);
 	}
@@ -195,7 +196,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	 */
 	@Nullable
 	@Override
-	public <D> Loader<D> initLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	public <D> Loader<D> initLoader(final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
 		this.ensureContextDelegate();
 		return mContextDelegate.initLoader(id, params, callbacks);
 	}
@@ -204,7 +205,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	 */
 	@Nullable
 	@Override
-	public <D> Loader<D> restartLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks) {
+	public <D> Loader<D> restartLoader(final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
 		this.ensureContextDelegate();
 		return mContextDelegate.restartLoader(id, params, callbacks);
 	}
@@ -236,7 +237,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public void setActionBar(@Nullable Toolbar toolbar) {
+	public void setActionBar(@Nullable final Toolbar toolbar) {
 		super.setActionBar(toolbar);
 		this.configureActionBar(getActionBar());
 	}
@@ -245,7 +246,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	 * Called to configure the given <var>actionBar</var> according to the {@link ActionBarOptions @ActionBarOptions}
 	 * annotation (if presented).
 	 */
-	private void configureActionBar(ActionBar actionBar) {
+	private void configureActionBar(final ActionBar actionBar) {
 		if (actionBar == null || mAnnotationHandler == null) return;
 		mAnnotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));
 	}
@@ -261,7 +262,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
 		if (mAnnotationHandler == null || !mAnnotationHandler.hasOptionsMenu()) return false;
 		final int menuResource = mAnnotationHandler.getOptionsMenuResource(-1);
 		if (menuResource != -1) {
@@ -290,7 +291,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public void setNavigationalTransition(@Nullable BaseNavigationalTransition transition) {
+	public void setNavigationalTransition(@Nullable final BaseNavigationalTransition transition) {
 		this.ensureContextDelegate();
 		mContextDelegate.setNavigationalTransition(transition);
 	}
@@ -324,7 +325,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public void setFragmentFactory(@Nullable FragmentFactory factory) {
+	public void setFragmentFactory(@Nullable final FragmentFactory factory) {
 		this.ensureContextDelegate();
 		mContextDelegate.setFragmentFactory(factory);
 	}
@@ -341,7 +342,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public void setDialogController(@Nullable DialogController controller) {
+	public void setDialogController(@Nullable final DialogController controller) {
 		this.ensureContextDelegate();
 		mContextDelegate.setDialogController(controller);
 	}
@@ -358,7 +359,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public void setDialogXmlFactory(@XmlRes int xmlDialogsSet) {
+	public void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
 		this.ensureContextDelegate();
 		mContextDelegate.setDialogXmlFactory(xmlDialogsSet);
 	}
@@ -366,7 +367,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public void setDialogFactory(@Nullable DialogFactory factory) {
+	public void setDialogFactory(@Nullable final DialogFactory factory) {
 		this.ensureContextDelegate();
 		mContextDelegate.setDialogFactory(factory);
 	}
@@ -440,7 +441,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public boolean isNetworkConnected(int networkType) {
+	public boolean isNetworkConnected(final int networkType) {
 		this.ensureContextDelegate();
 		return mContextDelegate.isNetworkConnected(networkType);
 	}
@@ -448,7 +449,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public int checkSelfPermission(@NonNull String permission) {
+	public int checkSelfPermission(@NonNull final String permission) {
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
 				super.checkSelfPermission(permission) :
 				PackageManager.PERMISSION_GRANTED;
@@ -457,7 +458,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public boolean shouldShowRequestPermissionRationale(@NonNull String permission) {
+	public boolean shouldShowRequestPermissionRationale(@NonNull final String permission) {
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && super.shouldShowRequestPermissionRationale(permission);
 	}
 
@@ -470,7 +471,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	 * @param permissions The desired set of permissions to request.
 	 * @param requestCode Code to identify this request in {@link #onRequestPermissionsResult(int, String[], int[])}.
 	 */
-	public void supportRequestPermissions(@NonNull String[] permissions, int requestCode) {
+	public void supportRequestPermissions(@NonNull final String[] permissions, final int requestCode) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
 			requestPermissions(permissions, requestCode);
 	}
@@ -478,21 +479,21 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 	}
 
 	/**
 	 */
 	@Override
-	public boolean showDialogWithId(int dialogId) {
+	public boolean showDialogWithId(final int dialogId) {
 		return showDialogWithId(dialogId, null);
 	}
 
 	/**
 	 */
 	@Override
-	public boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
+	public boolean showDialogWithId(@IntRange(from = 0) final int dialogId, @Nullable final DialogOptions options) {
 		this.ensureContextDelegate();
 		return mContextDelegate.showDialogWithId(dialogId, options);
 	}
@@ -500,7 +501,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public boolean dismissDialogWithId(@IntRange(from = 0) int dialogId) {
+	public boolean dismissDialogWithId(@IntRange(from = 0) final int dialogId) {
 		this.ensureContextDelegate();
 		return mContextDelegate.dismissDialogWithId(dialogId);
 	}
@@ -508,14 +509,14 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public boolean showXmlDialog(@XmlRes int resId) {
+	public boolean showXmlDialog(@XmlRes final int resId) {
 		return showXmlDialog(resId, null);
 	}
 
 	/**
 	 */
 	@Override
-	public boolean showXmlDialog(@XmlRes int resId, @Nullable DialogOptions options) {
+	public boolean showXmlDialog(@XmlRes final int resId, @Nullable final DialogOptions options) {
 		this.ensureContextDelegate();
 		return mContextDelegate.showXmlDialog(resId, options);
 	}
@@ -523,7 +524,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	public boolean dismissXmlDialog(@XmlRes int resId) {
+	public boolean dismissXmlDialog(@XmlRes final int resId) {
 		this.ensureContextDelegate();
 		return mContextDelegate.dismissXmlDialog(resId);
 	}
@@ -625,7 +626,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 		return false;
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

@@ -18,12 +18,12 @@
  */
 /**
  * Provides 'universal' implementations of {@link android.app.Activity Activity} and
- * {@link android.app.Fragment Fragment} classes that may be used as base parents for all
- * activities and fragments used across Android application.
+ * {@link android.app.Fragment Fragment} classes that may be used as base parents for all activities
+ * and fragments used across Android application.
  * {@link universum.studios.android.support.universi.UniversiActivity UniversiActivity} along with
  * {@link universum.studios.android.support.universi.UniversiFragment UniversiFragment} provide helper
- * methods and callbacks to simplify data loading via content loaders, data binding using
- * Android's <a href="https://developer.android.com/topic/libraries/data-binding/index.html">Data Binding Library</a>
+ * methods and callbacks to simplify data loading via content loaders, data binding using Android's
+ * <a href="https://developer.android.com/topic/libraries/data-binding/index.html">Data Binding Library</a>
  * and also simplified showing of Fragments and DialogFragments and other useful features.
  *
  * @author Martin Albedinsky
