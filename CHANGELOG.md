@@ -2,7 +2,7 @@ Change-Log
 ===============
 
 ### [Release 1.0.0](https://github.com/universum-studios/android_universi/releases/tag/1.0.0) ###
-> --.04.2017
+> 02.04.2017
 
 - First production release.
 - Updated `fragments` + `dialogs` dependencies to the latest versions.
