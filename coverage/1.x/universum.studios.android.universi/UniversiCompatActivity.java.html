@@ -41,6 +41,7 @@ import universum.studios.android.dialog.manage.DialogController;
 import universum.studios.android.dialog.manage.DialogFactory;
 import universum.studios.android.fragment.ActionBarDelegate;
 import universum.studios.android.fragment.BackPressWatcher;
+import universum.studios.android.fragment.FragmentsConfig;
 import universum.studios.android.fragment.annotation.ActionBarOptions;
 import universum.studios.android.fragment.annotation.FragmentAnnotations;
 import universum.studios.android.fragment.annotation.MenuOptions;
@@ -59,7 +60,7 @@ import universum.studios.android.transition.BaseNavigationalTransition;
  */
 public abstract class UniversiCompatActivity extends AppCompatActivity implements UniversiActivityContext {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -68,29 +69,29 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	// private static final String TAG = &quot;UniversiCompatActivity&quot;;
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
 	/**
 	 * Runnable that calls {@link #requestBindDataInner()} method.
 	 */
-<span class="nc" id="L86">	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {</span>
+<span class="nc" id="L87">	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {</span>
 
 		/**
 		 */
 		@Override
 		public void run() {
-<span class="nc" id="L92">			requestBindDataInner();</span>
-<span class="nc" id="L93">		}</span>
+<span class="nc" id="L93">			requestBindDataInner();</span>
+<span class="nc" id="L94">		}</span>
 	};
 
 	/**
@@ -105,21 +106,21 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	private UniversiActivityDelegate mContextDelegate;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
 	/**
-	 * Creates a new instance of UniversiActivity. If annotations processing is enabled via {@link UniversiConfig}
-	 * all annotations supported by this activity class will be processed/obtained here so they can
-	 * be later used.
+	 * Creates a new instance of UniversiActivity. If annotations processing is enabled via
+	 * {@link FragmentsConfig#ANNOTATIONS_PROCESSING_ENABLED} all annotations supported by this
+	 * activity class will be processed/obtained here so they can be later used.
 	 */
 	public UniversiCompatActivity() {
-<span class="nc" id="L118">		super();</span>
-<span class="nc" id="L119">		this.mAnnotationHandler = onCreateAnnotationHandler();</span>
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L119">		super();</span>
+<span class="nc" id="L120">		this.mAnnotationHandler = onCreateAnnotationHandler();</span>
+<span class="nc" id="L121">	}</span>
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -129,7 +130,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @return Annotations handler specific for this class.
 	 */
 	ActionBarFragmentAnnotationHandler onCreateAnnotationHandler() {
-<span class="nc" id="L132">		return ActionBarAnnotationHandlers.obtainActionBarFragmentHandler(getClass());</span>
+<span class="nc" id="L133">		return ActionBarAnnotationHandlers.obtainActionBarFragmentHandler(getClass());</span>
 	}
 
 	/**
@@ -141,97 +142,97 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@NonNull
 	protected ActionBarFragmentAnnotationHandler getAnnotationHandler() {
-<span class="nc" id="L144">		FragmentAnnotations.checkIfEnabledOrThrow();</span>
-<span class="nc" id="L145">		return mAnnotationHandler;</span>
+<span class="nc" id="L145">		FragmentAnnotations.checkIfEnabledOrThrow();</span>
+<span class="nc" id="L146">		return mAnnotationHandler;</span>
 	}
 
 	/**
 	 * Ensures that the context delegate is initialized for this fragment.
 	 */
 	private void ensureContextDelegate() {
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);</span>
-<span class="nc" id="L153">	}</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);</span>
+<span class="nc" id="L154">	}</span>
 
 	/**
 	 */
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-<span class="nc" id="L159">		super.onCreate(savedInstanceState);</span>
-<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (mAnnotationHandler != null) {</span>
-<span class="nc" id="L161">			final int viewResource = mAnnotationHandler.getContentViewResource(-1);</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">			if (viewResource != -1) {</span>
-<span class="nc" id="L163">				setContentView(viewResource);</span>
+	protected void onCreate(@Nullable final Bundle savedInstanceState) {
+<span class="nc" id="L160">		super.onCreate(savedInstanceState);</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (mAnnotationHandler != null) {</span>
+<span class="nc" id="L162">			final int viewResource = mAnnotationHandler.getContentViewResource(-1);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">			if (viewResource != -1) {</span>
+<span class="nc" id="L164">				setContentView(viewResource);</span>
 			}
 		}
-<span class="nc" id="L166">	}</span>
+<span class="nc" id="L167">	}</span>
 
 	/**
 	 */
 	@Nullable
 	@Override
-	public &lt;D&gt; Loader&lt;D&gt; startLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
-<span class="nc" id="L173">		this.ensureContextDelegate();</span>
-<span class="nc" id="L174">		return mContextDelegate.startLoader(id, params, callbacks);</span>
+	public &lt;D&gt; Loader&lt;D&gt; startLoader(final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
+<span class="nc" id="L174">		this.ensureContextDelegate();</span>
+<span class="nc" id="L175">		return mContextDelegate.startLoader(id, params, callbacks);</span>
 	}
 
 	/**
 	 */
 	@Nullable
 	@Override
-	public &lt;D&gt; Loader&lt;D&gt; initLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
-<span class="nc" id="L182">		this.ensureContextDelegate();</span>
-<span class="nc" id="L183">		return mContextDelegate.initLoader(id, params, callbacks);</span>
+	public &lt;D&gt; Loader&lt;D&gt; initLoader(final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
+<span class="nc" id="L183">		this.ensureContextDelegate();</span>
+<span class="nc" id="L184">		return mContextDelegate.initLoader(id, params, callbacks);</span>
 	}
 
 	/**
 	 */
 	@Nullable
 	@Override
-	public &lt;D&gt; Loader&lt;D&gt; restartLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
-<span class="nc" id="L191">		this.ensureContextDelegate();</span>
-<span class="nc" id="L192">		return mContextDelegate.restartLoader(id, params, callbacks);</span>
+	public &lt;D&gt; Loader&lt;D&gt; restartLoader(final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
+<span class="nc" id="L192">		this.ensureContextDelegate();</span>
+<span class="nc" id="L193">		return mContextDelegate.restartLoader(id, params, callbacks);</span>
 	}
 
 	/**
 	 */
 	@Override
-	public void destroyLoader(int id) {
-<span class="nc" id="L199">		this.ensureContextDelegate();</span>
-<span class="nc" id="L200">		mContextDelegate.destroyLoader(id);</span>
-<span class="nc" id="L201">	}</span>
+	public void destroyLoader(final int id) {
+<span class="nc" id="L200">		this.ensureContextDelegate();</span>
+<span class="nc" id="L201">		mContextDelegate.destroyLoader(id);</span>
+<span class="nc" id="L202">	}</span>
 
 	/**
 	 */
 	@Override
 	public void onContentChanged() {
-<span class="nc" id="L207">		super.onContentChanged();</span>
-<span class="nc" id="L208">		this.ensureContextDelegate();</span>
-<span class="nc" id="L209">		mContextDelegate.setViewCreated(true);</span>
-<span class="nc" id="L210">		this.configureActionBar(getSupportActionBar());</span>
-<span class="nc" id="L211">		onBindViews();</span>
+<span class="nc" id="L208">		super.onContentChanged();</span>
+<span class="nc" id="L209">		this.ensureContextDelegate();</span>
+<span class="nc" id="L210">		mContextDelegate.setViewCreated(true);</span>
+<span class="nc" id="L211">		this.configureActionBar(getSupportActionBar());</span>
+<span class="nc" id="L212">		onBindViews();</span>
 		// Check if there was requested data binding before view creation, if it was, perform binding now.
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (mContextDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {</span>
-<span class="nc" id="L214">			mContextDelegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
-<span class="nc" id="L215">			onBindData();</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		if (mContextDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {</span>
+<span class="nc" id="L215">			mContextDelegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
+<span class="nc" id="L216">			onBindData();</span>
 		}
-<span class="nc" id="L217">	}</span>
+<span class="nc" id="L218">	}</span>
 
 	/**
 	 */
 	@Override
-	public void setSupportActionBar(@Nullable Toolbar toolbar) {
-<span class="nc" id="L223">		super.setSupportActionBar(toolbar);</span>
-<span class="nc" id="L224">		this.configureActionBar(getSupportActionBar());</span>
-<span class="nc" id="L225">	}</span>
+	public void setSupportActionBar(@Nullable final Toolbar toolbar) {
+<span class="nc" id="L224">		super.setSupportActionBar(toolbar);</span>
+<span class="nc" id="L225">		this.configureActionBar(getSupportActionBar());</span>
+<span class="nc" id="L226">	}</span>
 
 	/**
 	 * Called to configure the given &lt;var&gt;actionBar&lt;/var&gt; according to the {@link ActionBarOptions @ActionBarOptions}
 	 * annotation (if presented).
 	 */
-	private void configureActionBar(ActionBar actionBar) {
-<span class="nc bnc" id="L232" title="All 4 branches missed.">		if (actionBar == null || mAnnotationHandler == null) return;</span>
-<span class="nc" id="L233">		mAnnotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));</span>
-<span class="nc" id="L234">	}</span>
+	private void configureActionBar(final ActionBar actionBar) {
+<span class="nc bnc" id="L233" title="All 4 branches missed.">		if (actionBar == null || mAnnotationHandler == null) return;</span>
+<span class="nc" id="L234">		mAnnotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));</span>
+<span class="nc" id="L235">	}</span>
 
 	/**
 	 * Invoked from {@link #onContentChanged()} to bind all views presented within context of this
@@ -239,52 +240,52 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	protected void onBindViews() {
 		// Inheritance hierarchies may perform here views binding/injection.
-<span class="nc" id="L242">	}</span>
+<span class="nc" id="L243">	}</span>
 
 	/**
 	 */
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-<span class="nc bnc" id="L248" title="All 4 branches missed.">		if (mAnnotationHandler == null || !mAnnotationHandler.hasOptionsMenu()) return false;</span>
-<span class="nc" id="L249">		final int menuResource = mAnnotationHandler.getOptionsMenuResource(-1);</span>
-<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (menuResource != -1) {</span>
-<span class="nc bnc" id="L251" title="All 2 branches missed.">			if (mAnnotationHandler.shouldClearOptionsMenu()) {</span>
-<span class="nc" id="L252">				menu.clear();</span>
+	public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
+<span class="nc bnc" id="L249" title="All 4 branches missed.">		if (mAnnotationHandler == null || !mAnnotationHandler.hasOptionsMenu()) return false;</span>
+<span class="nc" id="L250">		final int menuResource = mAnnotationHandler.getOptionsMenuResource(-1);</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		if (menuResource != -1) {</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">			if (mAnnotationHandler.shouldClearOptionsMenu()) {</span>
+<span class="nc" id="L253">				menu.clear();</span>
 			}
-<span class="nc bnc" id="L254" title="All 3 branches missed.">			switch (mAnnotationHandler.getOptionsMenuFlags(0)) {</span>
+<span class="nc bnc" id="L255" title="All 3 branches missed.">			switch (mAnnotationHandler.getOptionsMenuFlags(0)) {</span>
 				case MenuOptions.IGNORE_SUPER:
-<span class="nc" id="L256">					getMenuInflater().inflate(menuResource, menu);</span>
-<span class="nc" id="L257">					break;</span>
+<span class="nc" id="L257">					getMenuInflater().inflate(menuResource, menu);</span>
+<span class="nc" id="L258">					break;</span>
 				case MenuOptions.BEFORE_SUPER:
-<span class="nc" id="L259">					getMenuInflater().inflate(menuResource, menu);</span>
-<span class="nc" id="L260">					super.onCreateOptionsMenu(menu);</span>
-<span class="nc" id="L261">					break;</span>
+<span class="nc" id="L260">					getMenuInflater().inflate(menuResource, menu);</span>
+<span class="nc" id="L261">					super.onCreateOptionsMenu(menu);</span>
+<span class="nc" id="L262">					break;</span>
 				case MenuOptions.DEFAULT:
 				default:
-<span class="nc" id="L264">					super.onCreateOptionsMenu(menu);</span>
-<span class="nc" id="L265">					getMenuInflater().inflate(menuResource, menu);</span>
+<span class="nc" id="L265">					super.onCreateOptionsMenu(menu);</span>
+<span class="nc" id="L266">					getMenuInflater().inflate(menuResource, menu);</span>
 					break;
 			}
-<span class="nc" id="L268">			return true;</span>
+<span class="nc" id="L269">			return true;</span>
 		}
-<span class="nc" id="L270">		return super.onCreateOptionsMenu(menu);</span>
+<span class="nc" id="L271">		return super.onCreateOptionsMenu(menu);</span>
 	}
 
 	/**
 	 */
 	@Override
-	public void setNavigationalTransition(@Nullable BaseNavigationalTransition transition) {
-<span class="nc" id="L277">		this.ensureContextDelegate();</span>
-<span class="nc" id="L278">		mContextDelegate.setNavigationalTransition(transition);</span>
-<span class="nc" id="L279">	}</span>
+	public void setNavigationalTransition(@Nullable final BaseNavigationalTransition transition) {
+<span class="nc" id="L278">		this.ensureContextDelegate();</span>
+<span class="nc" id="L279">		mContextDelegate.setNavigationalTransition(transition);</span>
+<span class="nc" id="L280">	}</span>
 
 	/**
 	 */
 	@Override
 	@Nullable
 	public BaseNavigationalTransition getNavigationalTransition() {
-<span class="nc" id="L286">		this.ensureContextDelegate();</span>
-<span class="nc" id="L287">		return mContextDelegate.getNavigationalTransition();</span>
+<span class="nc" id="L287">		this.ensureContextDelegate();</span>
+<span class="nc" id="L288">		return mContextDelegate.getNavigationalTransition();</span>
 	}
 
 	/**
@@ -292,75 +293,75 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	@Override
 	@NonNull
 	public FragmentController getFragmentController() {
-<span class="nc" id="L295">		this.ensureContextDelegate();</span>
-<span class="nc" id="L296">		return mContextDelegate.getFragmentController();</span>
+<span class="nc" id="L296">		this.ensureContextDelegate();</span>
+<span class="nc" id="L297">		return mContextDelegate.getFragmentController();</span>
 	}
 
 	/**
 	 */
 	@Override
-	public void setFragmentController(@Nullable FragmentController controller) {
-<span class="nc" id="L303">		this.ensureContextDelegate();</span>
-<span class="nc" id="L304">		mContextDelegate.setFragmentController(controller);</span>
-<span class="nc" id="L305">	}</span>
+	public void setFragmentController(@Nullable final FragmentController controller) {
+<span class="nc" id="L304">		this.ensureContextDelegate();</span>
+<span class="nc" id="L305">		mContextDelegate.setFragmentController(controller);</span>
+<span class="nc" id="L306">	}</span>
 
 	/**
 	 */
 	@Override
-	public void setFragmentFactory(@Nullable FragmentFactory factory) {
-<span class="nc" id="L311">		this.ensureContextDelegate();</span>
-<span class="nc" id="L312">		mContextDelegate.setFragmentFactory(factory);</span>
-<span class="nc" id="L313">	}</span>
+	public void setFragmentFactory(@Nullable final FragmentFactory factory) {
+<span class="nc" id="L312">		this.ensureContextDelegate();</span>
+<span class="nc" id="L313">		mContextDelegate.setFragmentFactory(factory);</span>
+<span class="nc" id="L314">	}</span>
 
 	/**
 	 */
 	@Override
 	@Nullable
 	public FragmentFactory getFragmentFactory() {
-<span class="nc" id="L320">		this.ensureContextDelegate();</span>
-<span class="nc" id="L321">		return mContextDelegate.getFragmentFactory();</span>
+<span class="nc" id="L321">		this.ensureContextDelegate();</span>
+<span class="nc" id="L322">		return mContextDelegate.getFragmentFactory();</span>
 	}
 
 	/**
 	 */
 	@Override
-	public void setDialogController(@Nullable DialogController controller) {
-<span class="nc" id="L328">		this.ensureContextDelegate();</span>
-<span class="nc" id="L329">		mContextDelegate.setDialogController(controller);</span>
-<span class="nc" id="L330">	}</span>
+	public void setDialogController(@Nullable final DialogController controller) {
+<span class="nc" id="L329">		this.ensureContextDelegate();</span>
+<span class="nc" id="L330">		mContextDelegate.setDialogController(controller);</span>
+<span class="nc" id="L331">	}</span>
 
 	/**
 	 */
 	@Override
 	@NonNull
 	public DialogController getDialogController() {
-<span class="nc" id="L337">		this.ensureContextDelegate();</span>
-<span class="nc" id="L338">		return mContextDelegate.getDialogController();</span>
+<span class="nc" id="L338">		this.ensureContextDelegate();</span>
+<span class="nc" id="L339">		return mContextDelegate.getDialogController();</span>
 	}
 
 	/**
 	 */
 	@Override
-	public void setDialogXmlFactory(@XmlRes int xmlDialogsSet) {
-<span class="nc" id="L345">		this.ensureContextDelegate();</span>
-<span class="nc" id="L346">		mContextDelegate.setDialogXmlFactory(xmlDialogsSet);</span>
-<span class="nc" id="L347">	}</span>
+	public void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
+<span class="nc" id="L346">		this.ensureContextDelegate();</span>
+<span class="nc" id="L347">		mContextDelegate.setDialogXmlFactory(xmlDialogsSet);</span>
+<span class="nc" id="L348">	}</span>
 
 	/**
 	 */
 	@Override
-	public void setDialogFactory(@Nullable DialogFactory factory) {
-<span class="nc" id="L353">		this.ensureContextDelegate();</span>
-<span class="nc" id="L354">		mContextDelegate.setDialogFactory(factory);</span>
-<span class="nc" id="L355">	}</span>
+	public void setDialogFactory(@Nullable final DialogFactory factory) {
+<span class="nc" id="L354">		this.ensureContextDelegate();</span>
+<span class="nc" id="L355">		mContextDelegate.setDialogFactory(factory);</span>
+<span class="nc" id="L356">	}</span>
 
 	/**
 	 */
 	@Override
 	@Nullable
 	public DialogFactory getDialogFactory() {
-<span class="nc" id="L362">		this.ensureContextDelegate();</span>
-<span class="nc" id="L363">		return mContextDelegate.getDialogFactory();</span>
+<span class="nc" id="L363">		this.ensureContextDelegate();</span>
+<span class="nc" id="L364">		return mContextDelegate.getDialogFactory();</span>
 	}
 
 	/**
@@ -372,25 +373,25 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	protected void requestBindData() {
 		// Check whether this call has been made on the UI thread, if not post on the UI thread the request runnable.
-<span class="nc bnc" id="L375" title="All 2 branches missed.">		if (Looper.getMainLooper().equals(Looper.myLooper())) {</span>
-<span class="nc" id="L376">			this.requestBindDataInner();</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">		if (Looper.getMainLooper().equals(Looper.myLooper())) {</span>
+<span class="nc" id="L377">			this.requestBindDataInner();</span>
 		} else {
-<span class="nc" id="L378">			runOnUiThread(REQUEST_BIND_DATA_INNER);</span>
+<span class="nc" id="L379">			runOnUiThread(REQUEST_BIND_DATA_INNER);</span>
 		}
-<span class="nc" id="L380">	}</span>
+<span class="nc" id="L381">	}</span>
 
 	/**
 	 * Performs data binding of this activity. Will invoke {@link #onBindData()} if view hierarchy of
 	 * this activity is already created, otherwise will register a binding request via {@link UniversiContextDelegate#registerRequest(int)}.
 	 */
 	final void requestBindDataInner() {
-<span class="nc" id="L387">		this.ensureContextDelegate();</span>
-<span class="nc bnc" id="L388" title="All 2 branches missed.">		if (mContextDelegate.isViewCreated()) {</span>
-<span class="nc" id="L389">			onBindData();</span>
-<span class="nc" id="L390">			return;</span>
+<span class="nc" id="L388">		this.ensureContextDelegate();</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">		if (mContextDelegate.isViewCreated()) {</span>
+<span class="nc" id="L390">			onBindData();</span>
+<span class="nc" id="L391">			return;</span>
 		}
-<span class="nc" id="L392">		mContextDelegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
-<span class="nc" id="L393">	}</span>
+<span class="nc" id="L393">		mContextDelegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
+<span class="nc" id="L394">	}</span>
 
 	/**
 	 * Invoked due to call to {@link #requestBindData()} to perform data binding specific for this
@@ -401,49 +402,49 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	@UiThread
 	protected void onBindData() {
 		// Inheritance hierarchies may perform theirs specific data binding logic here.
-<span class="nc" id="L404">	}</span>
+<span class="nc" id="L405">	}</span>
 
 	/**
 	 */
 	@Override
 	protected void onResume() {
-<span class="nc" id="L410">		super.onResume();</span>
-<span class="nc" id="L411">		this.ensureContextDelegate();</span>
-<span class="nc" id="L412">		mContextDelegate.setPaused(false);</span>
-<span class="nc" id="L413">	}</span>
+<span class="nc" id="L411">		super.onResume();</span>
+<span class="nc" id="L412">		this.ensureContextDelegate();</span>
+<span class="nc" id="L413">		mContextDelegate.setPaused(false);</span>
+<span class="nc" id="L414">	}</span>
 
 	/**
 	 */
 	@CheckResult
 	@Override
 	public boolean isActiveNetworkConnected() {
-<span class="nc" id="L420">		this.ensureContextDelegate();</span>
-<span class="nc" id="L421">		return mContextDelegate.isActiveNetworkConnected();</span>
+<span class="nc" id="L421">		this.ensureContextDelegate();</span>
+<span class="nc" id="L422">		return mContextDelegate.isActiveNetworkConnected();</span>
 	}
 
 	/**
 	 */
 	@CheckResult
 	@Override
-	public boolean isNetworkConnected(int networkType) {
-<span class="nc" id="L429">		this.ensureContextDelegate();</span>
-<span class="nc" id="L430">		return mContextDelegate.isNetworkConnected(networkType);</span>
+	public boolean isNetworkConnected(final int networkType) {
+<span class="nc" id="L430">		this.ensureContextDelegate();</span>
+<span class="nc" id="L431">		return mContextDelegate.isNetworkConnected(networkType);</span>
 	}
 
 	/**
 	 */
 	@Override
-	public int checkSelfPermission(@NonNull String permission) {
-<span class="nc bnc" id="L437" title="All 2 branches missed.">		return Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M ?</span>
-<span class="nc" id="L438">				super.checkSelfPermission(permission) :</span>
+	public int checkSelfPermission(@NonNull final String permission) {
+<span class="nc bnc" id="L438" title="All 2 branches missed.">		return Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M ?</span>
+<span class="nc" id="L439">				super.checkSelfPermission(permission) :</span>
 				PackageManager.PERMISSION_GRANTED;
 	}
 
 	/**
 	 */
 	@Override
-	public boolean shouldShowRequestPermissionRationale(@NonNull String permission) {
-<span class="nc bnc" id="L446" title="All 4 branches missed.">		return Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M &amp;&amp; super.shouldShowRequestPermissionRationale(permission);</span>
+	public boolean shouldShowRequestPermissionRationale(@NonNull final String permission) {
+<span class="nc bnc" id="L447" title="All 4 branches missed.">		return Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M &amp;&amp; super.shouldShowRequestPermissionRationale(permission);</span>
 	}
 
 	/**
@@ -455,70 +456,70 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @param permissions The desired set of permissions to request.
 	 * @param requestCode Code to identify this request in {@link #onRequestPermissionsResult(int, String[], int[])}.
 	 */
-	public void supportRequestPermissions(@NonNull String[] permissions, int requestCode) {
-<span class="nc bnc" id="L459" title="All 2 branches missed.">		if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M)</span>
-<span class="nc" id="L460">			requestPermissions(permissions, requestCode);</span>
-<span class="nc" id="L461">	}</span>
+	public void supportRequestPermissions(@NonNull final String[] permissions, final int requestCode) {
+<span class="nc bnc" id="L460" title="All 2 branches missed.">		if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M)</span>
+<span class="nc" id="L461">			requestPermissions(permissions, requestCode);</span>
+<span class="nc" id="L462">	}</span>
 
 	/**
 	 */
 	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-<span class="nc" id="L467">		super.onRequestPermissionsResult(requestCode, permissions, grantResults);</span>
-<span class="nc" id="L468">	}</span>
+	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+<span class="nc" id="L468">		super.onRequestPermissionsResult(requestCode, permissions, grantResults);</span>
+<span class="nc" id="L469">	}</span>
 
 	/**
 	 */
 	@Override
-	public boolean showDialogWithId(int dialogId) {
-<span class="nc" id="L474">		return showDialogWithId(dialogId, null);</span>
+	public boolean showDialogWithId(final int dialogId) {
+<span class="nc" id="L475">		return showDialogWithId(dialogId, null);</span>
 	}
 
 	/**
 	 */
 	@Override
-	public boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options) {
-<span class="nc" id="L481">		this.ensureContextDelegate();</span>
-<span class="nc" id="L482">		return mContextDelegate.showDialogWithId(dialogId, options);</span>
+	public boolean showDialogWithId(@IntRange(from = 0) final int dialogId, @Nullable final DialogOptions options) {
+<span class="nc" id="L482">		this.ensureContextDelegate();</span>
+<span class="nc" id="L483">		return mContextDelegate.showDialogWithId(dialogId, options);</span>
 	}
 
 	/**
 	 */
 	@Override
-	public boolean dismissDialogWithId(@IntRange(from = 0) int dialogId) {
-<span class="nc" id="L489">		this.ensureContextDelegate();</span>
-<span class="nc" id="L490">		return mContextDelegate.dismissDialogWithId(dialogId);</span>
+	public boolean dismissDialogWithId(@IntRange(from = 0) final int dialogId) {
+<span class="nc" id="L490">		this.ensureContextDelegate();</span>
+<span class="nc" id="L491">		return mContextDelegate.dismissDialogWithId(dialogId);</span>
 	}
 
 	/**
 	 */
 	@Override
-	public boolean showXmlDialog(@XmlRes int resId) {
-<span class="nc" id="L497">		return showXmlDialog(resId, null);</span>
+	public boolean showXmlDialog(@XmlRes final int resId) {
+<span class="nc" id="L498">		return showXmlDialog(resId, null);</span>
 	}
 
 	/**
 	 */
 	@Override
-	public boolean showXmlDialog(@XmlRes int resId, @Nullable DialogOptions options) {
-<span class="nc" id="L504">		this.ensureContextDelegate();</span>
-<span class="nc" id="L505">		return mContextDelegate.showXmlDialog(resId, options);</span>
+	public boolean showXmlDialog(@XmlRes final int resId, @Nullable final DialogOptions options) {
+<span class="nc" id="L505">		this.ensureContextDelegate();</span>
+<span class="nc" id="L506">		return mContextDelegate.showXmlDialog(resId, options);</span>
 	}
 
 	/**
 	 */
 	@Override
-	public boolean dismissXmlDialog(@XmlRes int resId) {
-<span class="nc" id="L512">		this.ensureContextDelegate();</span>
-<span class="nc" id="L513">		return mContextDelegate.dismissXmlDialog(resId);</span>
+	public boolean dismissXmlDialog(@XmlRes final int resId) {
+<span class="nc" id="L513">		this.ensureContextDelegate();</span>
+<span class="nc" id="L514">		return mContextDelegate.dismissXmlDialog(resId);</span>
 	}
 
 	/**
 	 */
 	@Override
 	public void onBackPressed() {
-<span class="nc bnc" id="L520" title="All 2 branches missed.">		if (!onBackPress()) finishWithNavigationalTransition();</span>
-<span class="nc" id="L521">	}</span>
+<span class="nc bnc" id="L521" title="All 2 branches missed.">		if (!onBackPress()) finishWithNavigationalTransition();</span>
+<span class="nc" id="L522">	}</span>
 
 	/**
 	 * Invoked from {@link #onBackPressed()} to give a chance to this activity instance to consume
@@ -531,8 +532,8 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @return {@code True} if the back press event has been consumed here, {@code false} otherwise.
 	 */
 	protected boolean onBackPress() {
-<span class="nc" id="L534">		this.ensureContextDelegate();</span>
-<span class="nc bnc" id="L535" title="All 6 branches missed.">		return !mContextDelegate.isPaused() &amp;&amp; (dispatchBackPressToFragments() || popFragmentsBackStack());</span>
+<span class="nc" id="L535">		this.ensureContextDelegate();</span>
+<span class="nc bnc" id="L536" title="All 6 branches missed.">		return !mContextDelegate.isPaused() &amp;&amp; (dispatchBackPressToFragments() || popFragmentsBackStack());</span>
 	}
 
 	/**
@@ -546,7 +547,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @see BackPressWatcher#dispatchBackPress()
 	 */
 	protected boolean dispatchBackPressToFragments() {
-<span class="nc" id="L549">		return dispatchBackPressToCurrentFragment();</span>
+<span class="nc" id="L550">		return dispatchBackPressToCurrentFragment();</span>
 	}
 
 	/**
@@ -558,8 +559,8 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @see BackPressWatcher#dispatchBackPress()
 	 */
 	protected boolean dispatchBackPressToCurrentFragment() {
-<span class="nc" id="L561">		final Fragment fragment = findCurrentFragment();</span>
-<span class="nc bnc" id="L562" title="All 4 branches missed.">		return fragment instanceof BackPressWatcher &amp;&amp; ((BackPressWatcher) fragment).dispatchBackPress();</span>
+<span class="nc" id="L562">		final Fragment fragment = findCurrentFragment();</span>
+<span class="nc bnc" id="L563" title="All 4 branches missed.">		return fragment instanceof BackPressWatcher &amp;&amp; ((BackPressWatcher) fragment).dispatchBackPress();</span>
 	}
 
 	/**
@@ -574,8 +575,8 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Nullable
 	protected Fragment findCurrentFragment() {
-<span class="nc" id="L577">		this.ensureContextDelegate();</span>
-<span class="nc" id="L578">		return mContextDelegate.findCurrentFragment();</span>
+<span class="nc" id="L578">		this.ensureContextDelegate();</span>
+<span class="nc" id="L579">		return mContextDelegate.findCurrentFragment();</span>
 	}
 
 	/**
@@ -585,32 +586,32 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * were no fragments to pop from.
 	 */
 	protected boolean popFragmentsBackStack() {
-<span class="nc" id="L588">		this.ensureContextDelegate();</span>
-<span class="nc" id="L589">		return mContextDelegate.popFragmentsBackStack();</span>
+<span class="nc" id="L589">		this.ensureContextDelegate();</span>
+<span class="nc" id="L590">		return mContextDelegate.popFragmentsBackStack();</span>
 	}
 
 	/**
 	 */
 	@Override
 	protected void onPause() {
-<span class="nc" id="L596">		super.onPause();</span>
-<span class="nc" id="L597">		this.ensureContextDelegate();</span>
-<span class="nc" id="L598">		mContextDelegate.setPaused(true);</span>
-<span class="nc" id="L599">	}</span>
+<span class="nc" id="L597">		super.onPause();</span>
+<span class="nc" id="L598">		this.ensureContextDelegate();</span>
+<span class="nc" id="L599">		mContextDelegate.setPaused(true);</span>
+<span class="nc" id="L600">	}</span>
 
 	/**
 	 */
 	@Override
 	public boolean finishWithNavigationalTransition() {
-<span class="nc" id="L605">		this.ensureContextDelegate();</span>
-<span class="nc bnc" id="L606" title="All 2 branches missed.">		if (mContextDelegate.finishWithNavigationalTransition()) {</span>
-<span class="nc" id="L607">			return true;</span>
+<span class="nc" id="L606">		this.ensureContextDelegate();</span>
+<span class="nc bnc" id="L607" title="All 2 branches missed.">		if (mContextDelegate.finishWithNavigationalTransition()) {</span>
+<span class="nc" id="L608">			return true;</span>
 		}
-<span class="nc" id="L609">		supportFinishAfterTransition();</span>
-<span class="nc" id="L610">		return false;</span>
+<span class="nc" id="L610">		supportFinishAfterTransition();</span>
+<span class="nc" id="L611">		return false;</span>
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

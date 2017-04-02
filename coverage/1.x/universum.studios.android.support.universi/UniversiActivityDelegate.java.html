@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>UniversiActivityDelegate.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">universum.studios.android.support.universi</a> &gt; <span class="el_source">UniversiActivityDelegate.java</span></div><h1>UniversiActivityDelegate.java</h1><pre class="source lang-java linenums">/*
+ * =================================================================================================
+ *                             Copyright (C) 2017 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further &quot;License&quot; only).
+ * -------------------------------------------------------------------------------------------------
+ * You may use this file only in compliance with the License. More details and copy of this License 
+ * you may obtain at
+ * 
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * You can redistribute, modify or publish any part of the code written within this file but as it 
+ * is described in the License, the software distributed under the License is distributed on an 
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * 
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+package universum.studios.android.support.universi;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+
+import universum.studios.android.support.dialog.manage.DialogController;
+import universum.studios.android.support.fragment.manage.FragmentController;
+import universum.studios.android.support.fragment.manage.FragmentFactory;
+import universum.studios.android.transition.BaseNavigationalTransition;
+
+/**
+ * An {@link UniversiContextDelegate} implementation that can be used within context of {@link FragmentActivity}.
+ * Activity delegate has additional support for {@link Fragment Fragments} management via {@link FragmentController}.
+ * Fragment controller can be accessed via {@link #getFragmentController()} and custom controller can
+ * be specified via {@link #setFragmentController(FragmentController)}. Fragment factory that provides
+ * fragments to be displayed in a context of a specific UniversiActivity can be specified via
+ * {@link #setFragmentFactory(FragmentFactory)}.
+ * &lt;p&gt;
+ * Navigational transition that can be specified via {@link #setNavigationalTransition(BaseNavigationalTransition)}
+ * can be used to finish the associated activity.
+ *
+ * @author Martin Albedinsky
+ * @see UniversiFragmentDelegate
+ */
+final class UniversiActivityDelegate extends UniversiContextDelegate {
+
+	/*
+	 * Constants ===================================================================================
+	 */
+
+	/**
+	 * Log TAG.
+	 */
+	// private static final String TAG = &quot;UniversiActivityDelegate&quot;;
+
+	/*
+	 * Interface ===================================================================================
+	 */
+
+	/*
+	 * Static members ==============================================================================
+	 */
+
+	/*
+	 * Members =====================================================================================
+	 */
+
+	/**
+	 * Controller that is used to show and hide fragments within the associated activity context.
+	 */
+	private FragmentController mFragmentController;
+
+	/**
+	 * Factory providing fragment instances for the {@link #mFragmentController}.
+	 */
+	private FragmentFactory mFragmentFactory;
+
+	/**
+	 * Navigational transition that can be used to finish the associated activity context.
+	 */
+	private BaseNavigationalTransition mNavigationalTransition;
+
+	/*
+	 * Constructors ================================================================================
+	 */
+
+	/**
+	 * Creates a new instance of UniversiActivityDelegate for the given activity &lt;var&gt;context&lt;/var&gt;.
+	 *
+	 * @see UniversiContextDelegate#UniversiContextDelegate(Context)
+	 */
+	UniversiActivityDelegate(@NonNull final FragmentActivity context) {
+<span class="nc" id="L99">		super(context);</span>
+<span class="nc" id="L100">	}</span>
+
+	/*
+	 * Methods =====================================================================================
+	 */
+
+	/**
+	 */
+	@NonNull
+	@Override
+	DialogController instantiateDialogController() {
+<span class="nc" id="L111">		return new DialogController((FragmentActivity) mContext);</span>
+	}
+
+	/**
+	 * Starts a loader with the specified &lt;var&gt;id&lt;/var&gt;. If there was already started loader with the
+	 * same id before, such a loader will be &lt;b&gt;re-started&lt;/b&gt;, otherwise new loader will be &lt;b&gt;initialized&lt;/b&gt;.
+	 *
+	 * @param id        Id of the desired loader to start.
+	 * @param params    Params for loader.
+	 * @param callbacks Callbacks for loader.
+	 * @return Initialized or re-started loader instance or {@code null} if the specified &lt;var&gt;callbacks&lt;/var&gt;
+	 * do not create loader for the specified &lt;var&gt;id&lt;/var&gt;.
+	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 * @see #destroyLoader(int)
+	 */
+	@Nullable
+	&lt;D&gt; Loader&lt;D&gt; startLoader(@IntRange(from = 0) final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
+<span class="nc" id="L129">		final LoaderManager manager = ((FragmentActivity) mContext).getSupportLoaderManager();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (manager.getLoader(id) == null) return initLoader(id, params, callbacks);</span>
+<span class="nc" id="L131">		else return restartLoader(id, params, callbacks);</span>
+	}
+
+	/**
+	 * Initializes a loader with the specified &lt;var&gt;id&lt;/var&gt; for the given &lt;var&gt;callbacks&lt;/var&gt;.
+	 *
+	 * @param id        Id of the desired loader to init.
+	 * @param params    Params for loader.
+	 * @param callbacks Callbacks for loader.
+	 * @return Initialized loader instance or {@code null} if the specified &lt;var&gt;callbacks&lt;/var&gt; do
+	 * not create loader for the specified &lt;var&gt;id&lt;/var&gt;.
+	 * @see #startLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 * @see #destroyLoader(int)
+	 * @see LoaderManager#initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 */
+	@Nullable
+	&lt;D&gt; Loader&lt;D&gt; initLoader(@IntRange(from = 0) final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
+<span class="nc" id="L149">		return ((FragmentActivity) mContext).getSupportLoaderManager().initLoader(id, params, callbacks);</span>
+	}
+
+	/**
+	 * Re-starts a loader with the specified &lt;var&gt;id&lt;/var&gt; for the given &lt;var&gt;callbacks&lt;/var&gt;.
+	 *
+	 * @param id        Id of the desired loader to re-start.
+	 * @param params    Params for loader.
+	 * @param callbacks Callbacks for loader.
+	 * @return Re-started loader instance or {@code null} if the specified &lt;var&gt;callbacks&lt;/var&gt; do
+	 * not create loader for the specified &lt;var&gt;id&lt;/var&gt;.
+	 * @see #startLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 * @see #destroyLoader(int)
+	 * @see LoaderManager#restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 */
+	@Nullable
+	&lt;D&gt; Loader&lt;D&gt; restartLoader(@IntRange(from = 0) final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks&lt;D&gt; callbacks) {
+<span class="nc" id="L167">		return ((FragmentActivity) mContext).getSupportLoaderManager().restartLoader(id, params, callbacks);</span>
+	}
+
+	/**
+	 * Destroys a loader with the specified &lt;var&gt;id&lt;/var&gt;.
+	 *
+	 * @param id Id of the desired loader to destroy.
+	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 * @see LoaderManager#destroyLoader(int)
+	 */
+	void destroyLoader(@IntRange(from = 0) final int id) {
+<span class="nc" id="L179">		((FragmentActivity) mContext).getSupportLoaderManager().destroyLoader(id);</span>
+<span class="nc" id="L180">	}</span>
+
+	/**
+	 * Sets a navigational transition that can be used to finish associated activity via
+	 * {@link #finishWithNavigationalTransition()}.
+	 * &lt;p&gt;
+	 * If the given transition is not {@code null} this method will also configure incoming transitions
+	 * for the associated activity via {@link BaseNavigationalTransition#configureIncomingTransitions(Activity)}.
+	 *
+	 * @param transition The desired transition. May be {@code null} to clear the current one.
+	 * @see #getNavigationalTransition()
+	 */
+	void setNavigationalTransition(@Nullable final BaseNavigationalTransition transition) {
+<span class="nc" id="L193">		this.mNavigationalTransition = transition;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (transition != null) {</span>
+<span class="nc" id="L195">			transition.configureIncomingTransitions((FragmentActivity) mContext);</span>
+		}
+<span class="nc" id="L197">	}</span>
+
+	/**
+	 * Returns the navigational transition used to finish associated activity via
+	 * {@link #finishWithNavigationalTransition()}.
+	 *
+	 * @return Attached navigational transition or {@code null} if no transition has been specified.
+	 * @see #setNavigationalTransition(BaseNavigationalTransition)
+	 */
+	@Nullable
+	BaseNavigationalTransition getNavigationalTransition() {
+<span class="nc" id="L208">		return mNavigationalTransition;</span>
+	}
+
+	/**
+	 * Finishes the associated activity with navigational transition specified via
+	 * {@link #setNavigationalTransition(BaseNavigationalTransition)} (if any).
+	 *
+	 * @return {@code True} if transition has been started, {@code false} otherwise.
+	 */
+	boolean finishWithNavigationalTransition() {
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (mNavigationalTransition != null) {</span>
+<span class="nc" id="L219">			mNavigationalTransition.finish((FragmentActivity) mContext);</span>
+<span class="nc" id="L220">			return true;</span>
+		}
+<span class="nc" id="L222">		return false;</span>
+	}
+
+	/**
+	 * Sets a controller used to manage (show/hide) fragments in context of the associated activity.
+	 *
+	 * @param controller The desired controller. May be {@code null} to use the default one.
+	 * @see #getFragmentController()
+	 * @see #setFragmentFactory(FragmentFactory)
+	 */
+	void setFragmentController(@Nullable final FragmentController controller) {
+<span class="nc" id="L233">		this.mFragmentController = controller;</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">		if (mFragmentFactory != null) {</span>
+<span class="nc" id="L235">			this.ensureFragmentController();</span>
+<span class="nc" id="L236">			mFragmentController.setFactory(mFragmentFactory);</span>
+		}
+<span class="nc" id="L238">	}</span>
+
+	/**
+	 * Returns the default controller or the one specified via {@link #setFragmentController(FragmentController)}
+	 * that is used to manage fragments of the associated activity.
+	 *
+	 * @return Fragment controller instance ready to show/hide fragment instances.
+	 */
+	@NonNull
+	FragmentController getFragmentController() {
+<span class="nc" id="L248">		this.ensureFragmentController();</span>
+<span class="nc" id="L249">		return mFragmentController;</span>
+	}
+
+	/**
+	 * Sets a factory that provides fragment instances for fragment controller of this delegate.
+	 *
+	 * @param factory The desired factory. May be {@code null} to clear the current one.
+	 * @see #setFragmentController(FragmentController)
+	 * @see #getFragmentController()
+	 * @see #getFragmentFactory()
+	 */
+	void setFragmentFactory(@Nullable final FragmentFactory factory) {
+<span class="nc" id="L261">		this.mFragmentFactory = factory;</span>
+<span class="nc" id="L262">		this.ensureFragmentController();</span>
+<span class="nc" id="L263">		mFragmentController.setFactory(factory);</span>
+<span class="nc" id="L264">	}</span>
+
+	/**
+	 * Returns the factory providing fragment instances for fragment controller of this delegate.
+	 *
+	 * @return Instance of fragment factory or {@code null} if no factory has been specified.
+	 * @see #setFragmentFactory(FragmentFactory)
+	 */
+	@Nullable
+	FragmentFactory getFragmentFactory() {
+<span class="nc" id="L274">		return mFragmentFactory;</span>
+	}
+
+	/**
+	 * Ensures that the fragment controller is initialized.
+	 */
+	private void ensureFragmentController() {
+<span class="nc bnc" id="L281" title="All 2 branches missed.">		if (mFragmentController == null) this.mFragmentController = new FragmentController((FragmentActivity) mContext);</span>
+<span class="nc" id="L282">	}</span>
+
+	/**
+	 * Searches for current fragment displayed in container that is used by {@link FragmentController}
+	 * of this delegate to show fragments in the context of the associated activity.
+	 *
+	 * @return Instance of current fragment found via {@link FragmentController#findCurrentFragment()}
+	 * or {@code null} if there is no fragment displayed.
+	 */
+	@Nullable
+	public Fragment findCurrentFragment() {
+<span class="nc bnc" id="L293" title="All 2 branches missed.">		return mFragmentController == null ? null : mFragmentController.findCurrentFragment();</span>
+	}
+
+	/**
+	 * Pops stack with fragments of the associated activity via {@link FragmentManager#popBackStack()}
+	 *
+	 * @return {@code True} if the stack has ben popped, {@code false} otherwise.
+	 */
+	public boolean popFragmentsBackStack() {
+<span class="nc" id="L302">		final FragmentManager fragmentManager = ((FragmentActivity) mContext).getSupportFragmentManager();</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">		if (fragmentManager.getBackStackEntryCount() &gt; 0) {</span>
+<span class="nc" id="L304">			fragmentManager.popBackStack();</span>
+<span class="nc" id="L305">			return true;</span>
+		}
+<span class="nc" id="L307">		return false;</span>
+	}
+
+	/*
+	 * Inner classes ===============================================================================
+	 */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
