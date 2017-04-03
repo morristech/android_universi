@@ -32,13 +32,13 @@ Supported down to the **Android [API Level 14](http://developer.android.com/abou
 - [`com.android.support:support-annotations`](https://developer.android.com/topic/libraries/support-library/packages.html#annotations)
 - [`com.android.support:support-v7`](https://developer.android.com/topic/libraries/support-library/packages.html#v7)
 - [`com.android.support:recyclerview-v7`](https://developer.android.com/topic/libraries/support-library/packages.html#v7)
-- [`universum.studios.android:transitions-navigational-base`](https://github.com/universum-studios/android_transitions/MODULES.md)
-- [`universum.studios.android:fragments-core`](https://github.com/universum-studios/android_fragments/MODULES.md)
-- [`universum.studios.android:fragments-base`](https://github.com/universum-studios/android_fragments/MODULES.md)
-- [`universum.studios.android:fragments-common`](https://github.com/universum-studios/android_fragments/MODULES.md)
-- [`universum.studios.android:fragments-manage-core`](https://github.com/universum-studios/android_fragments/MODULES.md)
-- [`universum.studios.android:dialogs-core`](https://github.com/universum-studios/android_dialogs/MODULES.md)
-- [`universum.studios.android:dialogs-manage`](https://github.com/universum-studios/android_dialogs/MODULES.md)
+- [`universum.studios.android:transitions-navigational-base`](https://github.com/universum-studios/android_transitions/blob/master/MODULES.md)
+- [`universum.studios.android:fragments-core`](https://github.com/universum-studios/android_fragments/blob/master/MODULES.md)
+- [`universum.studios.android:fragments-base`](https://github.com/universum-studios/android_fragments/blob/master/MODULES.md)
+- [`universum.studios.android:fragments-common`](https://github.com/universum-studios/android_fragments/blob/master/MODULES.md)
+- [`universum.studios.android:fragments-manage-core`](https://github.com/universum-studios/android_fragments/blob/master/MODULES.md)
+- [`universum.studios.android:dialogs-core`](https://github.com/universum-studios/android_dialogs/blob/master/MODULES.md)
+- [`universum.studios.android:dialogs-manage`](https://github.com/universum-studios/android_dialogs/blob/master/MODULES.md)
 
 ## License ##
 
