@@ -16,22 +16,22 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.universi; 
+package universum.studios.android.support.universi;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.support.test.BaseInstrumentedTest;
 
 /**
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class UniversiFragmentTest extends BaseInstrumentedTest {
+public final class UniversiContextDelegateTest extends BaseInstrumentedTest {
     
 	@SuppressWarnings("unused")
-	private static final String TAG = "UniversiFragmentTest";
+	private static final String TAG = "UniversiContextDelegateTest";
 
     @Test
 	public void test() {

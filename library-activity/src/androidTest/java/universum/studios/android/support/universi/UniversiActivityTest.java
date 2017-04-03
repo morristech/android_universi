@@ -16,9 +16,25 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.universi;
+package universum.studios.android.support.universi;
+import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import universum.studios.android.support.test.BaseInstrumentedTest;
 
 /**
  * @author Martin Albedinsky
  */
-@SuppressWarnings("unused") final class FragmentTests {}
+@RunWith(AndroidJUnit4.class)
+public final class UniversiActivityTest extends BaseInstrumentedTest {
+    
+	@SuppressWarnings("unused")
+	private static final String TAG = "UniversiActivityTest";
+
+    @Test
+	public void test() {
+		// todo:: implement test
+	}
+}
