@@ -2,7 +2,7 @@ Change-Log
 ===============
 
 ### [Release 1.0.1](https://github.com/universum-studios/android_universi/releases/tag/support-1.0.1) ###
-> 11.04.2017
+> 12.04.2017
 
 - Fixed [Issue #14](https://github.com/universum-studios/android_universi/issues/14).
 
