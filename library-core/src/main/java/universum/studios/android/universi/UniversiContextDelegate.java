@@ -383,8 +383,10 @@ abstract class UniversiContextDelegate {
 	 * Ensures that the connectivity manager is initialized.
 	 */
 	private void ensureConnectivityManager() {
-		if (mConnectivityManager == null)
-			this.mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (mConnectivityManager == null) {
+			final Context applicationContext = mContext.getApplicationContext();
+			this.mConnectivityManager = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		}
 	}
 
 	/**
