@@ -19,10 +19,13 @@
 apply plugin: 'universum.studios.github'
 
 github {
-    defaultConfig {
+    repository {
         owner config.release.owner
-        repo config.release.repo
+        name config.release.repository
         accessToken config.release.accessToken
+    }
+
+    defaultConfig {
         artifactId config.maven.artifactId
     }
 

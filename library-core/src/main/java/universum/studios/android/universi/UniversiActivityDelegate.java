@@ -260,7 +260,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	void setFragmentFactory(@Nullable final FragmentFactory factory) {
 		this.mFragmentFactory = factory;
 		this.ensureFragmentController();
-		mFragmentController.setFactory(factory);
+		this.mFragmentController.setFactory(factory);
 	}
 
 	/**

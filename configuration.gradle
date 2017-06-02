@@ -38,7 +38,7 @@ def bintrayConfig = [
 
 def releaseConfig = [
         owner      : 'universum-studios',
-        repo       : 'android_universi',
+        repository : 'android_universi',
         accessToken: System.getenv('GITHUB_API_TOKEN')
 ]
 
