@@ -56,6 +56,13 @@ android {
                 '../library-activity/src/androidTest/java',
                 '../library-fragment/src/androidTest/java'
         ]
+        androidTest.res.srcDirs = [
+                '../library/src/androidTest/res',
+                '../library-core/src/androidTest/res',
+                '../library-context/src/androidTest/res',
+                '../library-activity/src/androidTest/res',
+                '../library-fragment/src/androidTest/res'
+        ]
     }
 
     compileOptions {
