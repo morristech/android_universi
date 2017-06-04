@@ -29,6 +29,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
+import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
@@ -86,7 +87,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	/**
 	 * Runnable that calls {@link #requestBindDataInner()} method.
 	 */
-	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
+	@VisibleForTesting final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
 
 		/**
 		 */
@@ -100,7 +101,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * Delegate that is used to handle requests specific for the Universi context made upon this
 	 * fragment like showing and dismissing of dialogs.
 	 */
-	private UniversiFragmentDelegate mContextDelegate;
+	private UniversiContextDelegate mContextDelegate;
 
 	/*
 	 * Constructors ================================================================================
@@ -109,6 +110,16 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	/*
 	 * Methods =====================================================================================
 	 */
+
+	/**
+	 * Sets a context delegate to be used by this fragment.
+	 *
+	 * @param delegate The delegate only for testing purpose.
+	 */
+	@VisibleForTesting
+	void setContextDelegate(final UniversiContextDelegate delegate) {
+		this.mContextDelegate = delegate;
+	}
 
 	/**
 	 * Ensures that the context delegate is initialized for this fragment.

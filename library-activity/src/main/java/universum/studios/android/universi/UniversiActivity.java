@@ -539,9 +539,9 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 * Invoked from {@link #onBackPressed()} to give a chance to this activity instance to consume
 	 * the back press event before it is delivered to its parent.
 	 * <p>
-	 * This implementation first tries to dispatch this event to one of its visible fragment via
-	 * {@link #dispatchBackPressToFragments()} and if none of the currently visible fragments does
-	 * not consume the event a stack with fragments will be popped via {@link #popFragmentsBackStack()}.
+	 * This implementation first tries to dispatch this event to one of its visible fragments via
+	 * {@link #dispatchBackPressToFragments()} and if none of the currently visible fragments consumes
+	 * the event a stack with fragments will be popped via {@link #popFragmentsBackStack()}.
 	 *
 	 * @return {@code True} if the back press event has been consumed here, {@code false} otherwise.
 	 */
