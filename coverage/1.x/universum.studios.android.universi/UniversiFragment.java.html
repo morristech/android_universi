@@ -29,6 +29,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
+import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
@@ -60,7 +61,7 @@ import universum.studios.android.fragment.ActionBarFragment;
  *
  * @author Martin Albedinsky
  */
-<span class="nc" id="L63">public abstract class UniversiFragment extends ActionBarFragment {</span>
+<span class="fc" id="L64">public abstract class UniversiFragment extends ActionBarFragment {</span>
 
 	/*
 	 * Constants ===================================================================================
@@ -86,21 +87,21 @@ import universum.studios.android.fragment.ActionBarFragment;
 	/**
 	 * Runnable that calls {@link #requestBindDataInner()} method.
 	 */
-<span class="nc" id="L89">	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {</span>
+<span class="fc" id="L90">	@VisibleForTesting final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {</span>
 
 		/**
 		 */
 		@Override
 		public void run() {
-<span class="nc" id="L95">			requestBindDataInner();</span>
-<span class="nc" id="L96">		}</span>
+<span class="fc" id="L96">			requestBindDataInner();</span>
+<span class="fc" id="L97">		}</span>
 	};
 
 	/**
 	 * Delegate that is used to handle requests specific for the Universi context made upon this
 	 * fragment like showing and dismissing of dialogs.
 	 */
-	private UniversiFragmentDelegate mContextDelegate;
+	private UniversiContextDelegate mContextDelegate;
 
 	/*
 	 * Constructors ================================================================================
@@ -111,11 +112,20 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 */
 
 	/**
+	 * Sets a context delegate to be used by this fragment.
+	 *
+	 * @param delegate The delegate only for testing purpose.
+	 */
+	@VisibleForTesting void setContextDelegate(final UniversiContextDelegate delegate) {
+<span class="fc" id="L120">		this.mContextDelegate = delegate;</span>
+<span class="fc" id="L121">	}</span>
+
+	/**
 	 * Ensures that the context delegate is initialized for this fragment.
 	 */
 	private void ensureContextDelegate() {
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);</span>
-<span class="nc" id="L118">	}</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);</span>
+<span class="fc" id="L128">	}</span>
 
 	/**
 	 * Sets a controller that should be used to show and dismiss dialogs within context of this fragment.
@@ -124,9 +134,9 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 * @see #getDialogController()
 	 */
 	protected void setDialogController(@Nullable DialogController controller) {
-<span class="nc" id="L127">		this.ensureContextDelegate();</span>
-<span class="nc" id="L128">		mContextDelegate.setDialogController(controller);</span>
-<span class="nc" id="L129">	}</span>
+<span class="fc" id="L137">		this.ensureContextDelegate();</span>
+<span class="fc" id="L138">		mContextDelegate.setDialogController(controller);</span>
+<span class="fc" id="L139">	}</span>
 
 	/**
 	 * Returns the controller that can be used to show and dismiss dialogs within context of this
@@ -139,8 +149,8 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 */
 	@NonNull
 	protected DialogController getDialogController() {
-<span class="nc" id="L142">		this.ensureContextDelegate();</span>
-<span class="nc" id="L143">		return mContextDelegate.getDialogController();</span>
+<span class="fc" id="L152">		this.ensureContextDelegate();</span>
+<span class="fc" id="L153">		return mContextDelegate.getDialogController();</span>
 	}
 
 	/**
@@ -152,9 +162,9 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 *                      current one.
 	 */
 	protected void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
-<span class="nc" id="L155">		this.ensureContextDelegate();</span>
-<span class="nc" id="L156">		mContextDelegate.setDialogXmlFactory(xmlDialogsSet);</span>
-<span class="nc" id="L157">	}</span>
+<span class="fc" id="L165">		this.ensureContextDelegate();</span>
+<span class="fc" id="L166">		mContextDelegate.setDialogXmlFactory(xmlDialogsSet);</span>
+<span class="fc" id="L167">	}</span>
 
 	/**
 	 * Specifies a factory that should provide dialog instances for {@link DialogController} of
@@ -166,9 +176,9 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	protected void setDialogFactory(@Nullable final DialogFactory factory) {
-<span class="nc" id="L169">		this.ensureContextDelegate();</span>
-<span class="nc" id="L170">		mContextDelegate.setDialogFactory(factory);</span>
-<span class="nc" id="L171">	}</span>
+<span class="fc" id="L179">		this.ensureContextDelegate();</span>
+<span class="fc" id="L180">		mContextDelegate.setDialogFactory(factory);</span>
+<span class="fc" id="L181">	}</span>
 
 	/**
 	 * Returns the current dialog factory specified for this fragment.
@@ -178,24 +188,24 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 */
 	@Nullable
 	protected DialogFactory getDialogFactory() {
-<span class="nc" id="L181">		this.ensureContextDelegate();</span>
-<span class="nc" id="L182">		return mContextDelegate.getDialogFactory();</span>
+<span class="fc" id="L191">		this.ensureContextDelegate();</span>
+<span class="fc" id="L192">		return mContextDelegate.getDialogFactory();</span>
 	}
 
 	/**
 	 */
 	@Override
 	public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
-<span class="nc" id="L189">		super.onViewCreated(view, savedInstanceState);</span>
-<span class="nc" id="L190">		this.ensureContextDelegate();</span>
-<span class="nc" id="L191">		mContextDelegate.setViewCreated(true);</span>
-<span class="nc" id="L192">		onBindViews(view, savedInstanceState);</span>
+<span class="fc" id="L199">		super.onViewCreated(view, savedInstanceState);</span>
+<span class="fc" id="L200">		this.ensureContextDelegate();</span>
+<span class="fc" id="L201">		mContextDelegate.setViewCreated(true);</span>
+<span class="fc" id="L202">		onBindViews(view, savedInstanceState);</span>
 		// Check if there was requested data binding before view creation, if it was, perform binding now.
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (mContextDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {</span>
-<span class="nc" id="L195">			mContextDelegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
-<span class="nc" id="L196">			onBindData();</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">		if (mContextDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {</span>
+<span class="fc" id="L205">			mContextDelegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
+<span class="fc" id="L206">			onBindData();</span>
 		}
-<span class="nc" id="L198">	}</span>
+<span class="fc" id="L208">	}</span>
 
 	/**
 	 * Invoked from {@link #onViewCreated(View, Bundle)} to bind all views presented within context
@@ -205,16 +215,16 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 */
 	protected void onBindViews(@NonNull final View rootView, @Nullable final Bundle savedInstanceState) {
 		// Inheritance hierarchies may perform here views binding/injection.
-<span class="nc" id="L208">	}</span>
+<span class="fc" id="L218">	}</span>
 
 	/**
 	 */
 	@Override
 	public void onResume() {
-<span class="nc" id="L214">		super.onResume();</span>
-<span class="nc" id="L215">		this.ensureContextDelegate();</span>
-<span class="nc" id="L216">		mContextDelegate.setPaused(false);</span>
-<span class="nc" id="L217">	}</span>
+<span class="fc" id="L224">		super.onResume();</span>
+<span class="fc" id="L225">		this.ensureContextDelegate();</span>
+<span class="fc" id="L226">		mContextDelegate.setPaused(false);</span>
+<span class="fc" id="L227">	}</span>
 
 	/**
 	 * Requests performing of data binding specific for this fragment via {@link #onBindData()}.
@@ -225,25 +235,25 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 */
 	protected void requestBindData() {
 		// Check whether this call has been made on the UI thread, if not post on the UI thread the request runnable.
-<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (Looper.getMainLooper().equals(Looper.myLooper())) {</span>
-<span class="nc" id="L229">			this.requestBindDataInner();</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">		if (Looper.getMainLooper().equals(Looper.myLooper())) {</span>
+<span class="fc" id="L239">			this.requestBindDataInner();</span>
 		} else {
-<span class="nc" id="L231">			runOnUiThread(REQUEST_BIND_DATA_INNER);</span>
+<span class="nc" id="L241">			runOnUiThread(REQUEST_BIND_DATA_INNER);</span>
 		}
-<span class="nc" id="L233">	}</span>
+<span class="fc" id="L243">	}</span>
 
 	/**
 	 * Performs data binding of this fragment. Will invoke {@link #onBindData()} if view hierarchy of
 	 * this fragment is already created, otherwise will register a binding request via {@link UniversiContextDelegate#registerRequest(int)}.
 	 */
 	final void requestBindDataInner() {
-<span class="nc" id="L240">		this.ensureContextDelegate();</span>
-<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (mContextDelegate.isViewCreated()) {</span>
-<span class="nc" id="L242">			onBindData();</span>
-<span class="nc" id="L243">			return;</span>
+<span class="fc" id="L250">		this.ensureContextDelegate();</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">		if (mContextDelegate.isViewCreated()) {</span>
+<span class="fc" id="L252">			onBindData();</span>
+<span class="fc" id="L253">			return;</span>
 		}
-<span class="nc" id="L245">		mContextDelegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
-<span class="nc" id="L246">	}</span>
+<span class="fc" id="L255">		mContextDelegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);</span>
+<span class="fc" id="L256">	}</span>
 
 	/**
 	 * Invoked due to call to {@link #requestBindData()} to perform data binding specific for this
@@ -254,7 +264,7 @@ import universum.studios.android.fragment.ActionBarFragment;
 	@UiThread
 	protected void onBindData() {
 		// Inheritance hierarchies may perform theirs specific data binding logic here.
-<span class="nc" id="L257">	}</span>
+<span class="fc" id="L267">	}</span>
 
 	/**
 	 * Checks whether the current active network is at this time connected or not.
@@ -266,8 +276,8 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 */
 	@CheckResult
 	protected boolean isActiveNetworkConnected() {
-<span class="nc" id="L269">		this.ensureContextDelegate();</span>
-<span class="nc" id="L270">		return mContextDelegate.isActiveNetworkConnected();</span>
+<span class="fc" id="L279">		this.ensureContextDelegate();</span>
+<span class="fc" id="L280">		return mContextDelegate.isActiveNetworkConnected();</span>
 	}
 
 	/**
@@ -281,8 +291,8 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 */
 	@CheckResult
 	protected boolean isNetworkConnected(final int networkType) {
-<span class="nc" id="L284">		this.ensureContextDelegate();</span>
-<span class="nc" id="L285">		return mContextDelegate.isNetworkConnected(networkType);</span>
+<span class="fc" id="L294">		this.ensureContextDelegate();</span>
+<span class="fc" id="L295">		return mContextDelegate.isNetworkConnected(networkType);</span>
 	}
 
 	/**
@@ -294,7 +304,7 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 */
 	@CheckResult
 	protected int checkSelfPermission(@NonNull final String permission) {
-<span class="nc" id="L297">		return ActivityCompat.checkSelfPermission(getActivity(), permission);</span>
+<span class="nc" id="L307">		return ActivityCompat.checkSelfPermission(getActivity(), permission);</span>
 	}
 
 	/**
@@ -302,7 +312,7 @@ import universum.studios.android.fragment.ActionBarFragment;
 	@Override
 	@CheckResult
 	public boolean shouldShowRequestPermissionRationale(@NonNull final String permission) {
-<span class="nc bnc" id="L305" title="All 4 branches missed.">		return Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M &amp;&amp; super.shouldShowRequestPermissionRationale(permission);</span>
+<span class="pc bpc" id="L315" title="2 of 4 branches missed.">		return Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M &amp;&amp; super.shouldShowRequestPermissionRationale(permission);</span>
 	}
 
 	/**
@@ -315,21 +325,22 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 * @param requestCode Code to identify this request in {@link #onRequestPermissionsResult(int, String[], int[])}.
 	 */
 	protected void supportRequestPermissions(@NonNull final String[] permissions, final int requestCode) {
-<span class="nc bnc" id="L318" title="All 2 branches missed.">		if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) requestPermissions(permissions, requestCode);</span>
-<span class="nc" id="L319">	}</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">		if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M)</span>
+<span class="nc" id="L329">			requestPermissions(permissions, requestCode);</span>
+<span class="nc" id="L330">	}</span>
 
 	/**
 	 */
 	@Override
 	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
-<span class="nc" id="L325">		super.onRequestPermissionsResult(requestCode, permissions, grantResults);</span>
-<span class="nc" id="L326">	}</span>
+<span class="fc" id="L336">		super.onRequestPermissionsResult(requestCode, permissions, grantResults);</span>
+<span class="fc" id="L337">	}</span>
 
 	/**
 	 * Same as {@link #showDialogWithId(int, DialogOptions)} with {@code null} options.
 	 */
 	protected boolean showDialogWithId(@IntRange(from = 0) final int dialogId) {
-<span class="nc" id="L332">		return showDialogWithId(dialogId, null);</span>
+<span class="fc" id="L343">		return showDialogWithId(dialogId, null);</span>
 	}
 
 	/**
@@ -344,8 +355,8 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 * @see #dismissDialogWithId(int)
 	 */
 	protected boolean showDialogWithId(@IntRange(from = 0) final int dialogId, @Nullable final DialogOptions options) {
-<span class="nc" id="L347">		this.ensureContextDelegate();</span>
-<span class="nc" id="L348">		return mContextDelegate.showDialogWithId(dialogId, options);</span>
+<span class="fc" id="L358">		this.ensureContextDelegate();</span>
+<span class="fc" id="L359">		return mContextDelegate.showDialogWithId(dialogId, options);</span>
 	}
 
 	/**
@@ -358,15 +369,15 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	protected boolean dismissDialogWithId(@IntRange(from = 0) final int dialogId) {
-<span class="nc" id="L361">		this.ensureContextDelegate();</span>
-<span class="nc" id="L362">		return mContextDelegate.dismissDialogWithId(dialogId);</span>
+<span class="fc" id="L372">		this.ensureContextDelegate();</span>
+<span class="fc" id="L373">		return mContextDelegate.dismissDialogWithId(dialogId);</span>
 	}
 
 	/**
 	 * Same as {@link #showXmlDialog(int, DialogOptions)} with {@code null} options.
 	 */
 	protected boolean showXmlDialog(@XmlRes final int resId) {
-<span class="nc" id="L369">		return showXmlDialog(resId, null);</span>
+<span class="fc" id="L380">		return showXmlDialog(resId, null);</span>
 	}
 
 	/**
@@ -382,8 +393,8 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 * @see #dismissXmlDialog(int)
 	 */
 	protected boolean showXmlDialog(@XmlRes final int resId, @Nullable final DialogOptions options) {
-<span class="nc" id="L385">		this.ensureContextDelegate();</span>
-<span class="nc" id="L386">		return mContextDelegate.showXmlDialog(resId, options);</span>
+<span class="fc" id="L396">		this.ensureContextDelegate();</span>
+<span class="fc" id="L397">		return mContextDelegate.showXmlDialog(resId, options);</span>
 	}
 
 	/**
@@ -395,30 +406,29 @@ import universum.studios.android.fragment.ActionBarFragment;
 	 * @see #showXmlDialog(int, DialogOptions)
 	 */
 	protected boolean dismissXmlDialog(@XmlRes final int resId) {
-<span class="nc" id="L398">		this.ensureContextDelegate();</span>
-<span class="nc" id="L399">		return mContextDelegate.dismissXmlDialog(resId);</span>
+<span class="fc" id="L409">		this.ensureContextDelegate();</span>
+<span class="fc" id="L410">		return mContextDelegate.dismissXmlDialog(resId);</span>
 	}
 
 	/**
 	 */
 	@Override
 	public void onPause() {
-<span class="nc" id="L406">		super.onPause();</span>
-<span class="nc" id="L407">		this.ensureContextDelegate();</span>
-<span class="nc" id="L408">		mContextDelegate.setPaused(true);</span>
-<span class="nc" id="L409">	}</span>
+<span class="fc" id="L417">		super.onPause();</span>
+<span class="fc" id="L418">		this.ensureContextDelegate();</span>
+<span class="fc" id="L419">		mContextDelegate.setPaused(true);</span>
+<span class="fc" id="L420">	}</span>
 
 	/**
 	 */
 	@Override
 	public void onDestroyView() {
-<span class="nc" id="L415">		super.onDestroyView();</span>
-<span class="nc" id="L416">		this.ensureContextDelegate();</span>
-<span class="nc" id="L417">		mContextDelegate.setViewCreated(false);</span>
-<span class="nc" id="L418">	}</span>
+<span class="fc" id="L426">		super.onDestroyView();</span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">		if (mContextDelegate != null) mContextDelegate.setViewCreated(false);</span>
+<span class="fc" id="L428">	}</span>
 
 	/*
 	 * Inner classes ===============================================================================
 	 */
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.2</div></body></html>

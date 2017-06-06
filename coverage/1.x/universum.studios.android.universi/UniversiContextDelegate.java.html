@@ -152,9 +152,9 @@ abstract class UniversiContextDelegate {
 	 *
 	 * @param context Context that is used to access some application data and services.
 	 */
-<span class="nc" id="L155">	UniversiContextDelegate(@NonNull final Context context) {</span>
-<span class="nc" id="L156">		this.mContext = context;</span>
-<span class="nc" id="L157">	}</span>
+<span class="fc" id="L155">	UniversiContextDelegate(@NonNull final Context context) {</span>
+<span class="fc" id="L156">		this.mContext = context;</span>
+<span class="fc" id="L157">	}</span>
 
 	/*
 	 * Methods =====================================================================================
@@ -168,7 +168,7 @@ abstract class UniversiContextDelegate {
 	 */
 	@NonNull
 	public static UniversiActivityDelegate create(@NonNull final Activity activity) {
-<span class="nc" id="L171">		return new UniversiActivityDelegate(activity);</span>
+<span class="fc" id="L171">		return new UniversiActivityDelegate(activity);</span>
 	}
 
 	/**
@@ -179,7 +179,7 @@ abstract class UniversiContextDelegate {
 	 */
 	@NonNull
 	public static UniversiFragmentDelegate create(@NonNull final Fragment fragment) {
-<span class="nc" id="L182">		return new UniversiFragmentDelegate(fragment);</span>
+<span class="fc" id="L182">		return new UniversiFragmentDelegate(fragment);</span>
 	}
 
 	/**
@@ -190,12 +190,12 @@ abstract class UniversiContextDelegate {
 	 * @see #getDialogController()
 	 */
 	void setDialogController(@Nullable final DialogController controller) {
-<span class="nc" id="L193">		this.mDialogController = controller;</span>
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (mDialogFactory != null) {</span>
-<span class="nc" id="L195">			this.ensureDialogController();</span>
-<span class="nc" id="L196">			mDialogController.setFactory(mDialogFactory);</span>
+<span class="fc" id="L193">		this.mDialogController = controller;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		if (mDialogFactory != null) {</span>
+<span class="fc" id="L195">			this.ensureDialogController();</span>
+<span class="fc" id="L196">			mDialogController.setFactory(mDialogFactory);</span>
 		}
-<span class="nc" id="L198">	}</span>
+<span class="fc" id="L198">	}</span>
 
 	/**
 	 * Returns the controller that can be used to show and dismiss dialogs within context that uses
@@ -208,16 +208,16 @@ abstract class UniversiContextDelegate {
 	 */
 	@NonNull
 	DialogController getDialogController() {
-<span class="nc" id="L211">		this.ensureDialogController();</span>
-<span class="nc" id="L212">		return mDialogController;</span>
+<span class="fc" id="L211">		this.ensureDialogController();</span>
+<span class="fc" id="L212">		return mDialogController;</span>
 	}
 
 	/**
 	 * Ensures that the dialog controller is initialized.
 	 */
 	private void ensureDialogController() {
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (mDialogController == null) this.mDialogController = instantiateDialogController();</span>
-<span class="nc" id="L220">	}</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">		if (mDialogController == null) this.mDialogController = instantiateDialogController();</span>
+<span class="fc" id="L220">	}</span>
 
 	/**
 	 * Creates a new instance of DialogController for the context that uses this delegate.
@@ -235,8 +235,8 @@ abstract class UniversiContextDelegate {
 	 *                      factory should provide. May be {@code 0} to remove the current one.
 	 */
 	void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
-<span class="nc bnc" id="L238" title="All 2 branches missed.">		setDialogFactory(xmlDialogsSet == 0 ? null : new DialogXmlFactory(mContext, xmlDialogsSet));</span>
-<span class="nc" id="L239">	}</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">		setDialogFactory(xmlDialogsSet == 0 ? null : new DialogXmlFactory(mContext, xmlDialogsSet));</span>
+<span class="fc" id="L239">	}</span>
 
 	/**
 	 * Specifies a factory that should provide dialog instances for {@link DialogController} of
@@ -247,10 +247,10 @@ abstract class UniversiContextDelegate {
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	void setDialogFactory(@Nullable final DialogFactory factory) {
-<span class="nc" id="L250">		this.mDialogFactory = factory;</span>
-<span class="nc" id="L251">		this.ensureDialogController();</span>
-<span class="nc" id="L252">		mDialogController.setFactory(factory);</span>
-<span class="nc" id="L253">	}</span>
+<span class="fc" id="L250">		this.mDialogFactory = factory;</span>
+<span class="fc" id="L251">		this.ensureDialogController();</span>
+<span class="fc" id="L252">		mDialogController.setFactory(factory);</span>
+<span class="fc" id="L253">	}</span>
 
 	/**
 	 * Returns the current dialog factory specified for this delegate.
@@ -260,7 +260,7 @@ abstract class UniversiContextDelegate {
 	 */
 	@Nullable
 	DialogFactory getDialogFactory() {
-<span class="nc" id="L263">		return mDialogFactory;</span>
+<span class="fc" id="L263">		return mDialogFactory;</span>
 	}
 
 	/**
@@ -275,9 +275,9 @@ abstract class UniversiContextDelegate {
 	 * @see #dismissDialogWithId(int)
 	 */
 	boolean showDialogWithId(@IntRange(from = 0) final int dialogId, @Nullable final DialogOptions options) {
-<span class="nc bnc" id="L278" title="All 4 branches missed.">		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;</span>
-<span class="nc" id="L279">		this.ensureDialogController();</span>
-<span class="nc bnc" id="L280" title="All 2 branches missed.">		return mDialogController.newRequest(dialogId).options(options).execute() != null;</span>
+<span class="fc bfc" id="L278" title="All 4 branches covered.">		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;</span>
+<span class="fc" id="L279">		this.ensureDialogController();</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">		return mDialogController.newRequest(dialogId).options(options).execute() != null;</span>
 	}
 
 	/**
@@ -290,9 +290,9 @@ abstract class UniversiContextDelegate {
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	boolean dismissDialogWithId(@IntRange(from = 0) final int dialogId) {
-<span class="nc bnc" id="L293" title="All 4 branches missed.">		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;</span>
-<span class="nc" id="L294">		this.ensureDialogController();</span>
-<span class="nc bnc" id="L295" title="All 2 branches missed.">		return mDialogController.newRequest(dialogId).intent(DialogRequest.DISMISS).execute() != null;</span>
+<span class="fc bfc" id="L293" title="All 4 branches covered.">		if (hasPrivateFlag(PFLAG_PAUSED) || mDialogFactory == null) return false;</span>
+<span class="fc" id="L294">		this.ensureDialogController();</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">		return mDialogController.newRequest(dialogId).intent(DialogRequest.DISMISS).execute() != null;</span>
 	}
 
 	/**
@@ -308,7 +308,7 @@ abstract class UniversiContextDelegate {
 	 * @see #dismissXmlDialog(int)
 	 */
 	boolean showXmlDialog(@XmlRes final int resId, @Nullable final DialogOptions options) {
-<span class="nc bnc" id="L311" title="All 2 branches missed.">		if (hasPrivateFlag(PFLAG_PAUSED)) return false;</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">		if (hasPrivateFlag(PFLAG_PAUSED)) return false;</span>
 <span class="nc" id="L312">		final DialogXmlFactory dialogFactory = accessDialogXmlFactory();</span>
 <span class="nc" id="L313">		final DialogFragment dialog = dialogFactory.createDialog(resId, options);</span>
 <span class="nc bnc" id="L314" title="All 2 branches missed.">		if (dialog != null) {</span>
@@ -327,10 +327,10 @@ abstract class UniversiContextDelegate {
 	 * @see #showXmlDialog(int, DialogOptions)
 	 */
 	boolean dismissXmlDialog(@XmlRes final int resId) {
-<span class="nc bnc" id="L330" title="All 2 branches missed.">		if (hasPrivateFlag(PFLAG_PAUSED)) return false;</span>
-<span class="nc" id="L331">		this.ensureDialogController();</span>
-<span class="nc" id="L332">		final Fragment fragment = mDialogController.getFragmentManager().findFragmentByTag(accessDialogXmlFactory().createDialogTag(resId));</span>
-<span class="nc bnc" id="L333" title="All 4 branches missed.">		return fragment instanceof DialogFragment &amp;&amp; mDialogController.newRequest((DialogFragment) fragment).intent(DialogRequest.DISMISS).execute() != null;</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">		if (hasPrivateFlag(PFLAG_PAUSED)) return false;</span>
+<span class="fc" id="L331">		this.ensureDialogController();</span>
+<span class="fc" id="L332">		final Fragment fragment = mDialogController.getFragmentManager().findFragmentByTag(accessDialogXmlFactory().createDialogTag(resId));</span>
+<span class="pc bpc" id="L333" title="1 of 4 branches missed.">		return fragment instanceof DialogFragment &amp;&amp; mDialogController.newRequest((DialogFragment) fragment).intent(DialogRequest.DISMISS).execute() != null;</span>
 	}
 
 	/**
@@ -340,13 +340,13 @@ abstract class UniversiContextDelegate {
 	 * @return Instance of DialogXmlFactory that can be used to create instances of Xml dialogs.
 	 */
 	private DialogXmlFactory accessDialogXmlFactory() {
-<span class="nc bnc" id="L343" title="All 2 branches missed.">		if (mDialogFactory instanceof DialogXmlFactory) {</span>
+<span class="pc bpc" id="L343" title="1 of 2 branches missed.">		if (mDialogFactory instanceof DialogXmlFactory) {</span>
 <span class="nc" id="L344">			return (DialogXmlFactory) mDialogFactory;</span>
 		}
-<span class="nc bnc" id="L346" title="All 2 branches missed.">		if (mDialogXmlFactory == null) {</span>
-<span class="nc" id="L347">			mDialogXmlFactory = new DialogXmlFactory(mContext);</span>
+<span class="pc bpc" id="L346" title="1 of 2 branches missed.">		if (mDialogXmlFactory == null) {</span>
+<span class="fc" id="L347">			mDialogXmlFactory = new DialogXmlFactory(mContext);</span>
 		}
-<span class="nc" id="L349">		return mDialogXmlFactory;</span>
+<span class="fc" id="L349">		return mDialogXmlFactory;</span>
 	}
 
 	/**
@@ -358,9 +358,9 @@ abstract class UniversiContextDelegate {
 	 * @see #isNetworkConnected(int)
 	 */
 	boolean isActiveNetworkConnected() {
-<span class="nc" id="L361">		this.ensureConnectivityManager();</span>
-<span class="nc" id="L362">		final NetworkInfo info = mConnectivityManager.getActiveNetworkInfo();</span>
-<span class="nc bnc" id="L363" title="All 4 branches missed.">		return info != null &amp;&amp; info.isConnected();</span>
+<span class="fc" id="L361">		this.ensureConnectivityManager();</span>
+<span class="fc" id="L362">		final NetworkInfo info = mConnectivityManager.getActiveNetworkInfo();</span>
+<span class="fc bfc" id="L363" title="All 4 branches covered.">		return info != null &amp;&amp; info.isConnected();</span>
 	}
 
 	/**
@@ -374,18 +374,20 @@ abstract class UniversiContextDelegate {
 	 */
 	@SuppressWarnings(&quot;deprecation&quot;)
 	boolean isNetworkConnected(final int networkType) {
-<span class="nc" id="L377">		this.ensureConnectivityManager();</span>
-<span class="nc" id="L378">		final NetworkInfo info = mConnectivityManager.getNetworkInfo(networkType);</span>
-<span class="nc bnc" id="L379" title="All 4 branches missed.">		return info != null &amp;&amp; info.isConnected();</span>
+<span class="fc" id="L377">		this.ensureConnectivityManager();</span>
+<span class="fc" id="L378">		final NetworkInfo info = mConnectivityManager.getNetworkInfo(networkType);</span>
+<span class="fc bfc" id="L379" title="All 4 branches covered.">		return info != null &amp;&amp; info.isConnected();</span>
 	}
 
 	/**
 	 * Ensures that the connectivity manager is initialized.
 	 */
 	private void ensureConnectivityManager() {
-<span class="nc bnc" id="L386" title="All 2 branches missed.">		if (mConnectivityManager == null)</span>
-<span class="nc" id="L387">			this.mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);</span>
-<span class="nc" id="L388">	}</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">		if (mConnectivityManager == null) {</span>
+<span class="fc" id="L387">			final Context applicationContext = mContext.getApplicationContext();</span>
+<span class="fc" id="L388">			this.mConnectivityManager = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);</span>
+		}
+<span class="fc" id="L390">	}</span>
 
 	/**
 	 * Sets a boolean flag indicating whether a view hierarchy of the related context is created or not.
@@ -394,8 +396,8 @@ abstract class UniversiContextDelegate {
 	 * @see #isViewCreated()
 	 */
 	void setViewCreated(final boolean created) {
-<span class="nc" id="L397">		this.updatePrivateFlags(PFLAG_VIEW_CREATED, created);</span>
-<span class="nc" id="L398">	}</span>
+<span class="fc" id="L399">		this.updatePrivateFlags(PFLAG_VIEW_CREATED, created);</span>
+<span class="fc" id="L400">	}</span>
 
 	/**
 	 * Returns the boolean flag indicating whether view hierarchy of the related context is created
@@ -405,7 +407,7 @@ abstract class UniversiContextDelegate {
 	 * @see #setViewCreated(boolean)
 	 */
 	boolean isViewCreated() {
-<span class="nc" id="L408">		return hasPrivateFlag(PFLAG_VIEW_CREATED);</span>
+<span class="fc" id="L410">		return hasPrivateFlag(PFLAG_VIEW_CREATED);</span>
 	}
 
 	/**
@@ -414,8 +416,8 @@ abstract class UniversiContextDelegate {
 	 * @param paused {@code True} if context is paused, {@code false} otherwise.
 	 */
 	void setPaused(final boolean paused) {
-<span class="nc" id="L417">		this.updatePrivateFlags(PFLAG_PAUSED, paused);</span>
-<span class="nc" id="L418">	}</span>
+<span class="fc" id="L419">		this.updatePrivateFlags(PFLAG_PAUSED, paused);</span>
+<span class="fc" id="L420">	}</span>
 
 	/**
 	 * Returns the boolean flag indicating whether the related context is paused or not.
@@ -423,7 +425,7 @@ abstract class UniversiContextDelegate {
 	 * @return {@code True} if context is paused, {@code false} otherwise.
 	 */
 	boolean isPaused() {
-<span class="nc" id="L426">		return hasPrivateFlag(PFLAG_PAUSED);</span>
+<span class="fc" id="L428">		return hasPrivateFlag(PFLAG_PAUSED);</span>
 	}
 
 	/**
@@ -434,8 +436,8 @@ abstract class UniversiContextDelegate {
 	 * @see #unregisterRequest(int)
 	 */
 	void registerRequest(final int request) {
-<span class="nc" id="L437">		this.mRequestFlags |= request;</span>
-<span class="nc" id="L438">	}</span>
+<span class="fc" id="L439">		this.mRequestFlags |= request;</span>
+<span class="fc" id="L440">	}</span>
 
 	/**
 	 * Removes request with the specified &lt;var&gt;request&lt;/var&gt; flag from the registered ones.
@@ -445,8 +447,8 @@ abstract class UniversiContextDelegate {
 	 * @see #isRequestRegistered(int)
 	 */
 	void unregisterRequest(final int request) {
-<span class="nc" id="L448">		this.mRequestFlags &amp;= ~request;</span>
-<span class="nc" id="L449">	}</span>
+<span class="fc" id="L450">		this.mRequestFlags &amp;= ~request;</span>
+<span class="fc" id="L451">	}</span>
 
 	/**
 	 * Checks whether a request with the specified &lt;var&gt;request&lt;/var&gt; flag is registered or not.
@@ -457,7 +459,7 @@ abstract class UniversiContextDelegate {
 	 * @see #unregisterRequest(int)
 	 */
 	boolean isRequestRegistered(final int request) {
-<span class="nc bnc" id="L460" title="All 2 branches missed.">		return (mRequestFlags &amp; request) != 0;</span>
+<span class="fc bfc" id="L462" title="All 2 branches covered.">		return (mRequestFlags &amp; request) != 0;</span>
 	}
 
 	/**
@@ -468,9 +470,9 @@ abstract class UniversiContextDelegate {
 	 */
 	@SuppressWarnings(&quot;unused&quot;)
 	private void updatePrivateFlags(final int flag, final boolean add) {
-<span class="nc bnc" id="L471" title="All 2 branches missed.">		if (add) this.mPrivateFlags |= flag;</span>
-<span class="nc" id="L472">		else this.mPrivateFlags &amp;= ~flag;</span>
-<span class="nc" id="L473">	}</span>
+<span class="fc bfc" id="L473" title="All 2 branches covered.">		if (add) this.mPrivateFlags |= flag;</span>
+<span class="fc" id="L474">		else this.mPrivateFlags &amp;= ~flag;</span>
+<span class="fc" id="L475">	}</span>
 
 	/**
 	 * Returns a boolean flag indicating whether the specified &lt;var&gt;flag&lt;/var&gt; is contained within
@@ -481,11 +483,11 @@ abstract class UniversiContextDelegate {
 	 */
 	@SuppressWarnings(&quot;unused&quot;)
 	private boolean hasPrivateFlag(final int flag) {
-<span class="nc bnc" id="L484" title="All 2 branches missed.">		return (mPrivateFlags &amp; flag) != 0;</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">		return (mPrivateFlags &amp; flag) != 0;</span>
 	}
 
 	/*
 	 * Inner classes ===============================================================================
 	 */
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.2</div></body></html>
