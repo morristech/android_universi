@@ -18,6 +18,7 @@
  */
 package universum.studios.android.support.universi;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
@@ -44,11 +45,14 @@ import universum.studios.android.transition.BaseNavigationalTransition;
  * <p>
  * Navigational transition that can be specified via {@link #setNavigationalTransition(BaseNavigationalTransition)}
  * can be used to finish the associated activity.
+ * <p>
+ * <b>Note</b> that this class has not been made final on purpose so it may be easily mocked in tests,
+ * thought it should not been extended.
  *
  * @author Martin Albedinsky
  * @see UniversiFragmentDelegate
  */
-final class UniversiActivityDelegate extends UniversiContextDelegate {
+class UniversiActivityDelegate extends UniversiContextDelegate {
 
 	/*
 	 * Constants ===================================================================================
@@ -260,7 +264,7 @@ final class UniversiActivityDelegate extends UniversiContextDelegate {
 	void setFragmentFactory(@Nullable final FragmentFactory factory) {
 		this.mFragmentFactory = factory;
 		this.ensureFragmentController();
-		mFragmentController.setFactory(factory);
+		this.mFragmentController.setFactory(factory);
 	}
 
 	/**

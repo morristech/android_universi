@@ -28,6 +28,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
+import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -42,7 +43,6 @@ import universum.studios.android.support.dialog.manage.DialogController;
 import universum.studios.android.support.dialog.manage.DialogFactory;
 import universum.studios.android.support.fragment.ActionBarDelegate;
 import universum.studios.android.support.fragment.BackPressWatcher;
-import universum.studios.android.support.fragment.FragmentsConfig;
 import universum.studios.android.support.fragment.annotation.ActionBarOptions;
 import universum.studios.android.support.fragment.annotation.FragmentAnnotations;
 import universum.studios.android.support.fragment.annotation.MenuOptions;
@@ -101,7 +101,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 * Runnable that calls {@link #requestBindDataInner()} method.
 	 */
-	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
+	@VisibleForTesting final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
 
 		/**
 		 */
@@ -129,8 +129,8 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 
 	/**
 	 * Creates a new instance of UniversiActivity. If annotations processing is enabled via
-	 * {@link FragmentsConfig#ANNOTATIONS_PROCESSING_ENABLED} all annotations supported by this
-	 * activity class will be processed/obtained here so they can be later used.
+	 * {@link FragmentAnnotations#setEnabled(boolean)} all annotations supported by this activity
+	 * class will be processed/obtained here so they can be later used.
 	 */
 	public UniversiActivity() {
 		super();
@@ -161,6 +161,15 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	protected ActionBarFragmentAnnotationHandler getAnnotationHandler() {
 		FragmentAnnotations.checkIfEnabledOrThrow();
 		return mAnnotationHandler;
+	}
+
+	/**
+	 * Sets a context delegate to be used by this activity.
+	 *
+	 * @param delegate The delegate only for testing purpose.
+	 */
+	@VisibleForTesting void setContextDelegate(final UniversiActivityDelegate delegate) {
+		this.mContextDelegate = delegate;
 	}
 
 	/**
@@ -263,29 +272,31 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
-		if (mAnnotationHandler == null || !mAnnotationHandler.hasOptionsMenu()) return false;
-		final int menuResource = mAnnotationHandler.getOptionsMenuResource(-1);
-		if (menuResource != -1) {
-			if (mAnnotationHandler.shouldClearOptionsMenu()) {
-				menu.clear();
-			}
-			switch (mAnnotationHandler.getOptionsMenuFlags(0)) {
-				case MenuOptions.IGNORE_SUPER:
-					getMenuInflater().inflate(menuResource, menu);
-					break;
-				case MenuOptions.BEFORE_SUPER:
-					getMenuInflater().inflate(menuResource, menu);
-					super.onCreateOptionsMenu(menu);
-					break;
-				case MenuOptions.DEFAULT:
-				default:
-					super.onCreateOptionsMenu(menu);
-					getMenuInflater().inflate(menuResource, menu);
-					break;
-			}
-			return true;
+		if (mAnnotationHandler == null || !mAnnotationHandler.hasOptionsMenu()) {
+			return false;
 		}
-		return super.onCreateOptionsMenu(menu);
+		final int menuResource = mAnnotationHandler.getOptionsMenuResource(-1);
+		if (menuResource == -1) {
+			return super.onCreateOptionsMenu(menu);
+		}
+		if (mAnnotationHandler.shouldClearOptionsMenu()) {
+			menu.clear();
+		}
+		switch (mAnnotationHandler.getOptionsMenuFlags(0)) {
+			case MenuOptions.IGNORE_SUPER:
+				getMenuInflater().inflate(menuResource, menu);
+				break;
+			case MenuOptions.BEFORE_SUPER:
+				getMenuInflater().inflate(menuResource, menu);
+				super.onCreateOptionsMenu(menu);
+				break;
+			case MenuOptions.DEFAULT:
+			default:
+				super.onCreateOptionsMenu(menu);
+				getMenuInflater().inflate(menuResource, menu);
+				break;
+		}
+		return true;
 	}
 
 	/**
@@ -308,18 +319,18 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	/**
 	 */
 	@Override
-	@NonNull
-	public FragmentController getFragmentController() {
+	public void setFragmentController(@Nullable FragmentController controller) {
 		this.ensureContextDelegate();
-		return mContextDelegate.getFragmentController();
+		mContextDelegate.setFragmentController(controller);
 	}
 
 	/**
 	 */
 	@Override
-	public void setFragmentController(@Nullable FragmentController controller) {
+	@NonNull
+	public FragmentController getFragmentController() {
 		this.ensureContextDelegate();
-		mContextDelegate.setFragmentController(controller);
+		return mContextDelegate.getFragmentController();
 	}
 
 	/**
@@ -540,9 +551,9 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	 * Invoked from {@link #onBackPressed()} to give a chance to this activity instance to consume
 	 * the back press event before it is delivered to its parent.
 	 * <p>
-	 * This implementation first tries to dispatch this event to one of its visible fragment via
-	 * {@link #dispatchBackPressToFragments()} and if none of the currently visible fragments does
-	 * not consume the event a stack with fragments will be popped via {@link #popFragmentsBackStack()}.
+	 * This implementation first tries to dispatch this event to one of its visible fragments via
+	 * {@link #dispatchBackPressToFragments()} and if none of the currently visible fragments consumes
+	 * the event a stack with fragments will be popped via {@link #popFragmentsBackStack()}.
 	 *
 	 * @return {@code True} if the back press event has been consumed here, {@code false} otherwise.
 	 */
@@ -624,6 +635,14 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 		}
 		ActivityCompat.finishAfterTransition(this);
 		return false;
+	}
+
+	/**
+	 */
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (mContextDelegate != null) mContextDelegate.setViewCreated(false);
 	}
 
 	/*
