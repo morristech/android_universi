@@ -24,6 +24,11 @@
 		  xmlns:tools="http://schemas.android.com/tools">
 
 	<application
+		android:theme="@style/Theme.AppCompat"
 		android:label="Universi Tests"
-		tools:replace="android:label" />
+		tools:replace="android:label">
+
+		<activity android:name=".UniversiActivityTest$TestActivity" />
+		<activity android:name=".UniversiCompatActivityTest$TestActivity" />
+	</application>
 </manifest>

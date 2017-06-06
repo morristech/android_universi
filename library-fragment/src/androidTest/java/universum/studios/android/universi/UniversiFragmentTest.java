@@ -39,6 +39,7 @@ import universum.studios.android.test.TestUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -84,6 +85,11 @@ public final class UniversiFragmentTest extends BaseInstrumentedTest {
 	    assertThat(fragment.getDialogController(), is(mockController));
 	    verify(mockDelegate, times(1)).getDialogController();
 	    verifyNoMoreInteractions(mockDelegate);
+    }
+
+    @Test
+    public void testGetDialogControllerDefault() {
+	    assertThat(new TestFragment().getDialogController(), is(notNullValue()));
     }
 
     @Test
@@ -312,6 +318,11 @@ public final class UniversiFragmentTest extends BaseInstrumentedTest {
 		fragment.onDestroyView();
 		verify(mockDelegate, times(1)).setViewCreated(false);
 		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Test
+	public void testOnDestroyViewWithoutContextDelegateInitialized() {
+		new TestFragment().onDestroyView();
 	}
 
 	public static final class TestFragment extends UniversiFragment {

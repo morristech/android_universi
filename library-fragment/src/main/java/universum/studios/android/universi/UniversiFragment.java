@@ -116,8 +116,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 *
 	 * @param delegate The delegate only for testing purpose.
 	 */
-	@VisibleForTesting
-	void setContextDelegate(final UniversiContextDelegate delegate) {
+	@VisibleForTesting void setContextDelegate(final UniversiContextDelegate delegate) {
 		this.mContextDelegate = delegate;
 	}
 
@@ -326,7 +325,8 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param requestCode Code to identify this request in {@link #onRequestPermissionsResult(int, String[], int[])}.
 	 */
 	protected void supportRequestPermissions(@NonNull final String[] permissions, final int requestCode) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) requestPermissions(permissions, requestCode);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+			requestPermissions(permissions, requestCode);
 	}
 
 	/**
@@ -424,8 +424,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		this.ensureContextDelegate();
-		mContextDelegate.setViewCreated(false);
+		if (mContextDelegate != null) mContextDelegate.setViewCreated(false);
 	}
 
 	/*

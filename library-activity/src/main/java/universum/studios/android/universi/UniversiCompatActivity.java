@@ -30,6 +30,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
+import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +42,6 @@ import universum.studios.android.dialog.manage.DialogController;
 import universum.studios.android.dialog.manage.DialogFactory;
 import universum.studios.android.fragment.ActionBarDelegate;
 import universum.studios.android.fragment.BackPressWatcher;
-import universum.studios.android.fragment.FragmentsConfig;
 import universum.studios.android.fragment.annotation.ActionBarOptions;
 import universum.studios.android.fragment.annotation.FragmentAnnotations;
 import universum.studios.android.fragment.annotation.MenuOptions;
@@ -84,7 +84,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	/**
 	 * Runnable that calls {@link #requestBindDataInner()} method.
 	 */
-	private final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
+	@VisibleForTesting final Runnable REQUEST_BIND_DATA_INNER = new Runnable() {
 
 		/**
 		 */
@@ -111,9 +111,9 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 
 	/**
-	 * Creates a new instance of UniversiActivity. If annotations processing is enabled via
-	 * {@link FragmentsConfig#ANNOTATIONS_PROCESSING_ENABLED} all annotations supported by this
-	 * activity class will be processed/obtained here so they can be later used.
+	 * Creates a new instance of UniversiCompatActivity. If annotations processing is enabled via
+	 * {@link FragmentAnnotations#setEnabled(boolean)} all annotations supported by this activity
+	 * class will be processed/obtained here so they can be later used.
 	 */
 	public UniversiCompatActivity() {
 		super();
@@ -144,6 +144,15 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	protected ActionBarFragmentAnnotationHandler getAnnotationHandler() {
 		FragmentAnnotations.checkIfEnabledOrThrow();
 		return mAnnotationHandler;
+	}
+
+	/**
+	 * Sets a context delegate to be used by this activity.
+	 *
+	 * @param delegate The delegate only for testing purpose.
+	 */
+	@VisibleForTesting void setContextDelegate(final UniversiActivityDelegate delegate) {
+		this.mContextDelegate = delegate;
 	}
 
 	/**
@@ -246,29 +255,31 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
-		if (mAnnotationHandler == null || !mAnnotationHandler.hasOptionsMenu()) return false;
-		final int menuResource = mAnnotationHandler.getOptionsMenuResource(-1);
-		if (menuResource != -1) {
-			if (mAnnotationHandler.shouldClearOptionsMenu()) {
-				menu.clear();
-			}
-			switch (mAnnotationHandler.getOptionsMenuFlags(0)) {
-				case MenuOptions.IGNORE_SUPER:
-					getMenuInflater().inflate(menuResource, menu);
-					break;
-				case MenuOptions.BEFORE_SUPER:
-					getMenuInflater().inflate(menuResource, menu);
-					super.onCreateOptionsMenu(menu);
-					break;
-				case MenuOptions.DEFAULT:
-				default:
-					super.onCreateOptionsMenu(menu);
-					getMenuInflater().inflate(menuResource, menu);
-					break;
-			}
-			return true;
+		if (mAnnotationHandler == null || !mAnnotationHandler.hasOptionsMenu()) {
+			return false;
 		}
-		return super.onCreateOptionsMenu(menu);
+		final int menuResource = mAnnotationHandler.getOptionsMenuResource(-1);
+		if (menuResource == -1) {
+			return super.onCreateOptionsMenu(menu);
+		}
+		if (mAnnotationHandler.shouldClearOptionsMenu()) {
+			menu.clear();
+		}
+		switch (mAnnotationHandler.getOptionsMenuFlags(0)) {
+			case MenuOptions.IGNORE_SUPER:
+				getMenuInflater().inflate(menuResource, menu);
+				break;
+			case MenuOptions.BEFORE_SUPER:
+				getMenuInflater().inflate(menuResource, menu);
+				super.onCreateOptionsMenu(menu);
+				break;
+			case MenuOptions.DEFAULT:
+			default:
+				super.onCreateOptionsMenu(menu);
+				getMenuInflater().inflate(menuResource, menu);
+				break;
+		}
+		return true;
 	}
 
 	/**
@@ -610,6 +621,15 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 		supportFinishAfterTransition();
 		return false;
 	}
+
+	/**
+	 */
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (mContextDelegate != null) mContextDelegate.setViewCreated(false);
+	}
+
 
 	/*
 	 * Inner classes ===============================================================================
