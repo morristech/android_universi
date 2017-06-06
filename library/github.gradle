@@ -39,9 +39,9 @@ github {
 
         types {
             production {
-                tagName config.maven.version
-                releaseName config.maven.version
-                releaseBody 'Release patch.'
+                tagName "support-${config.maven.version}"
+                releaseName "${config.maven.version} (support)"
+                releaseBody 'Release support patch.'
                 draft true
                 overwrite true
             }
