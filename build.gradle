@@ -37,13 +37,6 @@ task clean(type: Delete) {
 }
 
 /**
- * Task that cleans library artifacts directory.
- */
-task cleanArtifacts(type: Delete) {
-    // delete 'artifacts/universum/studios/android'
-}
-
-/**
  * Task that updates library artifacts directory.
  */
 task updateArtifacts() {
