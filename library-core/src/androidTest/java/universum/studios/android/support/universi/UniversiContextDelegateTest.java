@@ -18,10 +18,10 @@
  */
 package universum.studios.android.support.universi;
 
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -126,7 +126,7 @@ public final class UniversiContextDelegateTest extends BaseInstrumentedTest {
 		final TestActivity mockActivity = mock(TestActivity.class);
 		final FragmentManager mockFragmentManager = mock(FragmentManager.class);
 		final DialogFragment mockDialogFragment = mock(DialogFragment.class);
-		when(mockActivity.getFragmentManager()).thenReturn(mockFragmentManager);
+		when(mockActivity.getSupportFragmentManager()).thenReturn(mockFragmentManager);
 		final UniversiContextDelegate delegate = new TestDelegate(mockActivity);
 		final DialogFactory mockFactory = mock(DialogFactory.class);
 		when(mockFactory.isDialogProvided(1)).thenReturn(true);
@@ -161,7 +161,7 @@ public final class UniversiContextDelegateTest extends BaseInstrumentedTest {
 		final FragmentManager mockFragmentManager = mock(FragmentManager.class);
 		final DialogFragment mockDialogFragment = mock(DialogFragment.class);
 		when(mockFragmentManager.findFragmentByTag("Dialog.TAG.1")).thenReturn(mockDialogFragment);
-		when(mockActivity.getFragmentManager()).thenReturn(mockFragmentManager);
+		when(mockActivity.getSupportFragmentManager()).thenReturn(mockFragmentManager);
 		final UniversiContextDelegate delegate = new TestDelegate(mockActivity);
 		final DialogFactory mockFactory = mock(DialogFactory.class);
 		when(mockFactory.isDialogProvided(1)).thenReturn(true);
@@ -178,7 +178,7 @@ public final class UniversiContextDelegateTest extends BaseInstrumentedTest {
 		final TestActivity mockActivity = mock(TestActivity.class);
 		final FragmentManager mockFragmentManager = mock(FragmentManager.class);
 		when(mockFragmentManager.findFragmentByTag("Dialog.TAG.1")).thenReturn(null);
-		when(mockActivity.getFragmentManager()).thenReturn(mockFragmentManager);
+		when(mockActivity.getSupportFragmentManager()).thenReturn(mockFragmentManager);
 		final UniversiContextDelegate delegate = new TestDelegate(mockActivity);
 		final DialogFactory mockFactory = mock(DialogFactory.class);
 		when(mockFactory.isDialogProvided(1)).thenReturn(true);
@@ -227,7 +227,7 @@ public final class UniversiContextDelegateTest extends BaseInstrumentedTest {
 		final FragmentManager mockFragmentManager = mock(FragmentManager.class);
 		final DialogFragment mockDialogFragment = mock(DialogFragment.class);
 		when(mockFragmentManager.findFragmentByTag(DialogXmlFactory.class.getName() + ".TAG." + dialogResource)).thenReturn(mockDialogFragment);
-		when(mockActivity.getFragmentManager()).thenReturn(mockFragmentManager);
+		when(mockActivity.getSupportFragmentManager()).thenReturn(mockFragmentManager);
 		final UniversiContextDelegate delegate = new TestDelegate(mockActivity);
 		assertThat(delegate.dismissXmlDialog(dialogResource), is(true));
 	}
@@ -239,7 +239,7 @@ public final class UniversiContextDelegateTest extends BaseInstrumentedTest {
 		final TestActivity mockActivity = mock(TestActivity.class);
 		final FragmentManager mockFragmentManager = mock(FragmentManager.class);
 		when(mockFragmentManager.findFragmentByTag(DialogXmlFactory.class.getName() + ".TAG." + dialogResource)).thenReturn(null);
-		when(mockActivity.getFragmentManager()).thenReturn(mockFragmentManager);
+		when(mockActivity.getSupportFragmentManager()).thenReturn(mockFragmentManager);
 		final UniversiContextDelegate delegate = new TestDelegate(mockActivity);
 		assertThat(delegate.dismissXmlDialog(dialogResource), is(false));
 	}
@@ -252,7 +252,7 @@ public final class UniversiContextDelegateTest extends BaseInstrumentedTest {
 		final FragmentManager mockFragmentManager = mock(FragmentManager.class);
 		final Fragment mockFragment = mock(TestFragment.class);
 		when(mockFragmentManager.findFragmentByTag(DialogXmlFactory.class.getName() + ".TAG." + dialogResource)).thenReturn(mockFragment);
-		when(mockActivity.getFragmentManager()).thenReturn(mockFragmentManager);
+		when(mockActivity.getSupportFragmentManager()).thenReturn(mockFragmentManager);
 		final UniversiContextDelegate delegate = new TestDelegate(mockActivity);
 		assertThat(delegate.dismissXmlDialog(dialogResource), is(false));
 	}
@@ -383,13 +383,13 @@ public final class UniversiContextDelegateTest extends BaseInstrumentedTest {
 
     private static class TestDelegate extends UniversiContextDelegate {
 
-	    private Activity activity;
+	    private FragmentActivity activity;
 
 	    TestDelegate() {
 		    this(mock(TestActivity.class));
 	    }
 
-	    TestDelegate(Activity activity) {
+	    TestDelegate(FragmentActivity activity) {
 		    this((Context) activity);
 		    this.activity = activity;
 	    }

@@ -18,13 +18,13 @@
  */
 package universum.studios.android.support.universi;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.LoaderManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
+import android.support.v4.content.Loader;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.app.FragmentActivity;
 
 import org.hamcrest.core.Is;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 	@SuppressWarnings("unused")
 	private static final String TAG = "UniversiActivityDelegateTest";
 
-	private Activity mMockActivity;
+	private FragmentActivity mMockActivity;
 
 	@Override
 	public void beforeTest() throws Exception {
@@ -82,7 +82,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 		final LoaderManager mockLoaderManager = mock(LoaderManager.class);
 		when(mockLoaderManager.initLoader(1, null, mockCallbacks)).thenReturn(mockLoader);
 		when(mockLoaderManager.getLoader(1)).thenReturn(null);
-		when(mMockActivity.getLoaderManager()).thenReturn(mockLoaderManager);
+		when(mMockActivity.getSupportLoaderManager()).thenReturn(mockLoaderManager);
 		when(mockCallbacks.onCreateLoader(1, null)).thenReturn(mockLoader);
 		assertThat(new UniversiActivityDelegate(mMockActivity).startLoader(1, null, mockCallbacks), is(mockLoader));
 		verify(mockLoaderManager, times(1)).getLoader(1);
@@ -98,7 +98,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 		final LoaderManager mockLoaderManager = mock(LoaderManager.class);
 		when(mockLoaderManager.restartLoader(1, null, mockCallbacks)).thenReturn(mockLoader);
 		when(mockLoaderManager.getLoader(1)).thenReturn(mockLoader);
-		when(mMockActivity.getLoaderManager()).thenReturn(mockLoaderManager);
+		when(mMockActivity.getSupportLoaderManager()).thenReturn(mockLoaderManager);
 		assertThat(new UniversiActivityDelegate(mMockActivity).startLoader(1, null, mockCallbacks), is(mockLoader));
 		verify(mockLoaderManager, times(1)).getLoader(1);
 		verify(mockLoaderManager, times(1)).restartLoader(1, null, mockCallbacks);
@@ -109,7 +109,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 	@SuppressWarnings("unchecked")
 	public void testDestroyLoader() {
 		final LoaderManager mockLoaderManager = mock(LoaderManager.class);
-		when(mMockActivity.getLoaderManager()).thenReturn(mockLoaderManager);
+		when(mMockActivity.getSupportLoaderManager()).thenReturn(mockLoaderManager);
 		new UniversiActivityDelegate(mMockActivity).destroyLoader(1);
 		verify(mockLoaderManager, times(1)).destroyLoader(1);
 		verifyNoMoreInteractions(mockLoaderManager);
@@ -148,7 +148,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 	public void testSetGetFragmentController() {
 		final FragmentFactory mockFactory = mock(FragmentFactory.class);
 		final FragmentController mockController = mock(FragmentController.class);
-		when(mMockActivity.getFragmentManager()).thenReturn(mock(FragmentManager.class));
+		when(mMockActivity.getSupportFragmentManager()).thenReturn(mock(FragmentManager.class));
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
 		delegate.setFragmentFactory(mockFactory);
 		delegate.setFragmentController(mockController);
@@ -159,7 +159,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testSetNullFragmentController() {
-		when(mMockActivity.getFragmentManager()).thenReturn(mock(FragmentManager.class));
+		when(mMockActivity.getSupportFragmentManager()).thenReturn(mock(FragmentManager.class));
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
 		delegate.setFragmentController(null);
 		assertThat(delegate.getFragmentController(), is(notNullValue()));
@@ -167,7 +167,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testSetGetFragmentFactory() {
-		when(mMockActivity.getFragmentManager()).thenReturn(mock(FragmentManager.class));
+		when(mMockActivity.getSupportFragmentManager()).thenReturn(mock(FragmentManager.class));
 		final FragmentFactory mockFactory = mock(FragmentFactory.class);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
 		delegate.setFragmentFactory(mockFactory);
@@ -189,7 +189,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 	public void testFindCurrentFragmentWithoutControllerInitialized() {
 		final FragmentManager mockManager = mock(FragmentManager.class);
 		when(mockManager.getBackStackEntryCount()).thenReturn(1);
-		when(mMockActivity.getFragmentManager()).thenReturn(mockManager);
+		when(mMockActivity.getSupportFragmentManager()).thenReturn(mockManager);
 		assertThat(new UniversiActivityDelegate(mMockActivity).findCurrentFragment(), is(nullValue()));
 	}
 
@@ -197,7 +197,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 	public void testPopFragmentsBackStack() {
 		final FragmentManager mockManager = mock(FragmentManager.class);
 		when(mockManager.getBackStackEntryCount()).thenReturn(1);
-		when(mMockActivity.getFragmentManager()).thenReturn(mockManager);
+		when(mMockActivity.getSupportFragmentManager()).thenReturn(mockManager);
 		assertThat(new UniversiActivityDelegate(mMockActivity).popFragmentsBackStack(), is(true));
 		verify(mockManager, times(1)).getBackStackEntryCount();
 		verify(mockManager, times(1)).popBackStack();
@@ -208,7 +208,7 @@ public final class UniversiActivityDelegateTest extends BaseInstrumentedTest {
 	public void testPopFragmentsBackStackOnEmptyStack() {
 		final FragmentManager mockManager = mock(FragmentManager.class);
 		when(mockManager.getBackStackEntryCount()).thenReturn(0);
-		when(mMockActivity.getFragmentManager()).thenReturn(mockManager);
+		when(mMockActivity.getSupportFragmentManager()).thenReturn(mockManager);
 		assertThat(new UniversiActivityDelegate(mMockActivity).popFragmentsBackStack(), is(false));
 		verify(mockManager, times(1)).getBackStackEntryCount();
 		verifyNoMoreInteractions(mockManager);

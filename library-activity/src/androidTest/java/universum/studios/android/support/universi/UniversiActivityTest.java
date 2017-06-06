@@ -19,8 +19,6 @@
 package universum.studios.android.support.universi;
 
 import android.Manifest;
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -29,13 +27,44 @@ import android.os.Process;
 import android.support.test.annotation.UiThreadTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.view.Menu;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import universum.studios.android.support.dialog.DialogOptions;
+import universum.studios.android.support.dialog.manage.DialogController;
+import universum.studios.android.support.dialog.manage.DialogFactory;
+import universum.studios.android.support.fragment.BackPressWatcher;
+import universum.studios.android.support.fragment.annotation.ActionBarOptions;
+import universum.studios.android.support.fragment.annotation.ContentView;
+import universum.studios.android.support.fragment.annotation.FragmentAnnotations;
+import universum.studios.android.support.fragment.annotation.handler.ActionBarFragmentAnnotationHandler;
+import universum.studios.android.support.fragment.manage.FragmentController;
+import universum.studios.android.support.fragment.manage.FragmentFactory;
 import universum.studios.android.support.test.BaseInstrumentedTest;
+import universum.studios.android.support.test.TestFragment;
+import universum.studios.android.support.test.TestResources;
+import universum.studios.android.support.test.TestUtils;
+import universum.studios.android.transition.BaseNavigationalTransition;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assume.assumeTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Martin Albedinsky

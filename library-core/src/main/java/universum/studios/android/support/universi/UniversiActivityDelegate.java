@@ -18,6 +18,7 @@
  */
 package universum.studios.android.support.universi;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IntRange;

@@ -19,11 +19,11 @@
  * =================================================================================================
  */
 -->
-<manifest package="universum.studios.android.universi.activity"
+<manifest package="universum.studios.android.support.universi.activity"
 		  xmlns:android="http://schemas.android.com/apk/res/android"
 		  xmlns:tools="http://schemas.android.com/tools">
 
 	<application
-		android:label="Universi-Activity Tests"
+		android:label="Universi-Activity Tests (support)"
 		tools:replace="android:label" />
 </manifest>
