@@ -21,7 +21,9 @@ package universum.studios.android.universi;
 import android.Manifest;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.test.annotation.UiThreadTest;
@@ -354,7 +356,10 @@ public final class UniversiActivityTest extends BaseInstrumentedTest {
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
 		assertThat(
 				activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-				is(mContext.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()))
+				is(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
+						mContext.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) :
+						PackageManager.PERMISSION_GRANTED
+				)
 		);
 	}
 
@@ -371,6 +376,7 @@ public final class UniversiActivityTest extends BaseInstrumentedTest {
 	@Test
 	@UiThreadTest
 	public void testOnRequestPermissionsResult() {
+		assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);

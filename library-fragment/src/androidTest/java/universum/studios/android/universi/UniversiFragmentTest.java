@@ -19,6 +19,7 @@
 package universum.studios.android.universi; 
 import android.Manifest;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -225,6 +226,7 @@ public final class UniversiFragmentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testOnRequestPermissionsResult() {
+		assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
