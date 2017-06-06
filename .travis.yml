@@ -20,7 +20,7 @@ branches:
     - /^release.*$/
     - master
 
-# Continous integration scripts
+# Continuous integration scripts
 before_script:
   - ./ci/permissions.sh
   # Emulator management (create, start and wait)
@@ -36,7 +36,7 @@ after_success:
   - ./ci/coverage.sh
   - ./ci/deploy.sh
 
-# Notications
+# Notifications
 notifications:
   email: false
 
