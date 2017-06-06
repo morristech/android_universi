@@ -107,3 +107,4 @@ dependencies {
 apply from: 'analysis.gradle'
 apply from: 'codacy.gradle'
 apply from: '../deploy/deploy.gradle'
+apply from: 'github.gradle'
