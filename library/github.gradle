@@ -31,7 +31,10 @@ github {
 
     releases {
         assets {
-            //githubReleaseAsset file("${buildDir}/outputs/aar/library-release.aar")
+            githubReleaseAsset(file("${buildDir}/outputs/aar/library-release.aar")) {
+                name 'library'
+                classifier ''
+            }
             githubReleaseAsset classesJar
             githubReleaseAsset javadocJar
             githubReleaseAsset sourcesJar
@@ -39,16 +42,16 @@ github {
 
         types {
             production {
-                tagName config.maven.version
-                releaseName config.maven.version
-                releaseBody 'Release patch.'
+                tagName /*config.maven.version*/'release-test'
+                releaseName /*config.maven.version*/'release-test'
+                releaseBody file('github/release-body-production.md').text
                 draft true
                 overwrite true
             }
             beta {
                 tagName "${config.maven.version}-beta1"
                 releaseName "${config.maven.version}-beta1"
-                releaseBody 'Beta release iteration no. 1.'
+                releaseBody file('github/release-body-beta.md').text
                 draft true
                 preRelease true
                 overwrite true
