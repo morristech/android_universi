@@ -1,6 +1,11 @@
 Change-Log
 ===============
 
+### [Release 1.0.3](https://github.com/universum-studios/android_universi/releases/tag/support-1.0.3) ###
+> 06.06.2017
+
+- Small patches and code quality improvements.
+
 ### [Release 1.0.2](https://github.com/universum-studios/android_universi/releases/tag/support-1.0.2) ###
 > 14.05.2017
 

@@ -11,7 +11,7 @@ def testConfig = [
 ]
 
 def libraryConfig = [
-        version: '1.0.2'
+        version: '1.0.3'
 ]
 
 def mavenConfig = [
@@ -29,7 +29,7 @@ def mavenConfig = [
 
 def bintrayConfig = [
         publish                  : false,
-        packageName              : mavenConfig.groupId + ':' + mavenConfig.artifactId,
+        packageName              : "${mavenConfig.groupId}:${mavenConfig.artifactId}",
         packageLabels            : ['android', 'universal', 'activity', 'fragment'],
         packageVersionName       : mavenConfig.version,
         packageVersionDescription: 'Release support patch.',
