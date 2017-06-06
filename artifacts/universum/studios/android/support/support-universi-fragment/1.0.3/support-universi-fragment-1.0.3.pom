@@ -115,7 +115,7 @@
     <dependency>
       <groupId>universum.studios.android.support</groupId>
       <artifactId>support-universi-core</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.3</version>
       <type>aar</type>
       <scope>compile</scope>
       <exclusions>
