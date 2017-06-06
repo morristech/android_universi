@@ -107,3 +107,20 @@ dependencies {
 apply from: 'analysis.gradle'
 apply from: 'codacy.gradle'
 apply from: '../deploy/deploy.gradle'
+apply from: 'github.gradle'
+
+task listAllConfigurations() {
+    configurations.each {
+        if (it.name == "archives") {
+            it.artifacts.forEach { artifact ->
+                println it.name + " => " + artifact.name + "-" + artifact.classifier + "." + artifact.type
+            }
+        }
+    }
+}
+
+task listArtifactsForAllConfigurations() {
+    configurations.each { it.artifacts.forEach {artifact ->
+        println artifact.name + "-" + artifact.classifier + "." + artifact.type
+    }}
+}
