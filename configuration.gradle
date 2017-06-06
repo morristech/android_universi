@@ -36,6 +36,12 @@ def bintrayConfig = [
         packageVersionTag        : mavenConfig.version
 ]
 
+def releaseConfig = [
+        owner      : 'universum-studios',
+        repository : 'android_universi',
+        accessToken: System.getenv('GITHUB_API_TOKEN')
+]
+
 def codacyConfig = [
         // This path must be relative to the codacy.gradle file placed in the /library directory.
         tokensPath : '../../codacy.tokens',
@@ -52,6 +58,7 @@ ext.config = [
         "library": libraryConfig,
         "maven"  : mavenConfig,
         "bintray": bintrayConfig,
+        "release": releaseConfig,
         "codacy" : codacyConfig,
         "ci"     : ciConfig
 ]

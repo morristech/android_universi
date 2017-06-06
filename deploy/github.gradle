@@ -16,14 +16,43 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-// Add ARTIFACTS tasks.
-apply from: '../deploy/artifacts.gradle'
+apply plugin: 'universum.studios.github'
 
-// Apply MAVEN deployment script.
-apply from: '../deploy/maven.gradle'
+github {
+    repository {
+        owner config.release.owner
+        name config.release.repository
+        accessToken config.release.accessToken
+    }
 
-// Apply BINTRAY deployment script.
-apply from: '../deploy/bintray.gradle'
+    defaultConfig {
+        artifactId config.maven.artifactId
+    }
 
-// Apply GIT-HUB deployment script.
-apply from: '../deploy/github.gradle'
+    releases {
+        assets {
+            githubReleaseAsset file("${buildDir}/outputs/aar/library-release.aar")
+            githubReleaseAsset classesJar
+            githubReleaseAsset javadocJar
+            githubReleaseAsset sourcesJar
+        }
+
+        types {
+            production {
+                tagName config.maven.version
+                releaseName config.maven.version
+                releaseBody 'Release patch.'
+                draft true
+                overwrite true
+            }
+            beta {
+                tagName "${config.maven.version}-beta1"
+                releaseName "${config.maven.version}-beta1"
+                releaseBody 'Beta release iteration no. 1.'
+                draft true
+                preRelease true
+                overwrite true
+            }
+        }
+    }
+}
