@@ -27,6 +27,7 @@ github {
 
     defaultConfig {
         artifactId config.maven.artifactId
+        artifactVersion config.maven.version
     }
 
     releases {
