@@ -1,5 +1,3 @@
-Beta release patch.
+Beta release support patch.
 
-**Changes:**
-
-> See **[CHANGELOG](https://github.com/universum-studios/android_universi/blob/master/CHANGELOG.md)** for complete list of changes.
+For more information about this release please see **[1.0.3](https://github.com/universum-studios/android_universi/releases/tag/1.0.3)**.
