@@ -29,9 +29,9 @@ android.libraryVariants.all { variant ->
         effort = "max"
         reportLevel = "high"
         classes = files("${buildDir}/intermediates/classes/${variant.dirName}")
-        excludeFilter = file("${rootProject.rootDir}/analysis/findbugs-filter.xml")
-        source = variant.javaCompile.source
-        classpath = variant.javaCompile.classpath
+        excludeFilter = file("${projectDir}/analysis/findbugs-filter.xml")
+        source = variant.javaCompiler.source
+        classpath = variant.javaCompiler.classpath
         reports {
             // Only one of HTML or XML can be turned on at the same time.
             html.enabled = true
