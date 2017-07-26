@@ -43,25 +43,25 @@ android {
 
     sourceSets {
         release.java.srcDirs = [
-                '../library-core/src/main/java',
-                '../library-context/src/main/java',
-                '../library-activity/src/main/java',
-                '../library-fragment/src/main/java'
+                "${rootProject.rootDir}/library-core/src/main/java",
+                "${rootProject.rootDir}/library-context/src/main/java",
+                "${rootProject.rootDir}/library-activity/src/main/java",
+                "${rootProject.rootDir}/library-fragment/src/main/java"
         ]
         debug.java.srcDirs = release.java.srcDirs
         androidTest.java.srcDirs = [
-                '../library/src/androidTest/java',
-                '../library-core/src/androidTest/java',
-                '../library-context/src/androidTest/java',
-                '../library-activity/src/androidTest/java',
-                '../library-fragment/src/androidTest/java'
+                "${rootProject.rootDir}/library/src/androidTest/java",
+                "${rootProject.rootDir}/library-core/src/androidTest/java",
+                "${rootProject.rootDir}/library-context/src/androidTest/java",
+                "${rootProject.rootDir}/library-activity/src/androidTest/java",
+                "${rootProject.rootDir}/library-fragment/src/androidTest/java"
         ]
         androidTest.res.srcDirs = [
-                '../library/src/androidTest/res',
-                '../library-core/src/androidTest/res',
-                '../library-context/src/androidTest/res',
-                '../library-activity/src/androidTest/res',
-                '../library-fragment/src/androidTest/res'
+                "${rootProject.rootDir}/library/src/androidTest/res",
+                "${rootProject.rootDir}/library-core/src/androidTest/res",
+                "${rootProject.rootDir}/library-context/src/androidTest/res",
+                "${rootProject.rootDir}/library-activity/src/androidTest/res",
+                "${rootProject.rootDir}/library-fragment/src/androidTest/res"
         ]
     }
 
