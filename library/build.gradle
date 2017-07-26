@@ -103,8 +103,10 @@ dependencies {
     androidTestCompile project(':test-core')
 }
 
-// Apply additional scripts.
-apply from: 'analysis.gradle'
-apply from: 'codacy.gradle'
-apply from: '../deploy/deploy.gradle'
-apply from: 'github.gradle'
+/**
+ * Additional configuration ========================================================================
+ */
+apply from: 'analysis/analysis.gradle'
+apply from: 'coverage/codacy.gradle'
+apply from: "${rootProject.rootDir}/deploy/deploy.gradle"
+apply from: 'github/github.gradle'

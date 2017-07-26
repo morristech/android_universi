@@ -1,63 +1,59 @@
 // Defines dependencies used across the library project.
 def versions = [
-        androidSupportVersion             : '25.3.0',
-        androidSupportTestVersion         : '0.5',
-        androidSupportTestEspressoVersion : '2.2.2',
-        universumStudiosTransitionsVersion: '1.1.0',
-        universumStudiosFragmentsVersion  : '1.2.0',
-        universumStudiosDialogsVersion    : '0.9.3',
-        universumStudiosSamplesVersion    : '0.1.3',
-        butterknifeVersion                : '8.5.1',
-        junitVersion                      : '4.12',
-        mockitoVersion                    : '2.7.20'
+        androidSupport             : '26.0.0',
+        androidSupportTest         : '1.0',
+        androidSupportTestEspresso : '3.0.0',
+        universumStudiosTransitions: '1.1.0',
+        universumStudiosFragments  : '1.2.0',
+        universumStudiosDialogs    : '0.9.3',
+        universumStudiosSamples    : '0.1.3',
+        butterknife                : '8.5.1',
+        junit                      : '4.12',
+        mockito                    : '2.7.20'
 ]
 
 ext.versions = versions
 
 def androidSupport = [
-        annotations   : "com.android.support:support-annotations:${versions.androidSupportVersion}",
-        v4            : "com.android.support:support-v4:${versions.androidSupportVersion}",
-        appCompatV7   : "com.android.support:appcompat-v7:${versions.androidSupportVersion}",
-        vectorDrawable: "com.android.support:support-vector-drawable:${versions.androidSupportVersion}",
-        recyclerView  : "com.android.support:recyclerview-v7:${versions.androidSupportVersion}",
-        design        : "com.android.support:design:${versions.androidSupportVersion}"
-]
-
-def annotationProcessor = [
-        butterknife: "com.jakewharton:butterknife-compiler:${versions.butterknifeVersion}"
+        annotations   : "com.android.support:support-annotations:${versions.androidSupport}",
+        v4            : "com.android.support:support-v4:${versions.androidSupport}",
+        appCompatV7   : "com.android.support:appcompat-v7:${versions.androidSupport}",
+        vectorDrawable: "com.android.support:support-vector-drawable:${versions.androidSupport}",
+        recyclerView  : "com.android.support:recyclerview-v7:${versions.androidSupport}",
+        design        : "com.android.support:design:${versions.androidSupport}"
 ]
 
 def test = [
         androidSupportAnnotations: androidSupport.annotations,
-        androidRunner            : "com.android.support.test:runner:${versions.androidSupportTestVersion}",
-        androidRules             : "com.android.support.test:rules:${versions.androidSupportTestVersion}",
-        androidEspressoCore      : "com.android.support.test.espresso:espresso-core:${versions.androidSupportTestEspressoVersion}",
-        androidEspressoIntents   : "com.android.support.test.espresso:espresso-intents:${versions.androidSupportTestEspressoVersion}",
-        androidEspressoContrib   : "com.android.support.test.espresso:espresso-contrib:${versions.androidSupportTestEspressoVersion}",
-        junit                    : "junit:junit:${versions.junitVersion}",
-        mockitoCore              : "org.mockito:mockito-core:${versions.mockitoVersion}",
-        mockitoAndroid           : "org.mockito:mockito-android:${versions.mockitoVersion}"
+        androidRunner            : "com.android.support.test:runner:${versions.androidSupportTest}",
+        androidRules             : "com.android.support.test:rules:${versions.androidSupportTest}",
+        androidEspressoCore      : "com.android.support.test.espresso:espresso-core:${versions.androidSupportTestEspresso}",
+        androidEspressoIntents   : "com.android.support.test.espresso:espresso-intents:${versions.androidSupportTestEspresso}",
+        androidEspressoContrib   : "com.android.support.test.espresso:espresso-contrib:${versions.androidSupportTestEspresso}",
+        junit                    : "junit:junit:${versions.junit}",
+        mockitoCore              : "org.mockito:mockito-core:${versions.mockito}",
+        mockitoAndroid           : "org.mockito:mockito-android:${versions.mockito}"
 ]
 
 def universumStudios = [
-        transitionsNavigationalBase: "universum.studios.android:transitions-navigational-base:${versions.universumStudiosTransitionsVersion}@aar",
-        fragmentsCore              : "universum.studios.android:fragments-core:${versions.universumStudiosFragmentsVersion}@aar",
-        fragmentsBase              : "universum.studios.android:fragments-base:${versions.universumStudiosFragmentsVersion}@aar",
-        fragmentsCommon            : "universum.studios.android:fragments-common:${versions.universumStudiosFragmentsVersion}@aar",
-        fragmentsManageCore        : "universum.studios.android:fragments-manage-core:${versions.universumStudiosFragmentsVersion}@aar",
-        fragmentsTransition        : "universum.studios.android:fragments-transition:${versions.universumStudiosFragmentsVersion}@aar",
-        dialogsCore                : "universum.studios.android:dialogs-core:${versions.universumStudiosDialogsVersion}@aar",
-        dialogsManage              : "universum.studios.android:dialogs-manage:${versions.universumStudiosDialogsVersion}@aar",
-        samples                    : "universum.studios.android:samples:${versions.universumStudiosSamplesVersion}@aar"
+        transitionsNavigationalBase: "universum.studios.android:transitions-navigational-base:${versions.universumStudiosTransitions}@aar",
+        fragmentsCore              : "universum.studios.android:fragments-core:${versions.universumStudiosFragments}@aar",
+        fragmentsBase              : "universum.studios.android:fragments-base:${versions.universumStudiosFragments}@aar",
+        fragmentsCommon            : "universum.studios.android:fragments-common:${versions.universumStudiosFragments}@aar",
+        fragmentsManageCore        : "universum.studios.android:fragments-manage-core:${versions.universumStudiosFragments}@aar",
+        fragmentsTransition        : "universum.studios.android:fragments-transition:${versions.universumStudiosFragments}@aar",
+        dialogsCore                : "universum.studios.android:dialogs-core:${versions.universumStudiosDialogs}@aar",
+        dialogsManage              : "universum.studios.android:dialogs-manage:${versions.universumStudiosDialogs}@aar",
+        samples                    : "universum.studios.android:samples:${versions.universumStudiosSamples}@aar"
 ]
 
 def other = [
-        butterknife: "com.jakewharton:butterknife:${versions.butterknifeVersion}"
+        butterknife: "com.jakewharton:butterknife:${versions.butterknife}",
+        butterknifeProcessor: "com.jakewharton:butterknife-compiler:${versions.butterknife}"
 ]
 
 ext.deps = [
         "androidSupport"  : androidSupport,
-        "apt"             : annotationProcessor,
         "test"            : test,
         "universumStudios": universumStudios,
         "other"           : other

@@ -2,7 +2,7 @@
  * =================================================================================================
  *                             Copyright (C) 2017 Universum Studios
  * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ *         Licensed under the Apache License,  2.0 or later (further "License" only).
  * -------------------------------------------------------------------------------------------------
  * You may use this file only in compliance with the License. More details and copy of this License
  * you may obtain at
@@ -45,15 +45,15 @@ task generateJavadoc(type: Javadoc) {
     // Append class path with dependencies.
     classpath += files(
             android.getBootClasspath(),
-            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\support-annotations\\${versions.androidSupportVersion}\\support-annotations-${versions.androidSupportVersion}.jar",
-            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\appcompat-v7\\${versions.androidSupportVersion}\\appcompat-v7-${versions.androidSupportVersion}-sources.jar",
-            "${config.maven.localUrl}\\universum\\studios\\android\\transitions-navigational-base\\${versions.universumStudiosTransitionsVersion}\\transitions-navigational-base-${versions.universumStudiosTransitionsVersion}-sources.jar",
-            "${config.maven.localUrl}\\universum\\studios\\android\\fragments-core\\${versions.universumStudiosFragmentsVersion}\\fragments-core-${versions.universumStudiosFragmentsVersion}-sources.jar",
-            "${config.maven.localUrl}\\universum\\studios\\android\\fragments-base\\${versions.universumStudiosFragmentsVersion}\\fragments-base-${versions.universumStudiosFragmentsVersion}-sources.jar",
-            "${config.maven.localUrl}\\universum\\studios\\android\\fragments-common\\${versions.universumStudiosFragmentsVersion}\\fragments-common-${versions.universumStudiosFragmentsVersion}-sources.jar",
-            "${config.maven.localUrl}\\universum\\studios\\android\\fragments-manage\\${versions.universumStudiosFragmentsVersion}\\fragments-manage${versions.universumStudiosFragmentsVersion}-sources.jar",
-            "${config.maven.localUrl}\\universum\\studios\\android\\dialogs-core\\${versions.universumStudiosDialogsVersion}\\dialogs-core-${versions.universumStudiosDialogsVersion}-sources.jar",
-            "${config.maven.localUrl}\\universum\\studios\\android\\dialogs-manage\\${versions.universumStudiosDialogsVersion}\\dialogs-manage-${versions.universumStudiosDialogsVersion}-sources.jar"
+            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\support-annotations\\${versions.androidSupport}\\support-annotations-${versions.androidSupport}.jar",
+            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\appcompat-v7\\${versions.androidSupport}\\appcompat-v7-${versions.androidSupport}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\transitions-navigational-base\\${versions.universumStudiosTransitions}\\transitions-navigational-base-${versions.universumStudiosTransitions}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\fragments-core\\${versions.universumStudiosFragments}\\fragments-core-${versions.universumStudiosFragments}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\fragments-base\\${versions.universumStudiosFragments}\\fragments-base-${versions.universumStudiosFragments}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\fragments-common\\${versions.universumStudiosFragments}\\fragments-common-${versions.universumStudiosFragments}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\fragments-manage\\${versions.universumStudiosFragments}\\fragments-manage${versions.universumStudiosFragments}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\dialogs-core\\${versions.universumStudiosDialogs}\\dialogs-core-${versions.universumStudiosDialogs}-sources.jar",
+            "${config.maven.localUrl}\\universum\\studios\\android\\dialogs-manage\\${versions.universumStudiosDialogs}\\dialogs-manage-${versions.universumStudiosDialogs}-sources.jar"
     )
     failOnError false
 }
