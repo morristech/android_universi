@@ -23,7 +23,7 @@ android.libraryVariants.all { variant ->
      * Task that executes FindBugs tool for a specific build variant.
      */
     task("find${variant.name.capitalize()}Bugs", type: FindBugs, dependsOn: "compile${variant.name.capitalize()}JavaWithJavac") {
-        description "Analyzes source code for ${variant.name} variant using the FindBugs tool."
+        description "Analyzes code base of ${variant.name} variant using the FindBugs tool."
         group "Verification"
         ignoreFailures = true
         effort = "max"
@@ -35,10 +35,10 @@ android.libraryVariants.all { variant ->
         reports {
             // Only one of HTML or XML can be turned on at the same time.
             html.enabled = true
-            html.destination = "${buildDir}/reports/findbugs/${variant.name}/index.html"
+            html.destination = file("${buildDir}/reports/findbugs/${variant.name}/index.html")
             xml.enabled = !html.enabled
             xml.withMessages = true
-            xml.destination = "${buildDir}/reports/findbugs/${variant.name}/report.xml"
+            xml.destination = file("${buildDir}/reports/findbugs/${variant.name}/report.xml")
         }
     }
 }
