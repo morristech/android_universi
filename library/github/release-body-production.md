@@ -1,3 +1,9 @@
-Release support patch.
+### Overview ###
 
-For more information about this release please see **[1.0.3](https://github.com/universum-studios/android_universi/releases/tag/1.0.3)**.
+Release patch.
+
+### Changes ###
+
+- Small patches and code quality improvements.
+
+> See **[CHANGELOG](https://github.com/universum-studios/android_universi/blob/master/CHANGELOG.md)** for complete list of changes.
