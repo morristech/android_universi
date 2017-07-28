@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-def boolean isModule = project.name.startsWith('library-') && !project.name.endsWith('_group')
+final boolean isModule = project.name.startsWith('library-') && !project.name.endsWith('_group')
 
 /**
  * Bundles project's classes into a .jar! file.
