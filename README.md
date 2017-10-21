@@ -1,8 +1,8 @@
 Universi (support)
 ===============
 
-[![CircleCI](https://circleci.com/gh/universum-studios/android_universi.svg?style=svg)](https://circleci.com/gh/universum-studios/android_universi)
-[![Codecov](https://codecov.io/gh/universum-studios/android_universi/branch/master/graph/badge.svg)](https://codecov.io/gh/universum-studios/android_universi)
+[![CircleCI](https://circleci.com/gh/universum-studios/android_universi/tree/support-master.svg?style=svg)](https://circleci.com/gh/universum-studios/android_universi/tree/support-master)
+[![Codecov](https://codecov.io/gh/universum-studios/android_universi/branch/support-master/graph/badge.svg)](https://codecov.io/gh/universum-studios/android_universi)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c485a93364074dc5a87c7cb43dce9c3f)](https://www.codacy.com/app/universum-studios/android_universi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_universi&amp;utm_campaign=Badge_Grade)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universi-green.svg?style=flat)](https://android-arsenal.com/details/1/5412)
 
