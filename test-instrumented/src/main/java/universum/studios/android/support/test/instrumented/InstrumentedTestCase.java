@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.test.instrumented;
+package universum.studios.android.support.test.instrumented;
 
 import android.app.Instrumentation;
 import android.content.Context;

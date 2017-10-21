@@ -16,7 +16,7 @@
 * See the License for the specific language governing permissions and limitations under the License.
 * =================================================================================================
 */
-package universum.studios.android.test.instrumented;
+package universum.studios.android.support.test.instrumented;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -31,7 +31,7 @@ public final class TestUtils {
 	/**
 	 * Name of the library's root package.
 	 */
-	private static final String LIBRARY_ROOT_PACKAGE_NAME = "universum.studios.android.universi.test";
+	private static final String LIBRARY_ROOT_PACKAGE_NAME = "universum.studios.android.support.universi.test";
 
 	/**
 	 */

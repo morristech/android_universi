@@ -1,14 +1,14 @@
 // Defines dependencies used across the library project.
 def versions = [
-        androidSupport            : '26.0.0',
-        androidSupportTest        : '1.0',
-        androidSupportTestEspresso: '3.0.0',
-        universumStudiosSupportFragments : '1.2.0',
-        universumStudiosSupportDialogs   : '0.9.3',
-        butterknife               : '8.5.1',
-        junit                     : '4.12',
-        mockito                   : '2.7.20',
-        robolectric               : '3.3.2'
+        androidSupport                  : '26.0.0',
+        androidSupportTest              : '1.0',
+        androidSupportTestEspresso      : '3.0.0',
+        universumStudiosSupportFragments: '1.2.0',
+        universumStudiosSupportDialogs  : '0.9.3',
+        butterknife                     : '8.5.1',
+        junit                           : '4.12',
+        mockito                         : '2.7.20',
+        robolectric                     : '3.3.2'
 ]
 
 ext.versions = versions
@@ -35,7 +35,8 @@ def test = [
         androidEspressoIntents     : "com.android.support.test.espresso:espresso-intents:${versions.androidSupportTestEspresso}",
         androidEspressoContrib     : "com.android.support.test.espresso:espresso-contrib:${versions.androidSupportTestEspresso}",
         androidSupportAnnotations  : androidSupport.annotations,
-        androidSupportV4           : androidSupport.v4
+        androidSupportV4           : androidSupport.v4,
+        androidSupportAppCompatV7  : androidSupport.appCompatV7
 ]
 
 def universumStudios = [

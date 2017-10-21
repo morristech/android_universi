@@ -16,12 +16,12 @@
 * See the License for the specific language governing permissions and limitations under the License.
 * =================================================================================================
 */
-package universum.studios.android.test.instrumented;
+package universum.studios.android.support.test.instrumented;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.test.rule.ActivityTestRule;
+import android.support.v4.app.FragmentActivity;
 import android.widget.FrameLayout;
 
 /**
@@ -30,7 +30,7 @@ import android.widget.FrameLayout;
  *
  * @author Martin Albedinsky
  */
-public class TestActivity extends Activity {
+public class TestActivity extends FragmentActivity {
 
 	/**
 	 * Log TAG.

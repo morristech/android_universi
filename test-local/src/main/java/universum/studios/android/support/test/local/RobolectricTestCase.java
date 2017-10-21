@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.test.local;
+package universum.studios.android.support.test.local;
 
 import android.app.Application;
 import android.os.Build;

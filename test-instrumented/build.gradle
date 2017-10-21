@@ -47,6 +47,7 @@ android {
 dependencies {
     // Android Instrumentation test dependencies.
     compile deps.test.androidSupportAnnotations
+    compile deps.test.androidSupportAppCompatV7
     compile deps.test.androidRunner
     compile deps.test.androidRules
     compile deps.test.androidEspressoCore
