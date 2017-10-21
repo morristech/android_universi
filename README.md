@@ -1,9 +1,9 @@
 Universi
 ===============
 
-[![Build Status](https://travis-ci.org/universum-studios/android_universi.svg?branch=master)](https://travis-ci.org/universum-studios/android_universi)
+[![CircleCI](https://circleci.com/gh/universum-studios/android_universi.svg?style=svg)](https://circleci.com/gh/universum-studios/android_universi)
+[![Codecov](https://codecov.io/gh/universum-studios/android_universi/branch/master/graph/badge.svg)](https://codecov.io/gh/universum-studios/android_universi)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c485a93364074dc5a87c7cb43dce9c3f)](https://www.codacy.com/app/universum-studios/android_universi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_universi&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/c485a93364074dc5a87c7cb43dce9c3f)](https://www.codacy.com/app/universum-studios/android_universi?utm_source=github.com&utm_medium=referral&utm_content=universum-studios/android_universi&utm_campaign=Badge_Coverage)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universi-green.svg?style=flat)](https://android-arsenal.com/details/1/5412)
 
 Simple universal library for the Android platform providing components that may be used as base for Activities and Fragments in Android applications.
