@@ -45,10 +45,10 @@ import universum.studios.android.fragment.annotation.FragmentAnnotations;
 import universum.studios.android.fragment.annotation.handler.ActionBarFragmentAnnotationHandler;
 import universum.studios.android.fragment.manage.FragmentController;
 import universum.studios.android.fragment.manage.FragmentFactory;
-import universum.studios.android.test.BaseInstrumentedTest;
-import universum.studios.android.test.TestFragment;
-import universum.studios.android.test.TestResources;
-import universum.studios.android.test.TestUtils;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
+import universum.studios.android.test.instrumented.TestFragment;
+import universum.studios.android.test.instrumented.TestResources;
+import universum.studios.android.test.instrumented.TestUtils;
 import universum.studios.android.transition.BaseNavigationalTransition;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -70,7 +70,7 @@ import static org.mockito.Mockito.when;
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class UniversiCompatActivityTest extends BaseInstrumentedTest {
+public final class UniversiCompatActivityTest extends InstrumentedTestCase {
     
 	@SuppressWarnings("unused")
 	private static final String TAG = "UniversiCompatActivityTest";
