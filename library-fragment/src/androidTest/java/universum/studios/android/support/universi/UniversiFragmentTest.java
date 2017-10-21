@@ -35,9 +35,9 @@ import org.junit.runner.RunWith;
 import universum.studios.android.support.dialog.DialogOptions;
 import universum.studios.android.support.dialog.manage.DialogController;
 import universum.studios.android.support.dialog.manage.DialogFactory;
-import universum.studios.android.support.test.BaseInstrumentedTest;
-import universum.studios.android.support.test.TestResources;
-import universum.studios.android.support.test.TestUtils;
+import universum.studios.android.support.test.instrumented.InstrumentedTestCase;
+import universum.studios.android.support.test.instrumented.TestResources;
+import universum.studios.android.support.test.instrumented.TestUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -56,7 +56,7 @@ import static org.mockito.Mockito.when;
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class UniversiFragmentTest extends BaseInstrumentedTest {
+public final class UniversiFragmentTest extends InstrumentedTestCase {
     
 	@SuppressWarnings("unused")
 	private static final String TAG = "UniversiFragmentTest";
