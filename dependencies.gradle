@@ -40,7 +40,7 @@ def test = [
 ]
 
 def universumStudios = [
-        transitionsNavigationalBase: "universum.studios.android:transitions-navigational-base:1.1.0@aar",
+        transitionsNavigationalBase: 'universum.studios.android:transitions-navigational-base:1.1.0@aar',
         supportFragmentsCore       : "universum.studios.android.support:support-fragments-core:${versions.universumStudiosSupportFragments}@aar",
         supportFragmentsBase       : "universum.studios.android.support:support-fragments-base:${versions.universumStudiosSupportFragments}@aar",
         supportFragmentsCommon     : "universum.studios.android.support:support-fragments-common:${versions.universumStudiosSupportFragments}@aar",
