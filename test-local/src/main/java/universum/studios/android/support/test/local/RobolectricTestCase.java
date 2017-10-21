@@ -16,41 +16,59 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.support.universi;
+package universum.studios.android.test.local;
 
-import android.support.v4.app.Fragment;
-import android.support.test.runner.AndroidJUnit4;
+import android.app.Application;
+import android.os.Build;
+import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import universum.studios.android.support.test.BaseInstrumentedTest;
-import universum.studios.android.support.test.TestFragment;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.mockito.Mockito.mock;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 /**
+ * Class that may be used to group <b>suite of Android tests</b> to be executed on a local <i>JVM</i>
+ * with shadowed <i>Android environment</i> using {@link RobolectricTestRunner}.
+ *
  * @author Martin Albedinsky
  */
-@RunWith(AndroidJUnit4.class)
-public final class UniversiFragmentDelegateTest extends BaseInstrumentedTest {
-    
+@Config(constants = BuildConfig.class,
+		sdk = Build.VERSION_CODES.N_MR1)
+@RunWith(RobolectricTestRunner.class)
+@SuppressWarnings({"NullableProblems", "ConstantConditions"})
+public abstract class RobolectricTestCase extends LocalTestCase {
+
+	/**
+	 * Log TAG.
+	 */
 	@SuppressWarnings("unused")
-	private static final String TAG = "UniversiFragmentDelegateTest";
+	private static final String TAG = "RobolectricTestCase";
 
-	private Fragment mMockFragment;
+	/**
+	 * Application instance accessible via {@link RuntimeEnvironment#application}.
+	 * <p>
+	 * It is always valid between calls to {@link #beforeTest()} and {@link #afterTest()}.
+	 */
+	@NonNull
+	protected Application mApplication;
 
+	/**
+	 */
 	@Override
+	@CallSuper
 	public void beforeTest() throws Exception {
 		super.beforeTest();
-		this.mMockFragment = mock(TestFragment.class);
+		this.mApplication = RuntimeEnvironment.application;
 	}
 
-	@Test
-	public void testInstantiateDialogController() {
-		assertThat(new UniversiFragmentDelegate(mMockFragment).instantiateDialogController(), is(notNullValue()));
+	/**
+	 */
+	@Override
+	@CallSuper
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mApplication = null;
 	}
 }

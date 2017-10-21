@@ -16,40 +16,41 @@
 * See the License for the specific language governing permissions and limitations under the License.
 * =================================================================================================
 */
-package universum.studios.android.support.test;
+package universum.studios.android.test.instrumented;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.test.rule.ActivityTestRule;
-import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
- * Simple activity that may be used in <b>Android Instrumented Tests</b> in order to set up
- * {@link ActivityTestRule}.
+ * Simple fragment that may be used in <b>Android Instrumented Tests</b>.
  *
  * @author Martin Albedinsky
  */
-public class TestActivity extends FragmentActivity {
+public class TestFragment extends Fragment {
 
 	/**
 	 * Log TAG.
 	 */
 	@SuppressWarnings("unused")
-	private static final String TAG = "TestActivity";
+	private static final String TAG = "TestFragment";
 
 	/**
-	 * Id of the TestActivity's content view.
+	 * Id of the TestFragment's content view.
 	 */
 	public static final int CONTENT_VIEW_ID = android.R.id.custom;
 
 	/**
 	 */
+	@Nullable
 	@Override
-	protected void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		final FrameLayout contentView = new FrameLayout(this);
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+		final FrameLayout contentView = new FrameLayout(inflater.getContext());
 		contentView.setId(CONTENT_VIEW_ID);
-		setContentView(contentView);
+		return contentView;
 	}
 }
