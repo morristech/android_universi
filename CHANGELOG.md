@@ -1,12 +1,14 @@
 Change-Log
 ===============
 
-### [Release 1.0.3](https://github.com/universum-studios/android_universi/releases/tag/1.0.3) ###
+## Version 1.x ##
+
+### [1.0.3](https://github.com/universum-studios/android_universi/releases/tag/v1.0.3) ###
 > 06.06.2017
 
 - Small patches and code quality improvements.
 
-### [Release 1.0.2](https://github.com/universum-studios/android_universi/releases/tag/1.0.2) ###
+### [1.0.2](https://github.com/universum-studios/android_universi/releases/tag/v1.0.2) ###
 > 14.05.2017
 
 - Updated [Fragments](https://github.com/universum-studios/android_fragments) library dependency to
@@ -14,12 +16,12 @@ Change-Log
 - Updated [Transitions](https://github.com/universum-studios/android_transitions) library dependency
   to the **1.1.0** version.
 
-### [Release 1.0.1](https://github.com/universum-studios/android_universi/releases/tag/1.0.1) ###
+### [1.0.1](https://github.com/universum-studios/android_universi/releases/tag/v1.0.1) ###
 > 12.04.2017
 
 - Fixed [Issue #14](https://github.com/universum-studios/android_universi/issues/14).
 
-### [Release 1.0.0](https://github.com/universum-studios/android_universi/releases/tag/1.0.0) ###
+### [1.0.0](https://github.com/universum-studios/android_universi/releases/tag/v1.0.0) ###
 > 02.04.2017
 
 - First production release.
