@@ -39,7 +39,7 @@ def bintrayConfig = [
         packageLabels            : ['android', 'universal', 'activity', 'fragment'],
         packageVersionName       : mavenConfig.version,
         packageVersionDescription: 'Release patch.',
-        packageVersionTag        : mavenConfig.version
+        packageVersionTag        : "v${mavenConfig.version}"
 ]
 
 def codacyConfig = [
