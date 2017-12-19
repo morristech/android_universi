@@ -1,14 +1,14 @@
 // Defines dependencies used across the library project.
 def versions = [
-        androidSupport            : '26.0.0',
-        androidSupportTest        : '1.0',
-        androidSupportTestEspresso: '3.0.0',
+        androidSupport            : '27.0.0',
+        androidSupportTest        : '1.0.1',
+        androidSupportTestEspresso: '3.0.1',
         universumStudiosFragments : '1.2.0',
         universumStudiosDialogs   : '0.9.3',
-        butterknife               : '8.5.1',
+        butterknife               : '8.8.1',
         junit                     : '4.12',
-        mockito                   : '2.7.20',
-        robolectric               : '3.3.2'
+        mockito                   : '2.11.0',
+        robolectric               : '3.5.1'
 ]
 
 ext.versions = versions
@@ -16,6 +16,8 @@ ext.versions = versions
 def androidSupport = [
         annotations   : "com.android.support:support-annotations:${versions.androidSupport}",
         v4            : "com.android.support:support-v4:${versions.androidSupport}",
+        coreUtils     : "com.android.support:support-core-utils:${versions.androidSupport}",
+        coreUI        : "com.android.support:support-core-ui:${versions.androidSupport}",
         appCompatV7   : "com.android.support:appcompat-v7:${versions.androidSupport}",
         vectorDrawable: "com.android.support:support-vector-drawable:${versions.androidSupport}",
         recyclerView  : "com.android.support:recyclerview-v7:${versions.androidSupport}",
@@ -28,7 +30,7 @@ def test = [
         mockitoAndroid             : "org.mockito:mockito-android:${versions.mockito}",
         robolectric                : "org.robolectric:robolectric:${versions.robolectric}",
         robolectricMultidex        : "org.robolectric:shadows-multidex:${versions.robolectric}",
-        robolectricShadowsSupportV4: "org.robolectric:shadows-support-v4:${versions.robolectric}",
+        robolectricShadowsSupportV4: "org.robolectric:shadows-supportv4:${versions.robolectric}",
         androidRunner              : "com.android.support.test:runner:${versions.androidSupportTest}",
         androidRules               : "com.android.support.test:rules:${versions.androidSupportTest}",
         androidEspressoCore        : "com.android.support.test.espresso:espresso-core:${versions.androidSupportTestEspresso}",
@@ -39,7 +41,7 @@ def test = [
 ]
 
 def universumStudios = [
-        transitionsNavigationalBase: 'universum.studios.android:transitions-navigational-base:1.1.0@aar',
+        transitionsNavigationalBase: 'universum.studios.android:transitions-navigational-base:1.1.3@aar',
         fragmentsCore              : "universum.studios.android:fragments-core:${versions.universumStudiosFragments}@aar",
         fragmentsBase              : "universum.studios.android:fragments-base:${versions.universumStudiosFragments}@aar",
         fragmentsCommon            : "universum.studios.android:fragments-common:${versions.universumStudiosFragments}@aar",
@@ -47,7 +49,7 @@ def universumStudios = [
         fragmentsTransition        : "universum.studios.android:fragments-transition:${versions.universumStudiosFragments}@aar",
         dialogsCore                : "universum.studios.android:dialogs-core:${versions.universumStudiosDialogs}@aar",
         dialogsManage              : "universum.studios.android:dialogs-manage:${versions.universumStudiosDialogs}@aar",
-        samples                    : 'universum.studios.android:samples:0.1.3@aar'
+        samples                    : 'universum.studios.android:samples:0.1.4@aar'
 ]
 
 def other = [
