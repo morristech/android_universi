@@ -63,7 +63,6 @@ dependencies {
 
     // TEST ----------------------------------------------------------------------------------------
     testImplementation project(':test-local')
-    androidTestImplementation project(':test-instrumented')
 }
 
 apply from: "${rootProject.rootDir}/deploy/deploy.gradle"

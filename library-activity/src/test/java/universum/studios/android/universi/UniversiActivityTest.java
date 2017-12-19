@@ -26,14 +26,11 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
-import android.support.test.annotation.UiThreadTest;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
 import android.view.Menu;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.annotation.Config;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.manage.DialogController;
@@ -45,10 +42,8 @@ import universum.studios.android.fragment.annotation.FragmentAnnotations;
 import universum.studios.android.fragment.annotation.handler.ActionBarFragmentAnnotationHandler;
 import universum.studios.android.fragment.manage.FragmentController;
 import universum.studios.android.fragment.manage.FragmentFactory;
-import universum.studios.android.test.instrumented.InstrumentedTestCase;
-import universum.studios.android.test.instrumented.TestFragment;
-import universum.studios.android.test.instrumented.TestResources;
-import universum.studios.android.test.instrumented.TestUtils;
+import universum.studios.android.test.local.RobolectricTestCase;
+import universum.studios.android.test.local.TestFragment;
 import universum.studios.android.transition.BaseNavigationalTransition;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -56,7 +51,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
@@ -69,14 +63,10 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Albedinsky
  */
-@RunWith(AndroidJUnit4.class)
-public final class UniversiActivityTest extends InstrumentedTestCase {
-    
-	@SuppressWarnings("unused")
-	private static final String TAG = "UniversiActivityTest";
+public final class UniversiActivityTest extends RobolectricTestCase {
 
-	@Rule
-	public ActivityTestRule<TestActivity> ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
+	private static final int XML_DIALOGS_SET_RESOURCE_ID = 1;
+	private static final int XML_DIALOG_RESOURCE_ID = 2;
 
 	@Override
 	public void beforeTest() throws Exception {
@@ -86,7 +76,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testREQUEST_BIND_DATA_INNER() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -99,7 +88,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testOnCreateAnnotationHandler() {
 		final TestActivity activity = new TestActivity();
 		final ActionBarFragmentAnnotationHandler annotationHandler = activity.onCreateAnnotationHandler();
@@ -108,12 +96,10 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testGetAnnotationHandler() {
 		assertThat(new TestActivity().getAnnotationHandler(), is(not(nullValue())));
 	}
 
-	@UiThreadTest
 	@Test(expected = IllegalStateException.class)
 	public void testGetAnnotationHandlerWhenAnnotationsAreDisabled() {
 		FragmentAnnotations.setEnabled(false);
@@ -121,7 +107,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testStartLoader() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final LoaderManager.LoaderCallbacks mockLoaderCallbacks = mock(LoaderManager.LoaderCallbacks.class);
@@ -133,7 +118,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testInitLoader() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final LoaderManager.LoaderCallbacks mockLoaderCallbacks = mock(LoaderManager.LoaderCallbacks.class);
@@ -145,7 +129,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testRestartLoader() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final LoaderManager.LoaderCallbacks mockLoaderCallbacks = mock(LoaderManager.LoaderCallbacks.class);
@@ -157,7 +140,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testDestroyLoader() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -169,14 +151,13 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 
 	@Test
 	public void testOnCreateOptionsMenu() {
-		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
 		final Menu mockMenu = mock(Menu.class);
 		activity.onCreateOptionsMenu(mockMenu);
 		verifyZeroInteractions(mockMenu);
 	}
 
 	@Test
-	@UiThreadTest
 	public void testOnCreateOptionsMenuWithDisabledAnnotations() {
 		FragmentAnnotations.setEnabled(false);
 		final TestActivity activity = new TestActivity();
@@ -186,7 +167,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testSetGetNavigationalTransition() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final BaseNavigationalTransition mockNavigationalTransition = mock(BaseNavigationalTransition.class);
@@ -201,7 +181,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testSetGetFragmentController() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final FragmentController mockController = mock(FragmentController.class);
@@ -217,11 +196,10 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 
 	@Test
 	public void testGetFragmentControllerDefault() {
-		assertThat(ACTIVITY_RULE.getActivity().getFragmentController(), is(notNullValue()));
+		assertThat(Robolectric.buildActivity(TestActivity.class).create().start().resume().get().getFragmentController(), is(notNullValue()));
 	}
 
 	@Test
-	@UiThreadTest
 	public void testSetGetFragmentFactory() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final FragmentFactory mockFactory = mock(FragmentFactory.class);
@@ -235,7 +213,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testSetGetDialogController() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final DialogController mockController = mock(DialogController.class);
@@ -250,13 +227,11 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testGetDialogControllerDefault() {
 		assertThat(new TestActivity().getDialogController(), is(notNullValue()));
 	}
 
 	@Test
-	@UiThreadTest
 	public void testSetGetDialogFactory() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final DialogFactory mockFactory = mock(DialogFactory.class);
@@ -271,31 +246,29 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testSetDialogXmlFactory() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
-		final int dialogsResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialogs");
+		final int dialogsResource = XML_DIALOGS_SET_RESOURCE_ID;
 		activity.setDialogXmlFactory(dialogsResource);
 		verify(mockDelegate, times(1)).setDialogXmlFactory(dialogsResource);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
 	@Test
-	@UiThreadTest
-	public void testOnContentChanged() {}
+	public void testOnContentChanged() {
+	}
 
 	@Test
-	@UiThreadTest
-	public void testOnContentChangedWithRequestToBindData() {}
+	public void testOnContentChangedWithRequestToBindData() {
+	}
 
 	@Test
-	public void testOnResume() {}
+	public void testOnResume() {
+	}
 
 	@Test
-	@UiThreadTest
 	public void testRequestBindData() throws Throwable {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -309,7 +282,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testRequestBindDataWhenViewIsCreated() throws Throwable {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -323,14 +295,13 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 
 	@Test
 	public void testRequestBindDataFromBackgroundThread() throws Throwable {
-		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
 		activity.requestBindData();
 		Thread.sleep(200);
 		assertThat(activity.onBindDataInvoked, is(true));
 	}
 
 	@Test
-	@UiThreadTest
 	public void testIsActiveNetworkConnected() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -341,7 +312,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testIsNetworkConnected() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -353,30 +323,29 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 
 	@Test
 	public void testCheckSelfPermission() {
-		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
 		assertThat(
 				activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE),
 				is(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
-						mContext.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) :
+						mApplication.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) :
 						PackageManager.PERMISSION_GRANTED
 				)
 		);
 	}
 
 	@Test
-	@UiThreadTest
 	public void testShouldShowRequestPermissionRationale() {
-		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
 		assertThat(activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE), is(false));
 	}
 
 	@Test
-	public void testSupportRequestPermissions() {}
+	public void testSupportRequestPermissions() {
+	}
 
 	@Test
-	@UiThreadTest
+	@Config(sdk = Build.VERSION_CODES.M)
 	public void testOnRequestPermissionsResult() {
-		assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
@@ -385,7 +354,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testShowDialogWithId() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -396,7 +364,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testShowDialogWithIdAndOptions() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -408,7 +375,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testDismissDialogWithId() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -419,26 +385,22 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testShowXmlDialog() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
-		final int dialogResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog");
+		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		activity.showXmlDialog(dialogResource);
 		verify(mockDelegate, times(1)).showXmlDialog(eq(dialogResource), (DialogOptions) isNull());
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
 	@Test
-	@UiThreadTest
 	public void testShowXmlDialogWithOptions() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
-		final int dialogResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog");
+		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		final DialogOptions mockOptions = mock(DialogOptions.class);
 		activity.showXmlDialog(dialogResource, mockOptions);
 		verify(mockDelegate, times(1)).showXmlDialog(dialogResource, mockOptions);
@@ -446,20 +408,17 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testDismissXmlDialog() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
-		final int dialogResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog");
+		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		activity.dismissXmlDialog(dialogResource);
 		verify(mockDelegate, times(1)).dismissXmlDialog(dialogResource);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
 	@Test
-	@UiThreadTest
 	public void testOnBackPressed() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -475,7 +434,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testOnBackPressedWithFragmentsInBackStack() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -491,7 +449,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testOnBackPress() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -505,7 +462,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testOnBackPressHandledByCurrentFragment() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -522,7 +478,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testOnBackPressNotHandledByCurrentFragment() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -540,7 +495,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testOnBackPressWhenPaused() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -556,7 +510,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testDispatchBackPressToFragments() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -572,7 +525,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testDispatchBackPressToCurrentFragment() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -588,7 +540,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testDispatchBackPressToCurrentFragmentNotHandledByFragment() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -604,7 +555,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testDispatchBackPressToCurrentFragmentThatIsNotBackPressWatcher() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -617,7 +567,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testDispatchBackPressToCurrentFragmentWhenThereIsNone() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -629,7 +578,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testFindCurrentFragment() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -642,7 +590,6 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testPopFragmentsBackStack() {
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
@@ -655,15 +602,16 @@ public final class UniversiActivityTest extends InstrumentedTestCase {
 
 	@Test
 	public void testFinishWithNavigationalTransition() {
-		final TestActivity activity = ACTIVITY_RULE.getActivity();
-		activity.setNavigationalTransition(new BaseNavigationalTransition() {});
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		activity.setNavigationalTransition(new BaseNavigationalTransition() {
+		});
 		assertThat(activity.finishWithNavigationalTransition(), is(true));
 		assertThat(activity.isFinishing(), is(true));
 	}
 
 	@Test
 	public void testFinishWithNavigationalTransitionWhenThereIsNoTransition() {
-		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
 		assertThat(activity.finishWithNavigationalTransition(), is(false));
 		assertThat(activity.isFinishing(), is(true));
 	}
