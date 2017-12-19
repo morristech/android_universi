@@ -105,6 +105,11 @@ public final class TestResources {
 	public static final String TRANSITION = "transition";
 
 	/**
+	 * Type identifying <b>xml</b> resource which may be accessed as {@code R.xml.RESOURCE_NAME}.
+	 */
+	public static final String XML = "xml";
+
+	/**
 	 * Defines an annotation for determining set of allowed resource types for {@link #resourceIdentifier(Context, String, String)}.
 	 */
 	@StringDef({
@@ -120,7 +125,8 @@ public final class TestResources {
 			MENU,
 			STRING,
 			STYLE,
-			TRANSITION
+			TRANSITION,
+			XML
 	})
 	@Retention(RetentionPolicy.SOURCE)
 	@interface ResourceType {

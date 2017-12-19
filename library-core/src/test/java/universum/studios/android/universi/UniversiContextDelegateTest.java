@@ -26,26 +26,22 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
-import android.support.test.runner.AndroidJUnit4;
 
+import org.hamcrest.core.Is;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import universum.studios.android.dialog.manage.DialogController;
 import universum.studios.android.dialog.manage.DialogFactory;
 import universum.studios.android.dialog.manage.DialogXmlFactory;
-import universum.studios.android.test.instrumented.InstrumentedTestCase;
-import universum.studios.android.test.instrumented.TestActivity;
-import universum.studios.android.test.instrumented.TestFragment;
-import universum.studios.android.test.instrumented.TestResources;
-import universum.studios.android.test.instrumented.TestUtils;
+import universum.studios.android.test.local.RobolectricTestCase;
+import universum.studios.android.test.local.TestActivity;
+import universum.studios.android.test.local.TestFragment;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -56,15 +52,14 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Albedinsky
  */
-@RunWith(AndroidJUnit4.class)
-public final class UniversiContextDelegateTest extends InstrumentedTestCase {
-    
-	@SuppressWarnings("unused")
-	private static final String TAG = "UniversiContextDelegateTest";
+public final class UniversiContextDelegateTest extends RobolectricTestCase {
 
+	private static final int XML_DIALOGS_SET_RESOURCE_ID = 1;
+	private static final int XML_DIALOG_RESOURCE_ID = 2;
+    
 	@Test
 	public void testInstantiation() {
-		assertThat(new TestDelegate(mContext).mContext, is(mContext));
+		assertThat(new TestDelegate(mApplication).mContext, Is.<Context>is(mApplication));
 	}
 
     @Test
@@ -106,9 +101,8 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testSetDialogXmlFactory() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiContextDelegate delegate = new TestDelegate();
-		delegate.setDialogXmlFactory(TestResources.resourceIdentifier(mContext, TestResources.XML, "dialogs"));
+		delegate.setDialogXmlFactory(XML_DIALOGS_SET_RESOURCE_ID);
 		assertThat(delegate.getDialogFactory(), is(notNullValue()));
 		assertThat(delegate.getDialogFactory(), instanceOf(DialogXmlFactory.class));
 	}
@@ -152,7 +146,7 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testShowDialogWithIdWithoutDialogFactoryAttached() {
-		assertThat(new TestDelegate(mContext).showDialogWithId(1, null), is(false));
+		assertThat(new TestDelegate(mApplication).showDialogWithId(1, null), is(false));
 	}
 
 	@Test
@@ -202,7 +196,7 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testDismissDialogWithIdWithoutDialogFactoryAttached() {
-		assertThat(new TestDelegate(mContext).dismissDialogWithId(1), is(false));
+		assertThat(new TestDelegate(mApplication).dismissDialogWithId(1), is(false));
 	}
 
 	@Test
@@ -213,16 +207,14 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testShowXmlDialogWhenPaused() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiContextDelegate delegate = new TestDelegate();
 		delegate.setPaused(true);
-		assertThat(delegate.showXmlDialog(TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog"), null), is(false));
+		assertThat(delegate.showXmlDialog(XML_DIALOG_RESOURCE_ID, null), is(false));
 	}
 
 	@Test
 	public void testDismissXmlDialog() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
-		final int dialogResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog");
+		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		final TestActivity mockActivity = mock(TestActivity.class);
 		final FragmentManager mockFragmentManager = mock(FragmentManager.class);
 		final DialogFragment mockDialogFragment = mock(DialogFragment.class);
@@ -234,8 +226,7 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testDismissXmlDialogWhichIsNotShowing() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
-		final int dialogResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog");
+		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		final TestActivity mockActivity = mock(TestActivity.class);
 		final FragmentManager mockFragmentManager = mock(FragmentManager.class);
 		when(mockFragmentManager.findFragmentByTag(DialogXmlFactory.class.getName() + ".TAG." + dialogResource)).thenReturn(null);
@@ -246,8 +237,7 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testDismissXmlDialogWhichIsNotDialogFragment() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
-		final int dialogResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog");
+		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		final TestActivity mockActivity = mock(TestActivity.class);
 		final FragmentManager mockFragmentManager = mock(FragmentManager.class);
 		final Fragment mockFragment = mock(TestFragment.class);
@@ -259,10 +249,9 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testDismissXmlDialogWhenPaused() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiContextDelegate delegate = new TestDelegate();
 		delegate.setPaused(true);
-		assertThat(delegate.dismissXmlDialog(TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog")), is(false));
+		assertThat(delegate.dismissXmlDialog(XML_DIALOG_RESOURCE_ID), is(false));
 	}
 
 	@Test
@@ -340,7 +329,7 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testSetIsViewCreated() {
-		final UniversiContextDelegate delegate = new TestDelegate(mContext);
+		final UniversiContextDelegate delegate = new TestDelegate(mApplication);
 		delegate.setViewCreated(true);
 		assertThat(delegate.isViewCreated(), is(true));
 		delegate.setViewCreated(false);
@@ -349,12 +338,12 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testIsViewCreatedDefault() {
-		assertThat(new TestDelegate(mContext).isViewCreated(), is(false));
+		assertThat(new TestDelegate(mApplication).isViewCreated(), is(false));
 	}
 
 	@Test
 	public void testSetIsPaused() {
-		final UniversiContextDelegate delegate = new TestDelegate(mContext);
+		final UniversiContextDelegate delegate = new TestDelegate(mApplication);
 		delegate.setPaused(true);
 		assertThat(delegate.isPaused(), is(true));
 		delegate.setPaused(false);
@@ -363,19 +352,19 @@ public final class UniversiContextDelegateTest extends InstrumentedTestCase {
 
 	@Test
 	public void testIsPausedDefault() {
-		assertThat(new TestDelegate(mContext).isPaused(), is(false));
+		assertThat(new TestDelegate(mApplication).isPaused(), is(false));
 	}
 
 	@Test
 	public void testRegisterRequest() {
-		final UniversiContextDelegate delegate = new TestDelegate(mContext);
+		final UniversiContextDelegate delegate = new TestDelegate(mApplication);
 		delegate.registerRequest(0x00000001);
 		assertThat(delegate.isRequestRegistered(0x00000001), is(true));
 	}
 
 	@Test
 	public void testUnregisterRequest() {
-		final UniversiContextDelegate delegate = new TestDelegate(mContext);
+		final UniversiContextDelegate delegate = new TestDelegate(mApplication);
 		delegate.registerRequest(0x00000001);
 		delegate.unregisterRequest(0x00000001);
 		assertThat(delegate.isRequestRegistered(0x00000001), is(false));

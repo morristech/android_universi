@@ -24,17 +24,15 @@ import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
-import android.support.test.runner.AndroidJUnit4;
 
 import org.hamcrest.core.Is;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import universum.studios.android.fragment.manage.FragmentController;
 import universum.studios.android.fragment.manage.FragmentFactory;
-import universum.studios.android.test.instrumented.InstrumentedTestCase;
-import universum.studios.android.test.instrumented.TestActivity;
-import universum.studios.android.test.instrumented.TestFragment;
+import universum.studios.android.test.local.RobolectricTestCase;
+import universum.studios.android.test.local.TestActivity;
+import universum.studios.android.test.local.TestFragment;
 import universum.studios.android.transition.BaseNavigationalTransition;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -51,11 +49,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Albedinsky
  */
-@RunWith(AndroidJUnit4.class)
-public final class UniversiActivityDelegateTest extends InstrumentedTestCase {
-
-	@SuppressWarnings("unused")
-	private static final String TAG = "UniversiActivityDelegateTest";
+public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	private Activity mMockActivity;
 
