@@ -3,7 +3,7 @@ Universi
 
 [![CircleCI](https://circleci.com/gh/universum-studios/android_universi.svg?style=svg)](https://circleci.com/gh/universum-studios/android_universi)
 [![Codecov](https://codecov.io/gh/universum-studios/android_universi/branch/master/graph/badge.svg)](https://codecov.io/gh/universum-studios/android_universi)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c485a93364074dc5a87c7cb43dce9c3f)](https://www.codacy.com/app/universum-studios/android_universi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_universi&amp;utm_campaign=Badge_Grade)
+[![Codacy](https://api.codacy.com/project/badge/Grade/c485a93364074dc5a87c7cb43dce9c3f)](https://www.codacy.com/app/universum-studios/android_universi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_universi&amp;utm_campaign=Badge_Grade)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universi-green.svg?style=flat)](https://android-arsenal.com/details/1/5412)
 
 Simple universal library for the Android platform providing components that may be used as base for Activities and Fragments in Android applications.
@@ -11,13 +11,13 @@ Simple universal library for the Android platform providing components that may 
 For more information please visit the **[Wiki](https://github.com/universum-studios/android_universi/wiki)**.
 
 ## Download ##
-[![Download](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Auniversi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Auniversi/_latestVersion)
+[![Bintray](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Auniversi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Auniversi/_latestVersion)
 
 Download the latest **[release](https://github.com/universum-studios/android_universi/releases "Latest Releases page")** or **add as dependency** in your project via:
 
 ### Gradle ###
 
-    compile "universum.studios.android:universi:${DESIRED_VERSION}@aar"
+    implementation "universum.studios.android:universi:${DESIRED_VERSION}@aar"
 
 ## Modules ##
 

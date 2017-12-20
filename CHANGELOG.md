@@ -1,7 +1,15 @@
 Change-Log
 ===============
 
+More **detailed changelog** for each respective version may be viewed by pressing on a desired _version's name_.
+
 ## Version 1.x ##
+
+### [1.0.4](https://github.com/universum-studios/android_universi/releases/tag/v1.0.4) ###
+> 20.12.2017
+
+- Resolved [Feature #24](https://github.com/universum-studios/android_universi/issues/24).
+- Updated **dependencies** versions and _Gradle_ configuration.
 
 ### [1.0.3](https://github.com/universum-studios/android_universi/releases/tag/v1.0.3) ###
 > 06.06.2017
@@ -25,10 +33,3 @@ Change-Log
 > 02.04.2017
 
 - First production release.
-- Updated `fragments` + `dialogs` dependencies to the latest versions.
-- Updated `transitions` dependency to the latest version and incorporated updates for `BaseNavigationalTransition`
-  introduced in **[1.0.2](https://github.com/universum-studios/android_transitions/releases/tag/1.0.2)**
-  release. Whenever a desired `BaseNavigationalTransition` is attached to `UniversiActivity` or
-  `UniversiActivityCompat` via `setNavigationalTransition(...)` method a configuration for incoming
-  transitions is performed for that activity via `BaseNavigationalTransition.configureIncomingTransitions(Activity)`.
-- `UniversiConfig` class has been removed as it was not used across the library.

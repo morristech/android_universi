@@ -175,7 +175,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 * Ensures that the context delegate is initialized for this activity.
 	 */
 	private void ensureContextDelegate() {
-		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
+		if (mContextDelegate == null) this.mContextDelegate = UniversiActivityDelegate.create(this);
 	}
 
 	/**
