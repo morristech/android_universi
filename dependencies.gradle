@@ -3,7 +3,7 @@ def versions = [
         androidSupport                  : '27.0.0',
         androidSupportTest              : '1.0.1',
         androidSupportTestEspresso      : '3.0.1',
-        universumStudiosSupportFragments: '1.2.0',
+        universumStudiosSupportFragments: '1.3.0',
         universumStudiosSupportDialogs  : '0.9.3',
         butterknife                     : '8.8.1',
         junit                           : '4.12',
