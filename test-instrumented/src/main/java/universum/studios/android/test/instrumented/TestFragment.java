@@ -32,7 +32,7 @@ import android.widget.FrameLayout;
  *
  * @author Martin Albedinsky
  */
-public final class TestFragment extends Fragment {
+public class TestFragment extends Fragment {
 
 	/**
 	 * Log TAG.
