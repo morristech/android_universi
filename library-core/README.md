@@ -5,11 +5,11 @@ This module contains core components for the library, mainly **activity** and **
 for **Universi** context.
 
 ## Download ##
-[![Download](https://api.bintray.com/packages/universum-studios/android/universum.studios.android.support%3Asupport-universi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android.support%3Asupport-universi/_latestVersion)
+[![Bintray](https://api.bintray.com/packages/universum-studios/android/universum.studios.android.support%3Asupport-universi/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android.support%3Asupport-universi/_latestVersion)
 
 ### Gradle ###
 
-    compile "universum.studios.android.support:support-universi-core:${DESIRED_VERSION}@aar"
+    implementation "universum.studios.android.support:support-universi-core:${DESIRED_VERSION}@aar"
 
 ## Components ##
 

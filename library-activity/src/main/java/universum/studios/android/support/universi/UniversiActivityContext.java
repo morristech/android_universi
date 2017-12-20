@@ -51,6 +51,7 @@ public interface UniversiActivityContext {
 	 * @param id        Id of the desired loader to start.
 	 * @param params    Params for loader.
 	 * @param callbacks Callbacks for loader.
+	 * @param <D>       Type of data the loader loads.
 	 * @return Initialized or re-started loader instance or {@code null} if the specified <var>callbacks</var>
 	 * do not create loader for the specified <var>id</var>.
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
@@ -66,6 +67,7 @@ public interface UniversiActivityContext {
 	 * @param id        Id of the desired loader to init.
 	 * @param params    Params for loader.
 	 * @param callbacks Callbacks for loader.
+	 * @param <D>       Type of data the loader loads.
 	 * @return Initialized loader instance or {@code null} if the specified <var>callbacks</var> do
 	 * not create loader for the specified <var>id</var>.
 	 * @see #startLoader(int, Bundle, LoaderManager.LoaderCallbacks)
@@ -82,6 +84,7 @@ public interface UniversiActivityContext {
 	 * @param id        Id of the desired loader to re-start.
 	 * @param params    Params for loader.
 	 * @param callbacks Callbacks for loader.
+	 * @param <D>       Type of data the loader loads.
 	 * @return Re-started loader instance or {@code null} if the specified <var>callbacks</var> do
 	 * not create loader for the specified <var>id</var>.
 	 * @see #startLoader(int, Bundle, LoaderManager.LoaderCallbacks)
