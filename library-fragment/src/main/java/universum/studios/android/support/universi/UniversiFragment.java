@@ -124,7 +124,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * Ensures that the context delegate is initialized for this fragment.
 	 */
 	private void ensureContextDelegate() {
-		if (mContextDelegate == null) this.mContextDelegate = UniversiContextDelegate.create(this);
+		if (mContextDelegate == null) this.mContextDelegate = UniversiFragmentDelegate.create(this);
 	}
 
 	/**

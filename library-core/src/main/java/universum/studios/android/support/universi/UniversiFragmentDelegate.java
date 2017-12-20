@@ -21,6 +21,7 @@ package universum.studios.android.support.universi;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.annotation.VisibleForTesting;
 
 import universum.studios.android.support.dialog.manage.DialogController;
 
@@ -30,7 +31,7 @@ import universum.studios.android.support.dialog.manage.DialogController;
  * @author Martin Albedinsky
  * @see UniversiActivityDelegate
  */
-final class UniversiFragmentDelegate extends UniversiContextDelegate {
+public class UniversiFragmentDelegate extends UniversiContextDelegate {
 
 	/*
 	 * Constants ===================================================================================
@@ -67,6 +68,7 @@ final class UniversiFragmentDelegate extends UniversiContextDelegate {
 	 *
 	 * @see UniversiContextDelegate#UniversiContextDelegate(Context)
 	 */
+	@VisibleForTesting
 	UniversiFragmentDelegate(@NonNull final Fragment context) {
 		super(context.getActivity());
 		this.mFragment = context;
@@ -75,6 +77,17 @@ final class UniversiFragmentDelegate extends UniversiContextDelegate {
 	/*
 	 * Methods =====================================================================================
 	 */
+
+	/**
+	 * Creates a new instance of UniversiFragmentDelegate for the given <var>fragment</var>.
+	 *
+	 * @param fragment The fragment context in which will be the new delegate used.
+	 * @return Ready to be used delegate.
+	 */
+	@NonNull
+	public static UniversiFragmentDelegate create(@NonNull final Fragment fragment) {
+		return new UniversiFragmentDelegate(fragment);
+	}
 
 	/**
 	 */
