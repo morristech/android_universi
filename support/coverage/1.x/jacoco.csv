@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+library,universum.studios.android.support.universi,UniversiContextDelegate,33,281,9,41,7,61,7,44,0,26
+library,universum.studios.android.support.universi,UniversiActivity,115,355,23,28,32,114,20,57,4,47
+library,universum.studios.android.support.universi,UniversiFragment.new Runnable() {...},0,10,0,0,0,3,0,2,0,2
+library,universum.studios.android.support.universi,UniversiCompatActivity,184,286,32,19,56,90,29,48,11,40
+library,universum.studios.android.support.universi,UniversiActivityDelegate,0,156,0,14,0,40,0,24,0,17
+library,universum.studios.android.support.universi,UniversiCompatActivity.new Runnable() {...},0,10,0,0,0,3,0,2,0,2
+library,universum.studios.android.support.universi,UniversiFragment,24,196,6,10,5,66,6,30,2,26
+library,universum.studios.android.support.universi,UniversiActivity.new Runnable() {...},0,10,0,0,0,3,0,2,0,2
+library,universum.studios.android.support.universi,UniversiFragmentDelegate,0,19,0,0,0,5,0,3,0,3
