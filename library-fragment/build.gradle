@@ -28,17 +28,7 @@ android {
     defaultConfig {
         minSdkVersion config.build.minSdkVersion
         targetSdkVersion config.build.targetSdkVersion
-        testInstrumentationRunner config.test.instrumentationRunner
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-        debug {
-            minifyEnabled false
-            testCoverageEnabled true
-        }
+        testInstrumentationRunner config.test.instrumentationRunner.androidJUnit
     }
 
     compileOptions {
@@ -61,27 +51,22 @@ repositories {
 }
 
 dependencies {
-    /*
-     * RELEASE DEPENDENCIES ------------------------------------------------------------------------
-     */
-    compile deps.androidSupport.annotations
-    compile deps.androidSupport.appCompatV7
-    compile deps.universumStudios.supportFragmentsCore
-    compile deps.universumStudios.supportFragmentsBase
-    compile deps.universumStudios.supportFragmentsCommon
-    compile deps.universumStudios.supportDialogsCore
-    compile deps.universumStudios.supportDialogsManage
-    releaseCompile "universum.studios.android.support:support-universi-core:${config.library.version}@aar"
+    // PRODUCTION ----------------------------------------------------------------------------------
+    implementation deps.androidSupport.annotations
+    implementation deps.androidSupport.appCompatV7
+    implementation deps.universumStudios.supportFragmentsCore
+    implementation deps.universumStudios.supportFragmentsBase
+    implementation deps.universumStudios.supportFragmentsCommon
+    implementation deps.universumStudios.supportDialogsCore
+    implementation deps.universumStudios.supportDialogsManage
+    releaseImplementation "universum.studios.android.support:support-universi-core:${config.library.version}@aar"
 
-    /*
-     * DEBUG DEPENDENCIES --------------------------------------------------------------------------
-     */
-    debugCompile project(':library-core')
+    // DEVELOPMENT ---------------------------------------------------------------------------------
+    debugApi project(':library-core')
 
-    /*
-     * TEST DEPENDENCIES ---------------------------------------------------------------------------
-     */
-    androidTestCompile project(':test-instrumented')
+    // TEST ----------------------------------------------------------------------------------------
+    testImplementation project(':test-local')
+    androidTestImplementation project(':test-instrumented')
 }
 
 apply from: "${rootProject.rootDir}/deploy/deploy.gradle"

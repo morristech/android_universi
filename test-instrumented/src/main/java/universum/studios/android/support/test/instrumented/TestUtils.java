@@ -22,7 +22,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 /**
- * Utility class for tests.
+ * Utility class for instrumented tests.
  *
  * @author Martin Albedinsky
  */

@@ -19,6 +19,7 @@
 package universum.studios.android.support.test.instrumented;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
- * Simple fragment that may be used in <b>Android Instrumented Tests</b>.
+ * Simple fragment that may be used in <b>Android instrumented tests</b>.
  *
  * @author Martin Albedinsky
  */
@@ -40,15 +41,15 @@ public class TestFragment extends Fragment {
 	private static final String TAG = "TestFragment";
 
 	/**
-	 * Id of the TestFragment's content view.
+	 * Id of the TestActivity's content view.
 	 */
-	public static final int CONTENT_VIEW_ID = android.R.id.custom;
+	public static final int CONTENT_VIEW_ID = android.R.id.empty;
 
 	/**
 	 */
-	@Nullable
+	@NonNull
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		final FrameLayout contentView = new FrameLayout(inflater.getContext());
 		contentView.setId(CONTENT_VIEW_ID);
 		return contentView;
