@@ -16,32 +16,27 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.universi; 
+package universum.studios.android.universi;
+
 import android.Manifest;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.test.rule.UiThreadTestRule;
-import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.robolectric.annotation.Config;
 
 import universum.studios.android.dialog.DialogOptions;
 import universum.studios.android.dialog.manage.DialogController;
 import universum.studios.android.dialog.manage.DialogFactory;
-import universum.studios.android.test.instrumented.InstrumentedTestCase;
-import universum.studios.android.test.instrumented.TestResources;
-import universum.studios.android.test.instrumented.TestUtils;
+import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
@@ -54,14 +49,11 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Albedinsky
  */
-@RunWith(AndroidJUnit4.class)
-public final class UniversiFragmentTest extends InstrumentedTestCase {
+public final class UniversiFragmentTest extends RobolectricTestCase {
+
+	private static final int XML_DIALOGS_SET_RESOURCE_ID = 1;
+	private static final int XML_DIALOG_RESOURCE_ID = 2;
     
-	@SuppressWarnings("unused")
-	private static final String TAG = "UniversiFragmentTest";
-
-	@Rule public UiThreadTestRule UI_RULE = new UiThreadTestRule();
-
 	@Test
 	public void testREQUEST_BIND_DATA_INNER() {
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
@@ -93,7 +85,8 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 	    assertThat(new TestFragment().getDialogController(), is(notNullValue()));
     }
 
-    @Test
+	@Test
+    @SuppressWarnings("ResultOfMethodCallIgnored")
 	public void testSetGetDialogFactory() {
 	    final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 	    final DialogFactory mockFactory = mock(DialogFactory.class);
@@ -109,11 +102,10 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 
     @Test
 	public void testSetDialogXmlFactory() {
-	    assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 	    final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
-	    final int dialogsResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialogs");
+	    final int dialogsResource = XML_DIALOGS_SET_RESOURCE_ID;
 	    fragment.setDialogXmlFactory(dialogsResource);
 	    verify(mockDelegate, times(1)).setDialogXmlFactory(dialogsResource);
 	    verifyNoMoreInteractions(mockDelegate);
@@ -124,7 +116,7 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
-		fragment.onViewCreated(new View(mContext), null);
+		fragment.onViewCreated(new View(mApplication), null);
 		assertThat(fragment.onBindViewsInvoked, is(true));
 		verify(mockDelegate, times(1)).setViewCreated(true);
 		verify(mockDelegate, times(1)).isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA);
@@ -137,7 +129,7 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
 		when(mockDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)).thenReturn(true);
-		fragment.onViewCreated(new View(mContext), null);
+		fragment.onViewCreated(new View(mApplication), null);
 		assertThat(fragment.onBindViewsInvoked, is(true));
 		assertThat(fragment.onBindDataInvoked, is(true));
 		verify(mockDelegate, times(1)).setViewCreated(true);
@@ -162,17 +154,11 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
 	    when(mockDelegate.isViewCreated()).thenReturn(false);
-	    UI_RULE.runOnUiThread(new Runnable() {
-
-		    @Override
-		    public void run() {
-				fragment.requestBindData();
-			    assertThat(fragment.onBindDataInvoked, is(false));
-			    verify(mockDelegate, times(1)).isViewCreated();
-			    verify(mockDelegate, times(1)).registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
-			    verifyNoMoreInteractions(mockDelegate);
-		    }
-	    });
+	    fragment.requestBindData();
+	    assertThat(fragment.onBindDataInvoked, is(false));
+	    verify(mockDelegate, times(1)).isViewCreated();
+	    verify(mockDelegate, times(1)).registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+	    verifyNoMoreInteractions(mockDelegate);
     }
 
     @Test
@@ -181,16 +167,10 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
 	    when(mockDelegate.isViewCreated()).thenReturn(true);
-	    UI_RULE.runOnUiThread(new Runnable() {
-
-		    @Override
-		    public void run() {
-				fragment.requestBindData();
-			    assertThat(fragment.onBindDataInvoked, is(true));
-			    verify(mockDelegate, times(1)).isViewCreated();
-			    verifyNoMoreInteractions(mockDelegate);
-		    }
-	    });
+	    fragment.requestBindData();
+	    assertThat(fragment.onBindDataInvoked, is(true));
+	    verify(mockDelegate, times(1)).isViewCreated();
+	    verifyNoMoreInteractions(mockDelegate);
     }
 
     @Test
@@ -225,8 +205,8 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 	public void testSupportRequestPermissions() {}
 
 	@Test
+	@Config(sdk = Build.VERSION_CODES.M)
 	public void testOnRequestPermissionsResult() {
-		assumeTrue(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
@@ -267,11 +247,10 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 
 	@Test
 	public void testShowXmlDialog() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
-		final int dialogResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog");
+		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		fragment.showXmlDialog(dialogResource);
 		verify(mockDelegate, times(1)).showXmlDialog(eq(dialogResource), (DialogOptions) isNull());
 		verifyNoMoreInteractions(mockDelegate);
@@ -279,11 +258,10 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 
 	@Test
 	public void testShowXmlDialogWithOptions() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
-		final int dialogResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog");
+		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		final DialogOptions mockOptions = mock(DialogOptions.class);
 		fragment.showXmlDialog(dialogResource, mockOptions);
 		verify(mockDelegate, times(1)).showXmlDialog(dialogResource, mockOptions);
@@ -292,11 +270,10 @@ public final class UniversiFragmentTest extends InstrumentedTestCase {
 
 	@Test
 	public void testDismissXmlDialog() {
-		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
-		final int dialogResource = TestResources.resourceIdentifier(mContext, TestResources.XML, "dialog");
+		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		fragment.dismissXmlDialog(dialogResource);
 		verify(mockDelegate, times(1)).dismissXmlDialog(dialogResource);
 		verifyNoMoreInteractions(mockDelegate);
