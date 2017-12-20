@@ -28,17 +28,7 @@ android {
     defaultConfig {
         minSdkVersion config.build.minSdkVersion
         targetSdkVersion config.build.targetSdkVersion
-        testInstrumentationRunner config.test.instrumentationRunner
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-        debug {
-            minifyEnabled false
-            testCoverageEnabled true
-        }
+        testInstrumentationRunner config.test.instrumentationRunner.androidJUnit
     }
 
     compileOptions {
@@ -60,20 +50,19 @@ repositories {
 }
 
 dependencies {
-    /*
-     * RELEASE DEPENDENCIES ------------------------------------------------------------------------
-     */
-    compile deps.androidSupport.annotations
-    compile deps.universumStudios.transitionsNavigationalBase
-    compile deps.universumStudios.fragmentsCore
-    compile deps.universumStudios.fragmentsManageCore
-    compile deps.universumStudios.dialogsCore
-    compile deps.universumStudios.dialogsManage
+    // PRODUCTION ----------------------------------------------------------------------------------
+    implementation deps.androidSupport.annotations
+    implementation deps.universumStudios.transitionsNavigationalBase
+    implementation deps.universumStudios.fragmentsCore
+    implementation deps.universumStudios.fragmentsManageCore
+    implementation deps.universumStudios.dialogsCore
+    implementation deps.universumStudios.dialogsManage
 
-    /*
-     * TEST DEPENDENCIES ---------------------------------------------------------------------------
-     */
-    androidTestCompile project(':test-instrumented')
+    // DEVELOPMENT ---------------------------------------------------------------------------------
+    // None.
+
+    // TEST ----------------------------------------------------------------------------------------
+    testImplementation project(':test-local')
 }
 
 apply from: "${rootProject.rootDir}/deploy/deploy.gradle"

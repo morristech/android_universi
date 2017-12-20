@@ -33,9 +33,6 @@ import static org.mockito.Mockito.mock;
  */
 public final class UniversiFragmentDelegateTest extends RobolectricTestCase {
     
-	@SuppressWarnings("unused")
-	private static final String TAG = "UniversiFragmentDelegateTest";
-
 	private Fragment mMockFragment;
 
 	@Override
