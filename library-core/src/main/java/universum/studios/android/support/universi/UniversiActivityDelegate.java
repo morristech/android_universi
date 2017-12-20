@@ -116,7 +116,7 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @return Ready to be used delegate.
 	 */
 	@NonNull
-	public static UniversiActivityDelegate create(@NonNull final Activity activity) {
+	public static UniversiActivityDelegate create(@NonNull final FragmentActivity activity) {
 		return new UniversiActivityDelegate(activity);
 	}
 

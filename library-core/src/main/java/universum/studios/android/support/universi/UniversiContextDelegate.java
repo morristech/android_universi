@@ -19,9 +19,6 @@
 package universum.studios.android.support.universi;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -172,7 +169,7 @@ public abstract class UniversiContextDelegate {
 	 *
 	 * @param activity The activity context in which will be the new delegate used.
 	 * @return Ready to use context delegate.
-	 * @deprecated Use {@link UniversiActivityDelegate#create(Activity)} instead.
+	 * @deprecated Use {@link UniversiActivityDelegate#create(FragmentActivity)} instead.
 	 */
 	@NonNull
 	@Deprecated
@@ -187,7 +184,7 @@ public abstract class UniversiContextDelegate {
 	 *
 	 * @param fragment The fragment context in which will be the new delegate used.
 	 * @return Ready to use context delegate.
-	 * @deprecated Use {@link UniversiFragmentDelegate#create(Activity)} instead.
+	 * @deprecated Use {@link UniversiFragmentDelegate#create(Fragment)} instead.
 	 */
 	@NonNull
 	@Deprecated
