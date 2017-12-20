@@ -5,8 +5,8 @@ More **detailed changelog** for each respective version may be viewed by pressin
 
 ## Version 1.x ##
 
-### 1.0.4 ###
-> upcoming
+### [1.0.4](https://github.com/universum-studios/android_universi/releases/tag/v1.0.4) ###
+> 20.12.2017
 
 - Resolved [Feature #24](https://github.com/universum-studios/android_universi/issues/24).
 - Updated **dependencies** versions and _Gradle_ configuration.
