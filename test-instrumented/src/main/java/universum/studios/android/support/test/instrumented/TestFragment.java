@@ -38,7 +38,7 @@ public class TestFragment extends Fragment {
 	 * Log TAG.
 	 */
 	@SuppressWarnings("unused")
-	private static final String TAG = "TestActivity";
+	private static final String TAG = "TestFragment";
 
 	/**
 	 * Id of the TestActivity's content view.
