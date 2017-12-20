@@ -45,8 +45,8 @@ task generateJavadoc(type: Javadoc) {
         links 'https://developer.android.com/reference'
         links 'https://developer.android.com/reference/android/support'
         links 'https://universum-studios.github.io/android_transitions/reference/1.x'
-        links 'https://universum-studios.github.io/android_fragments/reference/1.x'
-        links 'https://universum-studios.github.io/android_dialogs/reference/0.x'
+        links 'https://universum-studios.github.io/android_fragments/support/reference/1.x'
+        links 'https://universum-studios.github.io/android_dialogs/support/reference/0.x'
     }
     // Append class path with dependencies.
     classpath += files(android.getBootClasspath().join(File.pathSeparator))

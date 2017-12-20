@@ -16,7 +16,7 @@ def testConfig = [
 ]
 
 def javadocConfig = [
-        reference: [online: "https://universum-studios.github.io/android_${libraryConfig.name}/reference/support/1.x"]
+        reference: [online: "https://universum-studios.github.io/android_${libraryConfig.name}/support/reference/1.x"]
 ]
 
 def githubConfig = [
