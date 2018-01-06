@@ -43,15 +43,15 @@ github {
 
         types {
             production {
-                tagName "support-v${config.maven.version}"
-                releaseName "${config.maven.version} (support)"
+                tagName "support-v${config.pom.version}"
+                releaseName "${config.pom.version} (support)"
                 releaseBody file("${projectDir}/github/release-body-production.md").text
                 draft true
                 overwrite true
             }
             beta {
-                tagName "support-${config.maven.version}-beta1"
-                releaseName "${config.maven.version}-beta1 (support)"
+                tagName "support-${config.pom.version}-beta1"
+                releaseName "${config.pom.version}-beta1 (support)"
                 releaseBody file("${projectDir}/github/release-body-beta.md").text
                 draft true
                 preRelease true

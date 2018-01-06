@@ -59,7 +59,7 @@ dependencies {
     implementation deps.universumStudios.supportFragmentsCommon
     implementation deps.universumStudios.supportDialogsCore
     implementation deps.universumStudios.supportDialogsManage
-    releaseImplementation "universum.studios.android.support:support-universi-core:${config.library.version}@aar"
+    releaseImplementation deps.modules.libraryCore
 
     // DEVELOPMENT ---------------------------------------------------------------------------------
     debugApi project(':library-core')
