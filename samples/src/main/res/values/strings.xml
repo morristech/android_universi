@@ -23,9 +23,9 @@
 
 	<!-- ### APPLICATION ======================================================================= -->
 
-	<string name="app_name">Universi</string>
+	<string name="app_name">Universi (support)</string>
 	<string name="app_intro">
-		Welcome to the Universi sample App.
+		Welcome to the Universi (support) sample App.
 	</string>
 
 	<!-- ### NAVIGATION ======================================================================== -->
