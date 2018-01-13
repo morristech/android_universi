@@ -1,4 +1,4 @@
-Universi
+Android Universi
 ===============
 
 [![CircleCI](https://circleci.com/gh/universum-studios/android_universi.svg?style=svg)](https://circleci.com/gh/universum-studios/android_universi)
