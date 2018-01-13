@@ -1,4 +1,4 @@
-Universi (support)
+Android Universi (support)
 ===============
 
 [![CircleCI](https://circleci.com/gh/universum-studios/android_universi/tree/support-master.svg?style=svg)](https://circleci.com/gh/universum-studios/android_universi/tree/support-master)
