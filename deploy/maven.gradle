@@ -34,7 +34,7 @@ afterEvaluate { project ->
              * Project artifact --------------------------------------------------------------------
              */
             pom.groupId = config.pom.groupId
-            pom.artifactId = project.property('maven.pom.artifactId')
+            pom.artifactId = "support-${project.property('maven.pom.artifactId')}"
             pom.version = config.pom.version
             pom.packaging = config.pom.packaging
             /**
@@ -81,7 +81,7 @@ afterEvaluate { project ->
 task updateArtifacts() {
     doLast {
         if (config.maven.localUrl != null) {
-            final String artifactId = String.valueOf(project.property('maven.pom.artifactId'))
+            final String artifactId = "support-${project.property('maven.pom.artifactId')}"
             final String artifactsSourceDir = "${config.maven.localUrl}/universum/studios/android/support/${artifactId}/${config.pom.version}"
             final String artifactsDestinationDir = "${rootProject.rootDir}/artifacts/universum/studios/android/support/${artifactId}/${config.pom.version}"
             delete artifactsDestinationDir

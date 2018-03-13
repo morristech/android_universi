@@ -54,7 +54,7 @@ publishing {
     publications {
         library(MavenPublication) {
             groupId config.pom.groupId
-            artifactId project.property('maven.pom.artifactId')
+            artifactId "support-${project.property('maven.pom.artifactId')}"
             version config.pom.version
             artifact bundleRelease
             artifact classesJar
