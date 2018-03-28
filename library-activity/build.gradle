@@ -47,20 +47,20 @@ android {
 repositories {
     maven { url repos.project.artifacts }
     mavenLocal()
-    maven { url repos.bintray.universumStudiosAndroid }
+    maven { url repos.bintray.universum.studios.android }
 }
 
 dependencies {
     // PRODUCTION ----------------------------------------------------------------------------------
-    implementation deps.androidSupport.annotations
-    implementation deps.androidSupport.appCompatV7
-    implementation deps.universumStudios.transitionsNavigationalBase
-    implementation deps.universumStudios.fragmentsCore
-    implementation deps.universumStudios.fragmentsBase
-    implementation deps.universumStudios.fragmentsCommon
-    implementation deps.universumStudios.fragmentsManageCore
-    implementation deps.universumStudios.dialogsCore
-    implementation deps.universumStudios.dialogsManage
+    implementation deps.android.support.annotations
+    implementation deps.android.support.appCompatV7
+    implementation deps.universum.studios.transitionsNavigationalBase
+    implementation deps.universum.studios.fragmentsCore
+    implementation deps.universum.studios.fragmentsBase
+    implementation deps.universum.studios.fragmentsCommon
+    implementation deps.universum.studios.fragmentsManageCore
+    implementation deps.universum.studios.dialogsCore
+    implementation deps.universum.studios.dialogsManage
     releaseImplementation deps.modules.libraryCore
 
     // DEVELOPMENT ---------------------------------------------------------------------------------
