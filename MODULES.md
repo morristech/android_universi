@@ -21,7 +21,7 @@ as usually.
     }
 
 ## Available modules ##
-> Following modules are available in the [latest](https://github.com/universum-studios/android_universi/releases "Latest Releases page") stable release.
+> Following modules are available in the [latest](https://github.com/universum-studios/android_universi/releases "Releases page") stable release.
 
 - **[Core](https://github.com/universum-studios/android_universi/tree/support-master/library-core)**
 - **[Activity](https://github.com/universum-studios/android_universi/tree/support-master/library-activity)**
