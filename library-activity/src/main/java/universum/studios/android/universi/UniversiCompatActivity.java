@@ -243,8 +243,10 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * annotation (if presented).
 	 */
 	private void configureActionBar(final ActionBar actionBar) {
-		if (actionBar == null || annotationHandler == null) return;
-		annotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));
+		if (actionBar == null || annotationHandler == null) {
+			return;
+		}
+		this.annotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));
 	}
 
 	/**
@@ -289,7 +291,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Override public void setNavigationalTransition(@Nullable final BaseNavigationalTransition transition) {
 		this.ensureContextDelegate();
-		delegate.setNavigationalTransition(transition);
+		this.delegate.setNavigationalTransition(transition);
 	}
 
 	/**
@@ -310,14 +312,14 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Override public void setFragmentController(@Nullable final FragmentController controller) {
 		this.ensureContextDelegate();
-		delegate.setFragmentController(controller);
+		this.delegate.setFragmentController(controller);
 	}
 
 	/**
 	 */
 	@Override public void setFragmentFactory(@Nullable final FragmentFactory factory) {
 		this.ensureContextDelegate();
-		delegate.setFragmentFactory(factory);
+		this.delegate.setFragmentFactory(factory);
 	}
 
 	/**
@@ -331,7 +333,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Override public void setDialogController(@Nullable final DialogController controller) {
 		this.ensureContextDelegate();
-		delegate.setDialogController(controller);
+		this.delegate.setDialogController(controller);
 	}
 
 	/**
@@ -345,14 +347,14 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	@Override public void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
 		this.ensureContextDelegate();
-		delegate.setDialogXmlFactory(xmlDialogsSet);
+		this.delegate.setDialogXmlFactory(xmlDialogsSet);
 	}
 
 	/**
 	 */
 	@Override public void setDialogFactory(@Nullable final DialogFactory factory) {
 		this.ensureContextDelegate();
-		delegate.setDialogFactory(factory);
+		this.delegate.setDialogFactory(factory);
 	}
 
 	/**
@@ -388,7 +390,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 			onBindData();
 			return;
 		}
-		delegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+		this.delegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
 	}
 
 	/**

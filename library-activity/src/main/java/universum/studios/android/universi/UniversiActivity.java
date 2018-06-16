@@ -243,7 +243,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 		onBindViews();
 		// Check if there was requested data binding before view creation, if it was, perform binding now.
 		if (delegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {
-			delegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+			this.delegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
 			onBindData();
 		}
 	}
@@ -260,8 +260,10 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 * annotation (if presented).
 	 */
 	private void configureActionBar(final ActionBar actionBar) {
-		if (actionBar == null || annotationHandler == null) return;
-		annotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));
+		if (actionBar == null || annotationHandler == null) {
+			return;
+		}
+		this.annotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));
 	}
 
 	/**
@@ -306,7 +308,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@Override public void setNavigationalTransition(@Nullable final BaseNavigationalTransition transition) {
 		this.ensureContextDelegate();
-		delegate.setNavigationalTransition(transition);
+		this.delegate.setNavigationalTransition(transition);
 	}
 
 	/**
@@ -320,7 +322,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@Override public void setFragmentController(@Nullable final FragmentController controller) {
 		this.ensureContextDelegate();
-		delegate.setFragmentController(controller);
+		this.delegate.setFragmentController(controller);
 	}
 
 	/**
@@ -334,7 +336,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@Override public void setFragmentFactory(@Nullable final FragmentFactory factory) {
 		this.ensureContextDelegate();
-		delegate.setFragmentFactory(factory);
+		this.delegate.setFragmentFactory(factory);
 	}
 
 	/**
@@ -348,7 +350,7 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@Override public void setDialogController(@Nullable final DialogController controller) {
 		this.ensureContextDelegate();
-		delegate.setDialogController(controller);
+		this.delegate.setDialogController(controller);
 	}
 
 	/**
@@ -362,14 +364,14 @@ public abstract class UniversiActivity extends Activity implements UniversiActiv
 	 */
 	@Override public void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
 		this.ensureContextDelegate();
-		delegate.setDialogXmlFactory(xmlDialogsSet);
+		this.delegate.setDialogXmlFactory(xmlDialogsSet);
 	}
 
 	/**
 	 */
 	@Override public void setDialogFactory(@Nullable final DialogFactory factory) {
 		this.ensureContextDelegate();
-		delegate.setDialogFactory(factory);
+		this.delegate.setDialogFactory(factory);
 	}
 
 	/**
