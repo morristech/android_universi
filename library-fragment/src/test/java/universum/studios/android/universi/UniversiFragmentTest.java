@@ -299,23 +299,23 @@ public final class UniversiFragmentTest extends RobolectricTestCase {
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnDestroyViewWithoutContextDelegateInitialized() {
-		new TestFragment().onDestroyView();
+	@Test public void testOnDestroyViewWithoutContextDelegateInitialized() {
+		// Arrange:
+		final UniversiFragment fragment = new TestFragment();
+		// Act:
+		fragment.onDestroyView();
 	}
 
 	public static final class TestFragment extends UniversiFragment {
 
 		boolean onBindViewsInvoked, onBindDataInvoked;
 
-		@Override
-		protected void onBindViews(@NonNull View rootView, @Nullable Bundle savedInstanceState) {
+		@Override protected void onBindViews(@NonNull final View rootView, @Nullable final Bundle savedInstanceState) {
 			super.onBindViews(rootView, savedInstanceState);
 			this.onBindViewsInvoked = true;
 		}
 
-		@Override
-		protected void onBindData() {
+		@Override protected void onBindData() {
 			super.onBindData();
 			this.onBindDataInvoked = true;
 		}

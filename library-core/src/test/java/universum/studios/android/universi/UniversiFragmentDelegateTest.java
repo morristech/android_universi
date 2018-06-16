@@ -22,10 +22,12 @@ import android.app.Fragment;
 
 import org.junit.Test;
 
+import universum.studios.android.dialog.manage.DialogController;
 import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.Mockito.mock;
 
@@ -34,16 +36,14 @@ import static org.mockito.Mockito.mock;
  */
 public final class UniversiFragmentDelegateTest extends RobolectricTestCase {
 
-	private Fragment mMockFragment;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mMockFragment = mock(Fragment.class);
-	}
-
-	@Test
-	public void testInstantiateDialogController() {
-		assertThat(new UniversiFragmentDelegate(mMockFragment).instantiateDialogController(), is(notNullValue()));
+	@Test public void testInstantiateDialogController() {
+		// Arrange:
+		final Fragment mockFragment = mock(Fragment.class);
+		final UniversiFragmentDelegate delegate = new UniversiFragmentDelegate(mockFragment);
+		// Act:
+		final DialogController controller = delegate.instantiateDialogController();
+		// Assert:
+		assertThat(controller, is(notNullValue()));
+		assertThat(controller, is(not(delegate.instantiateDialogController())));
 	}
 }
