@@ -1,6 +1,6 @@
 /*
  * *************************************************************************************************
- *                                 Copyright 2017 Universum Studios
+ *                                 Copyright 2018 Universum Studios
  * *************************************************************************************************
  *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
@@ -16,34 +16,38 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * *************************************************************************************************
  */
-package universum.studios.android.universi;
+package universum.studios.android.test.instrumented;
 
 import android.app.Fragment;
-
-import org.junit.Test;
-
-import universum.studios.android.test.local.RobolectricTestCase;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.mockito.Mockito.mock;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 /**
+ * Simple fragment that may be used in <b>Android instrumented tests</b>.
+ *
  * @author Martin Albedinsky
  */
-public final class UniversiFragmentDelegateTest extends RobolectricTestCase {
+public class TestFragment extends Fragment {
 
-	private Fragment mMockFragment;
+	/**
+	 * Id of the TestFragment's view.
+	 */
+	public static final int CONTENT_VIEW_ID = android.R.id.empty;
 
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mMockFragment = mock(Fragment.class);
-	}
-
-	@Test
-	public void testInstantiateDialogController() {
-		assertThat(new UniversiFragmentDelegate(mMockFragment).instantiateDialogController(), is(notNullValue()));
+	/**
+	 */
+	@Override @NonNull public View onCreateView(
+			@NonNull final LayoutInflater inflater,
+			@Nullable final ViewGroup container,
+			@Nullable final Bundle savedInstanceState
+	) {
+		final FrameLayout contentView = new FrameLayout(inflater.getContext());
+		contentView.setId(CONTENT_VIEW_ID);
+		return contentView;
 	}
 }

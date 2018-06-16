@@ -10,6 +10,7 @@ More **detailed changelog** for each respective version may be viewed by pressin
 > --.06.2018
 
 - Small updates.
+- Removed deprecated elements and methods from previous version.
 
 ### [1.0.4](https://github.com/universum-studios/android_universi/releases/tag/v1.0.4) ###
 > 20.12.2017

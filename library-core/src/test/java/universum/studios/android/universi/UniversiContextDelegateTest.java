@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2017 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2017 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License 
- * you may obtain at
- * 
- * 		http://www.apache.org/licenses/LICENSE-2.0
- * 
- * You can redistribute, modify or publish any part of the code written within this file but as it 
- * is described in the License, the software distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
- * 
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.universi;
 
@@ -56,21 +56,11 @@ public final class UniversiContextDelegateTest extends RobolectricTestCase {
 
 	private static final int XML_DIALOGS_SET_RESOURCE_ID = 1;
 	private static final int XML_DIALOG_RESOURCE_ID = 2;
-    
+
 	@Test
 	public void testInstantiation() {
-		assertThat(new TestDelegate(application).mContext, Is.<Context>is(application));
+		assertThat(new TestDelegate(application).context, Is.<Context>is(application));
 	}
-
-    @Test
-	public void testCreateActivityDelegate() {
-		assertThat(UniversiContextDelegate.create(mock(TestActivity.class)), is(notNullValue()));
-    }
-
-    @Test
-	public void testCreateFragmentDelegate() {
-	    assertThat(UniversiContextDelegate.create(mock(TestFragment.class)), is(notNullValue()));
-    }
 
 	@Test
 	public void testSetGetDialogController() {
@@ -370,27 +360,27 @@ public final class UniversiContextDelegateTest extends RobolectricTestCase {
 		assertThat(delegate.isRequestRegistered(0x00000001), is(false));
 	}
 
-    private static class TestDelegate extends UniversiContextDelegate {
+	private static class TestDelegate extends UniversiContextDelegate {
 
-	    private Activity activity;
+		private Activity activity;
 
-	    TestDelegate() {
-		    this(mock(TestActivity.class));
-	    }
+		TestDelegate() {
+			this(mock(TestActivity.class));
+		}
 
-	    TestDelegate(Activity activity) {
-		    this((Context) activity);
-		    this.activity = activity;
-	    }
+		TestDelegate(Activity activity) {
+			this((Context) activity);
+			this.activity = activity;
+		}
 
-	    TestDelegate(@NonNull Context context) {
-		    super(context);
-	    }
+		TestDelegate(@NonNull Context context) {
+			super(context);
+		}
 
-	    @NonNull
-	    @Override
-	    DialogController instantiateDialogController() {
-		    return new DialogController(activity);
-	    }
-    }
+		@NonNull
+		@Override
+		DialogController instantiateDialogController() {
+			return new DialogController(activity);
+		}
+	}
 }

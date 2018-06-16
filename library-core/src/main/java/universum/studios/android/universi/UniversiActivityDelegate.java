@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2017 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2017 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License 
- * you may obtain at
- * 
- * 		http://www.apache.org/licenses/LICENSE-2.0
- * 
- * You can redistribute, modify or publish any part of the code written within this file but as it 
- * is described in the License, the software distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
- * 
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.universi;
 
@@ -50,6 +50,8 @@ import universum.studios.android.transition.BaseNavigationalTransition;
  * thought it should not been extended.
  *
  * @author Martin Albedinsky
+ * @since 1.0
+ *
  * @see UniversiFragmentDelegate
  */
 public class UniversiActivityDelegate extends UniversiContextDelegate {
@@ -78,17 +80,17 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	/**
 	 * Controller that is used to show and hide fragments within the associated activity context.
 	 */
-	private FragmentController mFragmentController;
+	private FragmentController fragmentController;
 
 	/**
-	 * Factory providing fragment instances for the {@link #mFragmentController}.
+	 * Factory providing fragment instances for the {@link #fragmentController}.
 	 */
-	private FragmentFactory mFragmentFactory;
+	private FragmentFactory fragmentFactory;
 
 	/**
 	 * Navigational transition that can be used to finish the associated activity context.
 	 */
-	private BaseNavigationalTransition mNavigationalTransition;
+	private BaseNavigationalTransition navigationalTransition;
 
 	/*
 	 * Constructors ================================================================================
@@ -99,8 +101,7 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 *
 	 * @see UniversiContextDelegate#UniversiContextDelegate(Context)
 	 */
-	@VisibleForTesting
-	UniversiActivityDelegate(@NonNull final Activity context) {
+	@VisibleForTesting UniversiActivityDelegate(@NonNull final Activity context) {
 		super(context);
 	}
 
@@ -114,17 +115,14 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @param activity The activity context in which will be the new delegate used.
 	 * @return Ready to be used delegate.
 	 */
-	@NonNull
-	public static UniversiActivityDelegate create(@NonNull final Activity activity) {
+	@NonNull public static UniversiActivityDelegate create(@NonNull final Activity activity) {
 		return new UniversiActivityDelegate(activity);
 	}
 
 	/**
 	 */
-	@NonNull
-	@Override
-	DialogController instantiateDialogController() {
-		return new DialogController((Activity) mContext);
+	@Override @NonNull final DialogController instantiateDialogController() {
+		return new DialogController((Activity) context);
 	}
 
 	/**
@@ -136,13 +134,13 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @param callbacks Callbacks for loader.
 	 * @return Initialized or re-started loader instance or {@code null} if the specified <var>callbacks</var>
 	 * do not create loader for the specified <var>id</var>.
+	 *
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #destroyLoader(int)
 	 */
-	@Nullable
-	public <D> Loader<D> startLoader(@IntRange(from = 0) final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
-		final LoaderManager manager = ((Activity) mContext).getLoaderManager();
+	@Nullable public <D> Loader<D> startLoader(@IntRange(from = 0) final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
+		final LoaderManager manager = ((Activity) context).getLoaderManager();
 		if (manager.getLoader(id) == null) return initLoader(id, params, callbacks);
 		else return restartLoader(id, params, callbacks);
 	}
@@ -155,14 +153,14 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @param callbacks Callbacks for loader.
 	 * @return Initialized loader instance or {@code null} if the specified <var>callbacks</var> do
 	 * not create loader for the specified <var>id</var>.
+	 *
 	 * @see #startLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #destroyLoader(int)
 	 * @see LoaderManager#initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 */
-	@Nullable
-	public <D> Loader<D> initLoader(@IntRange(from = 0) final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
-		return ((Activity) mContext).getLoaderManager().initLoader(id, params, callbacks);
+	@Nullable public <D> Loader<D> initLoader(@IntRange(from = 0) final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
+		return ((Activity) context).getLoaderManager().initLoader(id, params, callbacks);
 	}
 
 	/**
@@ -173,26 +171,27 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @param callbacks Callbacks for loader.
 	 * @return Re-started loader instance or {@code null} if the specified <var>callbacks</var> do
 	 * not create loader for the specified <var>id</var>.
+	 *
 	 * @see #startLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #destroyLoader(int)
 	 * @see LoaderManager#restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 */
-	@Nullable
-	public <D> Loader<D> restartLoader(@IntRange(from = 0) final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
-		return ((Activity) mContext).getLoaderManager().restartLoader(id, params, callbacks);
+	@Nullable public <D> Loader<D> restartLoader(@IntRange(from = 0) final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
+		return ((Activity) context).getLoaderManager().restartLoader(id, params, callbacks);
 	}
 
 	/**
 	 * Destroys a loader with the specified <var>id</var>.
 	 *
 	 * @param id Id of the desired loader to destroy.
+	 *
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see LoaderManager#destroyLoader(int)
 	 */
 	public void destroyLoader(@IntRange(from = 0) final int id) {
-		((Activity) mContext).getLoaderManager().destroyLoader(id);
+		((Activity) context).getLoaderManager().destroyLoader(id);
 	}
 
 	/**
@@ -203,12 +202,13 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * for the associated activity via {@link BaseNavigationalTransition#configureIncomingTransitions(Activity)}.
 	 *
 	 * @param transition The desired transition. May be {@code null} to clear the current one.
+	 *
 	 * @see #getNavigationalTransition()
 	 */
 	public void setNavigationalTransition(@Nullable final BaseNavigationalTransition transition) {
-		this.mNavigationalTransition = transition;
+		this.navigationalTransition = transition;
 		if (transition != null) {
-			transition.configureIncomingTransitions((Activity) mContext);
+			transition.configureIncomingTransitions((Activity) context);
 		}
 	}
 
@@ -217,11 +217,11 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * {@link #finishWithNavigationalTransition()}.
 	 *
 	 * @return Attached navigational transition or {@code null} if no transition has been specified.
+	 *
 	 * @see #setNavigationalTransition(BaseNavigationalTransition)
 	 */
-	@Nullable
-	public BaseNavigationalTransition getNavigationalTransition() {
-		return mNavigationalTransition;
+	@Nullable public BaseNavigationalTransition getNavigationalTransition() {
+		return navigationalTransition;
 	}
 
 	/**
@@ -231,25 +231,26 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @return {@code True} if transition has been started, {@code false} otherwise.
 	 */
 	public boolean finishWithNavigationalTransition() {
-		if (mNavigationalTransition != null) {
-			mNavigationalTransition.finish((Activity) mContext);
-			return true;
+		if (navigationalTransition == null) {
+			return false;
 		}
-		return false;
+		this.navigationalTransition.finish((Activity) context);
+		return true;
 	}
 
 	/**
 	 * Sets a controller used to manage (show/hide) fragments in context of the associated activity.
 	 *
 	 * @param controller The desired controller. May be {@code null} to use the default one.
+	 *
 	 * @see #getFragmentController()
 	 * @see #setFragmentFactory(FragmentFactory)
 	 */
 	public void setFragmentController(@Nullable final FragmentController controller) {
-		this.mFragmentController = controller;
-		if (mFragmentFactory != null) {
+		this.fragmentController = controller;
+		if (fragmentFactory != null) {
 			this.ensureFragmentController();
-			mFragmentController.setFactory(mFragmentFactory);
+			fragmentController.setFactory(fragmentFactory);
 		}
 	}
 
@@ -259,42 +260,42 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 *
 	 * @return Fragment controller instance ready to show/hide fragment instances.
 	 */
-	@NonNull
-	public FragmentController getFragmentController() {
+	@NonNull public FragmentController getFragmentController() {
 		this.ensureFragmentController();
-		return mFragmentController;
+		return fragmentController;
 	}
 
 	/**
 	 * Sets a factory that provides fragment instances for fragment controller of this delegate.
 	 *
 	 * @param factory The desired factory. May be {@code null} to clear the current one.
+	 *
 	 * @see #setFragmentController(FragmentController)
 	 * @see #getFragmentController()
 	 * @see #getFragmentFactory()
 	 */
 	public void setFragmentFactory(@Nullable final FragmentFactory factory) {
-		this.mFragmentFactory = factory;
+		this.fragmentFactory = factory;
 		this.ensureFragmentController();
-		this.mFragmentController.setFactory(factory);
+		this.fragmentController.setFactory(factory);
 	}
 
 	/**
 	 * Returns the factory providing fragment instances for fragment controller of this delegate.
 	 *
 	 * @return Instance of fragment factory or {@code null} if no factory has been specified.
+	 *
 	 * @see #setFragmentFactory(FragmentFactory)
 	 */
-	@Nullable
-	public FragmentFactory getFragmentFactory() {
-		return mFragmentFactory;
+	@Nullable public FragmentFactory getFragmentFactory() {
+		return fragmentFactory;
 	}
 
 	/**
 	 * Ensures that the fragment controller is initialized.
 	 */
 	private void ensureFragmentController() {
-		if (mFragmentController == null) this.mFragmentController = new FragmentController((Activity) mContext);
+		if (fragmentController == null) this.fragmentController = new FragmentController((Activity) context);
 	}
 
 	/**
@@ -304,9 +305,8 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @return Instance of current fragment found via {@link FragmentController#findCurrentFragment()}
 	 * or {@code null} if there is no fragment displayed.
 	 */
-	@Nullable
-	public Fragment findCurrentFragment() {
-		return mFragmentController == null ? null : mFragmentController.findCurrentFragment();
+	@Nullable public Fragment findCurrentFragment() {
+		return fragmentController == null ? null : fragmentController.findCurrentFragment();
 	}
 
 	/**
@@ -315,7 +315,7 @@ public class UniversiActivityDelegate extends UniversiContextDelegate {
 	 * @return {@code True} if the stack has ben popped, {@code false} otherwise.
 	 */
 	public boolean popFragmentsBackStack() {
-		final FragmentManager fragmentManager = ((Activity) mContext).getFragmentManager();
+		final FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
 		if (fragmentManager.getBackStackEntryCount() > 0) {
 			fragmentManager.popBackStack();
 			return true;
