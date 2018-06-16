@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2017 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2017 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.universi;
 
@@ -31,7 +31,6 @@ import org.junit.Test;
 import universum.studios.android.fragment.manage.FragmentController;
 import universum.studios.android.fragment.manage.FragmentFactory;
 import universum.studios.android.test.local.RobolectricTestCase;
-import universum.studios.android.test.local.TestActivity;
 import universum.studios.android.test.local.TestFragment;
 import universum.studios.android.transition.BaseNavigationalTransition;
 
@@ -51,160 +50,197 @@ import static org.mockito.Mockito.when;
  */
 public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
-	private Activity mMockActivity;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mMockActivity = mock(TestActivity.class);
+	@Test public void testInstantiation() {
+		// Act:
+		final Activity mockActivity = mock(Activity.class);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act:
+		assertThat(delegate.context, Is.<Context>is(mockActivity));
 	}
 
-	@Test
-	public void testInstantiation() {
-		assertThat(new UniversiActivityDelegate(mMockActivity).mContext, Is.<Context>is(mMockActivity));
+	@Test public void testInstantiateDialogController() {
+		// Arrange:
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mock(Activity.class));
+		// Act + Assert:
+		assertThat(delegate.instantiateDialogController(), is(notNullValue()));
 	}
 
-	@Test
-	public void testInstantiateDialogController() {
-		assertThat(new UniversiActivityDelegate(mMockActivity).instantiateDialogController(), is(notNullValue()));
-	}
-
-	@Test
-	public void testStartLoader() {
+	@Test public void testStartLoader() {
+		// Arrange:
 		final Loader mockLoader = mock(Loader.class);
 		final LoaderManager.LoaderCallbacks mockCallbacks = mock(LoaderManager.LoaderCallbacks.class);
 		final LoaderManager mockLoaderManager = mock(LoaderManager.class);
 		when(mockLoaderManager.initLoader(1, null, mockCallbacks)).thenReturn(mockLoader);
 		when(mockLoaderManager.getLoader(1)).thenReturn(null);
-		when(mMockActivity.getLoaderManager()).thenReturn(mockLoaderManager);
+		final Activity mockActivity = mock(Activity.class);
+		when(mockActivity.getLoaderManager()).thenReturn(mockLoaderManager);
 		when(mockCallbacks.onCreateLoader(1, null)).thenReturn(mockLoader);
-		assertThat(new UniversiActivityDelegate(mMockActivity).startLoader(1, null, mockCallbacks), is(mockLoader));
-		verify(mockLoaderManager, times(1)).getLoader(1);
-		verify(mockLoaderManager, times(1)).initLoader(1, null, mockCallbacks);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act:
+		assertThat(delegate.startLoader(1, null, mockCallbacks), is(mockLoader));
+		// Assert:
+		verify(mockLoaderManager).getLoader(1);
+		verify(mockLoaderManager).initLoader(1, null, mockCallbacks);
 		verifyNoMoreInteractions(mockLoaderManager);
 	}
 
-	@Test
 	@SuppressWarnings("unchecked")
-	public void testStartLoaderWhenAlreadyStarted() {
+	@Test public void testStartLoaderWhenAlreadyStarted() {
+		// Arrange:
 		final Loader mockLoader = mock(Loader.class);
 		final LoaderManager.LoaderCallbacks mockCallbacks = mock(LoaderManager.LoaderCallbacks.class);
 		final LoaderManager mockLoaderManager = mock(LoaderManager.class);
 		when(mockLoaderManager.restartLoader(1, null, mockCallbacks)).thenReturn(mockLoader);
 		when(mockLoaderManager.getLoader(1)).thenReturn(mockLoader);
-		when(mMockActivity.getLoaderManager()).thenReturn(mockLoaderManager);
-		assertThat(new UniversiActivityDelegate(mMockActivity).startLoader(1, null, mockCallbacks), is(mockLoader));
-		verify(mockLoaderManager, times(1)).getLoader(1);
-		verify(mockLoaderManager, times(1)).restartLoader(1, null, mockCallbacks);
+		final Activity mockActivity = mock(Activity.class);
+		when(mockActivity.getLoaderManager()).thenReturn(mockLoaderManager);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act:
+		assertThat(delegate.startLoader(1, null, mockCallbacks), is(mockLoader));
+		// Assert:
+		verify(mockLoaderManager).getLoader(1);
+		verify(mockLoaderManager).restartLoader(1, null, mockCallbacks);
 		verifyNoMoreInteractions(mockLoaderManager);
 	}
 
-	@Test
 	@SuppressWarnings("unchecked")
-	public void testDestroyLoader() {
+	@Test public void testDestroyLoader() {
+		// Arrange:
+		final Activity mockActivity = mock(Activity.class);
 		final LoaderManager mockLoaderManager = mock(LoaderManager.class);
-		when(mMockActivity.getLoaderManager()).thenReturn(mockLoaderManager);
-		new UniversiActivityDelegate(mMockActivity).destroyLoader(1);
-		verify(mockLoaderManager, times(1)).destroyLoader(1);
+		when(mockActivity.getLoaderManager()).thenReturn(mockLoaderManager);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act:
+		delegate.destroyLoader(1);
+		// Assert:
+		verify(mockLoaderManager).destroyLoader(1);
 		verifyNoMoreInteractions(mockLoaderManager);
 	}
 
-	@Test
-	public void testSetGetNavigationalTransition() {
-		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
+	@Test public void testNavigationalTransition() {
+		// Arrange:
+		final Activity mockActivity = mock(Activity.class);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		final BaseNavigationalTransition mockTransition = mock(BaseNavigationalTransition.class);
+		// Act + Assert:
 		delegate.setNavigationalTransition(mockTransition);
 		assertThat(delegate.getNavigationalTransition(), is(mockTransition));
-		verify(mockTransition, times(1)).configureIncomingTransitions(mMockActivity);
+		verify(mockTransition).configureIncomingTransitions(mockActivity);
 	}
 
-	@Test
-	public void testSetNullNavigationalTransition() {
-		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
+	@Test public void testSetNullNavigationalTransition() {
+		// Arrange:
+		final Activity mockActivity = mock(Activity.class);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act:
 		delegate.setNavigationalTransition(null);
+		// Assert:
 		assertThat(delegate.getNavigationalTransition(), is(nullValue()));
 	}
 
-	@Test
-	public void testFinishWithNavigationalTransition() {
-		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
+	@Test public void testFinishWithNavigationalTransition() {
+		// Arrange:
+		final Activity mockActivity = mock(Activity.class);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		final BaseNavigationalTransition mockTransition = mock(BaseNavigationalTransition.class);
 		delegate.setNavigationalTransition(mockTransition);
+		// Act + Assert:
 		assertThat(delegate.finishWithNavigationalTransition(), is(true));
 	}
 
-	@Test
-	public void testFinishWithNavigationalTransitionWithoutAttachedTransition() {
-		assertThat(new UniversiActivityDelegate(mMockActivity).finishWithNavigationalTransition(), is(false));
+	@Test public void testFinishWithNavigationalTransitionWithoutAttachedTransition() {
+		// Arrange:
+		final Activity mockActivity = mock(Activity.class);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act + Assert:
+		assertThat(delegate.finishWithNavigationalTransition(), is(false));
 	}
 
-	@Test
-	public void testSetGetFragmentController() {
+	@Test public void testFragmentController() {
+		// Arrange:
+		final Activity mockActivity = mock(Activity.class);
+		when(mockActivity.getFragmentManager()).thenReturn(mock(FragmentManager.class));
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		final FragmentFactory mockFactory = mock(FragmentFactory.class);
 		final FragmentController mockController = mock(FragmentController.class);
-		when(mMockActivity.getFragmentManager()).thenReturn(mock(FragmentManager.class));
-		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
 		delegate.setFragmentFactory(mockFactory);
+		// Act + Assert:
 		delegate.setFragmentController(mockController);
 		assertThat(delegate.getFragmentController(), is(mockController));
-		verify(mockController, times(1)).setFactory(mockFactory);
+		verify(mockController).setFactory(mockFactory);
 		verifyNoMoreInteractions(mockController);
 	}
 
-	@Test
-	public void testSetNullFragmentController() {
-		when(mMockActivity.getFragmentManager()).thenReturn(mock(FragmentManager.class));
-		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
+	@Test public void testSetNullFragmentController() {
+		// Arrange:
+		final Activity mockActivity = mock(Activity.class);
+		when(mockActivity.getFragmentManager()).thenReturn(mock(FragmentManager.class));
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act:
 		delegate.setFragmentController(null);
+		// Assert:
 		assertThat(delegate.getFragmentController(), is(notNullValue()));
 	}
 
-	@Test
-	public void testSetGetFragmentFactory() {
-		when(mMockActivity.getFragmentManager()).thenReturn(mock(FragmentManager.class));
+	@Test public void testFragmentFactory() {
+		// Arrange:
+		final Activity mockActivity = mock(Activity.class);
+		when(mockActivity.getFragmentManager()).thenReturn(mock(FragmentManager.class));
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		final FragmentFactory mockFactory = mock(FragmentFactory.class);
-		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
+		// Act + Assert:
 		delegate.setFragmentFactory(mockFactory);
 		assertThat(delegate.getFragmentFactory(), is(mockFactory));
 		verifyZeroInteractions(mockFactory);
 	}
 
-	@Test
-	public void testFindCurrentFragment() {
-		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mMockActivity);
+	@Test public void testFindCurrentFragment() {
+		// Arrange:
 		final FragmentController mockController = mock(FragmentController.class);
 		final Fragment mockFragment = mock(TestFragment.class);
 		when(mockController.findCurrentFragment()).thenReturn(mockFragment);
+		final Activity mockActivity = mock(Activity.class);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		delegate.setFragmentController(mockController);
+		// Act + Assert:
 		assertThat(delegate.findCurrentFragment(), is(mockFragment));
 	}
 
-	@Test
-	public void testFindCurrentFragmentWithoutControllerInitialized() {
+	@Test public void testFindCurrentFragmentWithoutControllerInitialized() {
+		// Arrange:
 		final FragmentManager mockManager = mock(FragmentManager.class);
 		when(mockManager.getBackStackEntryCount()).thenReturn(1);
-		when(mMockActivity.getFragmentManager()).thenReturn(mockManager);
-		assertThat(new UniversiActivityDelegate(mMockActivity).findCurrentFragment(), is(nullValue()));
+		final Activity mockActivity = mock(Activity.class);
+		when(mockActivity.getFragmentManager()).thenReturn(mockManager);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act + Assert:
+		assertThat(delegate.findCurrentFragment(), is(nullValue()));
 	}
 
-	@Test
-	public void testPopFragmentsBackStack() {
+	@Test public void testPopFragmentsBackStack() {
+		// Arrange:
 		final FragmentManager mockManager = mock(FragmentManager.class);
 		when(mockManager.getBackStackEntryCount()).thenReturn(1);
-		when(mMockActivity.getFragmentManager()).thenReturn(mockManager);
-		assertThat(new UniversiActivityDelegate(mMockActivity).popFragmentsBackStack(), is(true));
+		final Activity mockActivity = mock(Activity.class);
+		when(mockActivity.getFragmentManager()).thenReturn(mockManager);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act + Assert:
+		assertThat(delegate.popFragmentsBackStack(), is(true));
 		verify(mockManager, times(1)).getBackStackEntryCount();
 		verify(mockManager, times(1)).popBackStack();
 		verifyNoMoreInteractions(mockManager);
 	}
 
-	@Test
-	public void testPopFragmentsBackStackOnEmptyStack() {
+	@Test public void testPopFragmentsBackStackOnEmptyStack() {
+		// Arrange:
 		final FragmentManager mockManager = mock(FragmentManager.class);
 		when(mockManager.getBackStackEntryCount()).thenReturn(0);
-		when(mMockActivity.getFragmentManager()).thenReturn(mockManager);
-		assertThat(new UniversiActivityDelegate(mMockActivity).popFragmentsBackStack(), is(false));
-		verify(mockManager, times(1)).getBackStackEntryCount();
+		final Activity mockActivity = mock(Activity.class);
+		when(mockActivity.getFragmentManager()).thenReturn(mockManager);
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
+		// Act + Assert:
+		assertThat(delegate.popFragmentsBackStack(), is(false));
+		verify(mockManager).getBackStackEntryCount();
 		verifyNoMoreInteractions(mockManager);
 	}
 }

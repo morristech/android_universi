@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2017 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2017 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License 
- * you may obtain at
- * 
- * 		http://www.apache.org/licenses/LICENSE-2.0
- * 
- * You can redistribute, modify or publish any part of the code written within this file but as it 
- * is described in the License, the software distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
- * 
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.universi;
 
@@ -68,157 +68,184 @@ public final class UniversiActivityTest extends RobolectricTestCase {
 	private static final int XML_DIALOGS_SET_RESOURCE_ID = 1;
 	private static final int XML_DIALOG_RESOURCE_ID = 2;
 
-	@Override
-	public void beforeTest() throws Exception {
+	@Override public void beforeTest() throws Exception {
 		super.beforeTest();
 		// Ensure that we have always annotations processing enabled.
 		FragmentAnnotations.setEnabled(true);
 	}
 
-	@Test
-	public void testREQUEST_BIND_DATA_INNER() {
+	@Test public void testREQUEST_BIND_DATA_INNER() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
 		when(mockDelegate.isViewCreated()).thenReturn(true);
+		// Act:
 		activity.REQUEST_BIND_DATA_INNER.run();
+		// Assert:
 		assertThat(activity.onBindDataInvoked, is(true));
-		verify(mockDelegate, times(1)).isViewCreated();
+		verify(mockDelegate).isViewCreated();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnCreateAnnotationHandler() {
+	@Test public void testInstantiation() {
+		// Act:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().get();
+		// Assert:
+		assertThat(activity.getFragmentController(), is(notNullValue()));
+		assertThat(activity.getDialogController(), is(notNullValue()));
+	}
+
+	@Test public void testOnCreateAnnotationHandler() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		// Act:
 		final ActionBarFragmentAnnotationHandler annotationHandler = activity.onCreateAnnotationHandler();
-		assertThat(annotationHandler, is(not(nullValue())));
+		// Assert:
+		assertThat(annotationHandler, is(notNullValue()));
 		assertThat(annotationHandler, is(activity.onCreateAnnotationHandler()));
 	}
 
-	@Test
-	public void testGetAnnotationHandler() {
-		assertThat(new TestActivity().getAnnotationHandler(), is(not(nullValue())));
+	@Test public void testAnnotationHandler() {
+		// Arrange:
+		final TestActivity activity = new TestActivity();
+		// Act + Assert:
+		assertThat(activity.getAnnotationHandler(), is(not(nullValue())));
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void testGetAnnotationHandlerWhenAnnotationsAreDisabled() {
+	public void testAnnotationHandlerWhenAnnotationsAreDisabled() {
+		// Arrange:
 		FragmentAnnotations.setEnabled(false);
-		new TestActivity().getAnnotationHandler();
+		final TestActivity activity = new TestActivity();
+		// Act:
+		activity.getAnnotationHandler();
 	}
 
-	@Test
-	public void testStartLoader() {
+	@Test public void testStartLoader() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final LoaderManager.LoaderCallbacks mockLoaderCallbacks = mock(LoaderManager.LoaderCallbacks.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
+		// Act:
 		activity.startLoader(1, null, mockLoaderCallbacks);
-		verify(mockDelegate, times(1)).startLoader(eq(1), (Bundle) isNull(), eq(mockLoaderCallbacks));
+		// Assert:
+		verify(mockDelegate).startLoader(eq(1), (Bundle) isNull(), eq(mockLoaderCallbacks));
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testInitLoader() {
+	@Test public void testInitLoader() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final LoaderManager.LoaderCallbacks mockLoaderCallbacks = mock(LoaderManager.LoaderCallbacks.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
+		// Act:
 		activity.initLoader(1, null, mockLoaderCallbacks);
-		verify(mockDelegate, times(1)).initLoader(eq(1), (Bundle) isNull(), eq(mockLoaderCallbacks));
+		// Assert:
+		verify(mockDelegate).initLoader(eq(1), (Bundle) isNull(), eq(mockLoaderCallbacks));
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testRestartLoader() {
+	@Test public void testRestartLoader() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final LoaderManager.LoaderCallbacks mockLoaderCallbacks = mock(LoaderManager.LoaderCallbacks.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
+		// Act:
 		activity.restartLoader(1, null, mockLoaderCallbacks);
-		verify(mockDelegate, times(1)).restartLoader(eq(1), (Bundle) isNull(), eq(mockLoaderCallbacks));
+		// Assert:
+		verify(mockDelegate).restartLoader(eq(1), (Bundle) isNull(), eq(mockLoaderCallbacks));
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testDestroyLoader() {
+	@Test public void testDestroyLoader() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
+		// Act:
 		activity.destroyLoader(1);
-		verify(mockDelegate, times(1)).destroyLoader(1);
+		// Assert:
+		verify(mockDelegate).destroyLoader(1);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnCreateOptionsMenu() {
+	@Test public void testOnCreateOptionsMenu() {
+		// Arrange:
 		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
 		final Menu mockMenu = mock(Menu.class);
+		// Act:
 		activity.onCreateOptionsMenu(mockMenu);
+		// Assert:
 		verifyZeroInteractions(mockMenu);
 	}
 
-	@Test
-	public void testOnCreateOptionsMenuWithDisabledAnnotations() {
+	@Test public void testOnCreateOptionsMenuWithDisabledAnnotations() {
+		// Arrange:
 		FragmentAnnotations.setEnabled(false);
 		final TestActivity activity = new TestActivity();
 		final Menu mockMenu = mock(Menu.class);
+		// Act:
 		activity.onCreateOptionsMenu(mockMenu);
+		// Assert:
 		verifyZeroInteractions(mockMenu);
 	}
 
-	@Test
-	public void testSetGetNavigationalTransition() {
+	@Test public void testNavigationalTransition() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final BaseNavigationalTransition mockNavigationalTransition = mock(BaseNavigationalTransition.class);
 		when(mockDelegate.getNavigationalTransition()).thenReturn(mockNavigationalTransition);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
+		// Act + Assert:
 		activity.setNavigationalTransition(mockNavigationalTransition);
-		verify(mockDelegate, times(1)).setNavigationalTransition(mockNavigationalTransition);
+		verify(mockDelegate).setNavigationalTransition(mockNavigationalTransition);
 		assertThat(activity.getNavigationalTransition(), is(mockNavigationalTransition));
-		verify(mockDelegate, times(1)).getNavigationalTransition();
+		verify(mockDelegate).getNavigationalTransition();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testSetGetFragmentController() {
+	@Test public void testFragmentController() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final FragmentController mockController = mock(FragmentController.class);
 		when(mockDelegate.getFragmentController()).thenReturn(mockController);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
+		// Act + Assert:
 		activity.setFragmentController(mockController);
-		verify(mockDelegate, times(1)).setFragmentController(mockController);
+		verify(mockDelegate).setFragmentController(mockController);
 		assertThat(activity.getFragmentController(), is(mockController));
-		verify(mockDelegate, times(1)).getFragmentController();
+		verify(mockDelegate).getFragmentController();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testGetFragmentControllerDefault() {
-		assertThat(Robolectric.buildActivity(TestActivity.class).create().start().resume().get().getFragmentController(), is(notNullValue()));
-	}
-
-	@Test
-	public void testSetGetFragmentFactory() {
+	@Test public void testFragmentFactory() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final FragmentFactory mockFactory = mock(FragmentFactory.class);
 		when(mockDelegate.getFragmentFactory()).thenReturn(mockFactory);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
+		// Act + Assert:
 		activity.setFragmentFactory(mockFactory);
-		verify(mockDelegate, times(1)).setFragmentFactory(mockFactory);
+		verify(mockDelegate).setFragmentFactory(mockFactory);
 		assertThat(activity.getFragmentFactory(), is(mockFactory));
 		verify(mockDelegate, times(1)).getFragmentFactory();
 	}
 
-	@Test
-	public void testSetGetDialogController() {
+	@Test public void testDialogController() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final DialogController mockController = mock(DialogController.class);
 		when(mockDelegate.getDialogController()).thenReturn(mockController);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
+		// Act + Assert:
 		activity.setDialogController(mockController);
 		verify(mockDelegate, times(1)).setDialogController(mockController);
 		assertThat(activity.getDialogController(), is(mockController));
@@ -226,392 +253,467 @@ public final class UniversiActivityTest extends RobolectricTestCase {
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testGetDialogControllerDefault() {
-		assertThat(new TestActivity().getDialogController(), is(notNullValue()));
-	}
-
-	@Test
-	public void testSetGetDialogFactory() {
+	@Test public void testDialogFactory() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final DialogFactory mockFactory = mock(DialogFactory.class);
 		when(mockDelegate.getDialogFactory()).thenReturn(mockFactory);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
+		// Act + Assert:
 		activity.setDialogFactory(mockFactory);
-		verify(mockDelegate, times(1)).setDialogFactory(mockFactory);
+		verify(mockDelegate).setDialogFactory(mockFactory);
 		assertThat(activity.getDialogFactory(), is(mockFactory));
-		verify(mockDelegate, times(1)).getDialogFactory();
+		verify(mockDelegate).getDialogFactory();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testSetDialogXmlFactory() {
+	@Test public void testDialogXmlFactory() {
+		// Arrange:
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
 		final int dialogsResource = XML_DIALOGS_SET_RESOURCE_ID;
+		// Act + Assert:
 		activity.setDialogXmlFactory(dialogsResource);
-		verify(mockDelegate, times(1)).setDialogXmlFactory(dialogsResource);
+		verify(mockDelegate).setDialogXmlFactory(dialogsResource);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnContentChanged() {
-	}
-
-	@Test
-	public void testOnContentChangedWithRequestToBindData() {
-	}
-
-	@Test
-	public void testOnResume() {
-	}
-
-	@Test
-	public void testRequestBindData() throws Throwable {
+	@Test public void testOnContentChanged() {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().get();
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
-		final TestActivity activity = new TestActivity();
 		activity.setContextDelegate(mockDelegate);
-		when(mockDelegate.isViewCreated()).thenReturn(false);
-		activity.requestBindData();
-		assertThat(activity.onBindDataInvoked, is(false));
-		verify(mockDelegate, times(1)).isViewCreated();
-		verify(mockDelegate, times(1)).registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+		// Act:
+		activity.onContentChanged();
+		// Assert:
+		assertThat(activity.onBindViewsInvoked, is(true));
+		verify(mockDelegate).setViewCreated(true);
+		verify(mockDelegate).isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testRequestBindDataWhenViewIsCreated() throws Throwable {
+	@Test public void testOnContentChangedWithRequestToBindData() {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().get();
 		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
-		final TestActivity activity = new TestActivity();
+		when(mockDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)).thenReturn(true);
 		activity.setContextDelegate(mockDelegate);
-		when(mockDelegate.isViewCreated()).thenReturn(true);
-		activity.requestBindData();
+		// Act:
+		activity.onContentChanged();
+		// Assert:
+		assertThat(activity.onBindViewsInvoked, is(true));
 		assertThat(activity.onBindDataInvoked, is(true));
-		verify(mockDelegate, times(1)).isViewCreated();
+		verify(mockDelegate).setViewCreated(true);
+		verify(mockDelegate).isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA);
+		verify(mockDelegate).unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testRequestBindDataFromBackgroundThread() throws Throwable {
-		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+	@Test public void testOnResume() {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().get();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		activity.setContextDelegate(mockDelegate);
+		// Act:
+		activity.onResume();
+		// Assert:
+		verify(mockDelegate).setPaused(false);
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Test public void testRequestBindData() {
+		// Arrange:
+		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		when(mockDelegate.isViewCreated()).thenReturn(false);
+		activity.setContextDelegate(mockDelegate);
+		// Act:
 		activity.requestBindData();
+		// Assert:
+		assertThat(activity.onBindDataInvoked, is(false));
+		verify(mockDelegate).isViewCreated();
+		verify(mockDelegate).registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Test public void testRequestBindDataWhenViewIsCreated() {
+		// Arrange:
+		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		when(mockDelegate.isViewCreated()).thenReturn(true);
+		activity.setContextDelegate(mockDelegate);
+		// Act:
+		activity.requestBindData();
+		// Assert:
+		assertThat(activity.onBindDataInvoked, is(true));
+		verify(mockDelegate).isViewCreated();
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Test public void testRequestBindDataFromBackgroundThread() throws Throwable {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		// Act:
+		activity.requestBindData();
+		// Assert:
 		Thread.sleep(200);
 		assertThat(activity.onBindDataInvoked, is(true));
 	}
 
-	@Test
-	public void testIsActiveNetworkConnected() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testIsActiveNetworkConnected() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
+		// Act + Assert:
 		assertThat(activity.isActiveNetworkConnected(), is(false));
-		verify(mockDelegate, times(1)).isActiveNetworkConnected();
+		verify(mockDelegate).isActiveNetworkConnected();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testIsNetworkConnected() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testIsNetworkConnected() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
+		// Act + Assert:
 		assertThat(activity.isNetworkConnected(ConnectivityManager.TYPE_MOBILE), is(false));
-		verify(mockDelegate, times(1)).isNetworkConnected(ConnectivityManager.TYPE_MOBILE);
+		verify(mockDelegate).isNetworkConnected(ConnectivityManager.TYPE_MOBILE);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testCheckSelfPermission() {
+	@Test public void testCheckSelfPermission() {
+		// Arrange:
 		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		// Act + Assert:
 		assertThat(
 				activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE),
 				is(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
-						mApplication.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) :
+						application.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) :
 						PackageManager.PERMISSION_GRANTED
 				)
 		);
 	}
 
-	@Test
-	public void testShouldShowRequestPermissionRationale() {
+	@Test public void testShouldShowRequestPermissionRationale() {
+		// Arrange:
 		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		// Act + Assert:
 		assertThat(activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE), is(false));
 	}
 
-	@Test
-	public void testSupportRequestPermissions() {
-	}
-
-	@Test
-	@Config(sdk = Build.VERSION_CODES.M)
-	public void testOnRequestPermissionsResult() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testSupportRequestPermissions() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
-		activity.onRequestPermissionsResult(1, new String[0], new int[0]);
+		// Act:
+		activity.supportRequestPermissions(new String[0], 1);
+		// Assert:
 		verifyZeroInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testShowDialogWithId() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Config(sdk = Build.VERSION_CODES.M)
+	@Test public void testOnRequestPermissionsResult() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
+		// Act:
+		activity.onRequestPermissionsResult(1, new String[0], new int[0]);
+		// Assert:
+		verifyZeroInteractions(mockDelegate);
+	}
+
+	@Test public void testShowDialogWithId() {
+		// Arrange:
+		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		activity.setContextDelegate(mockDelegate);
+		// Act:
 		activity.showDialogWithId(1);
-		verify(mockDelegate, times(1)).showDialogWithId(eq(1), (DialogOptions) isNull());
+		// Assert:
+		verify(mockDelegate).showDialogWithId(eq(1), (DialogOptions) isNull());
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testShowDialogWithIdAndOptions() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testShowDialogWithIdAndOptions() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final DialogOptions mockOptions = mock(DialogOptions.class);
+		// Act:
 		activity.showDialogWithId(1, mockOptions);
-		verify(mockDelegate, times(1)).showDialogWithId(1, mockOptions);
+		// Assert:
+		verify(mockDelegate).showDialogWithId(1, mockOptions);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testDismissDialogWithId() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testDismissDialogWithId() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
+		// Act:
 		activity.dismissDialogWithId(1);
-		verify(mockDelegate, times(1)).dismissDialogWithId(1);
+		// Assert:
+		verify(mockDelegate).dismissDialogWithId(1);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testShowXmlDialog() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testShowXmlDialog() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final int dialogResource = XML_DIALOG_RESOURCE_ID;
+		// Act:
 		activity.showXmlDialog(dialogResource);
-		verify(mockDelegate, times(1)).showXmlDialog(eq(dialogResource), (DialogOptions) isNull());
+		// Assert:
+		verify(mockDelegate).showXmlDialog(eq(dialogResource), (DialogOptions) isNull());
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testShowXmlDialogWithOptions() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testShowXmlDialogWithOptions() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		final DialogOptions mockOptions = mock(DialogOptions.class);
+		// Act:
 		activity.showXmlDialog(dialogResource, mockOptions);
-		verify(mockDelegate, times(1)).showXmlDialog(dialogResource, mockOptions);
+		// Assert:
+		verify(mockDelegate).showXmlDialog(dialogResource, mockOptions);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testDismissXmlDialog() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testDismissXmlDialog() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final int dialogResource = XML_DIALOG_RESOURCE_ID;
+		// Act:
 		activity.dismissXmlDialog(dialogResource);
-		verify(mockDelegate, times(1)).dismissXmlDialog(dialogResource);
+		// Assert:
+		verify(mockDelegate).dismissXmlDialog(dialogResource);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnBackPressed() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testOnBackPressed() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		when(mockDelegate.findCurrentFragment()).thenReturn(null);
 		when(mockDelegate.finishWithNavigationalTransition()).thenReturn(true);
+		// Act:
 		activity.onBackPressed();
-		verify(mockDelegate, times(1)).isPaused();
-		verify(mockDelegate, times(1)).findCurrentFragment();
-		verify(mockDelegate, times(1)).popFragmentsBackStack();
-		verify(mockDelegate, times(1)).finishWithNavigationalTransition();
+		// Assert:
+		verify(mockDelegate).isPaused();
+		verify(mockDelegate).findCurrentFragment();
+		verify(mockDelegate).popFragmentsBackStack();
+		verify(mockDelegate).finishWithNavigationalTransition();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnBackPressedWithFragmentsInBackStack() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testOnBackPressedWithFragmentsInBackStack() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		when(mockDelegate.findCurrentFragment()).thenReturn(null);
 		when(mockDelegate.popFragmentsBackStack()).thenReturn(true);
+		// Act:
 		activity.onBackPressed();
-		verify(mockDelegate, times(1)).isPaused();
-		verify(mockDelegate, times(1)).findCurrentFragment();
-		verify(mockDelegate, times(1)).popFragmentsBackStack();
+		// Assert:
+		verify(mockDelegate).isPaused();
+		verify(mockDelegate).findCurrentFragment();
+		verify(mockDelegate).popFragmentsBackStack();
 		verify(mockDelegate, times(0)).finishWithNavigationalTransition();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnBackPress() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testOnBackPress() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		when(mockDelegate.findCurrentFragment()).thenReturn(null);
+		// Act + Assert:
 		assertThat(activity.onBackPress(), is(false));
-		verify(mockDelegate, times(1)).isPaused();
-		verify(mockDelegate, times(1)).findCurrentFragment();
-		verify(mockDelegate, times(1)).popFragmentsBackStack();
+		verify(mockDelegate).isPaused();
+		verify(mockDelegate).findCurrentFragment();
+		verify(mockDelegate).popFragmentsBackStack();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnBackPressHandledByCurrentFragment() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testOnBackPressHandledByCurrentFragment() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final TestBackPressWatcherFragment mockFragment = mock(TestBackPressWatcherFragment.class);
 		when(mockFragment.dispatchBackPress()).thenReturn(true);
 		when(mockDelegate.findCurrentFragment()).thenReturn(mockFragment);
+		// Act + Assert:
 		assertThat(activity.onBackPress(), is(true));
-		verify(mockDelegate, times(1)).isPaused();
-		verify(mockDelegate, times(1)).findCurrentFragment();
+		verify(mockDelegate).isPaused();
+		verify(mockDelegate).findCurrentFragment();
 		verifyNoMoreInteractions(mockDelegate);
-		verify(mockFragment, times(1)).dispatchBackPress();
+		verify(mockFragment).dispatchBackPress();
 		verifyNoMoreInteractions(mockFragment);
 	}
 
-	@Test
-	public void testOnBackPressNotHandledByCurrentFragment() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testOnBackPressNotHandledByCurrentFragment() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final TestBackPressWatcherFragment mockFragment = mock(TestBackPressWatcherFragment.class);
 		when(mockFragment.dispatchBackPress()).thenReturn(false);
 		when(mockDelegate.findCurrentFragment()).thenReturn(mockFragment);
+		// Act + Assert:
 		assertThat(activity.onBackPress(), is(false));
-		verify(mockDelegate, times(1)).isPaused();
-		verify(mockDelegate, times(1)).findCurrentFragment();
-		verify(mockDelegate, times(1)).popFragmentsBackStack();
+		verify(mockDelegate).isPaused();
+		verify(mockDelegate).findCurrentFragment();
+		verify(mockDelegate).popFragmentsBackStack();
 		verifyNoMoreInteractions(mockDelegate);
-		verify(mockFragment, times(1)).dispatchBackPress();
+		verify(mockFragment).dispatchBackPress();
 		verifyNoMoreInteractions(mockFragment);
 	}
 
-	@Test
-	public void testOnBackPressWhenPaused() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testOnBackPressWhenPaused() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final TestBackPressWatcherFragment mockFragment = mock(TestBackPressWatcherFragment.class);
 		when(mockFragment.dispatchBackPress()).thenReturn(true);
 		when(mockDelegate.isPaused()).thenReturn(true);
 		when(mockDelegate.findCurrentFragment()).thenReturn(mockFragment);
+		// Act + Assert:
 		assertThat(activity.onBackPress(), is(false));
-		verify(mockDelegate, times(1)).isPaused();
+		verify(mockDelegate).isPaused();
 		verifyNoMoreInteractions(mockDelegate);
 		verifyZeroInteractions(mockFragment);
 	}
 
-	@Test
-	public void testDispatchBackPressToFragments() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testDispatchBackPressToFragments() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final TestBackPressWatcherFragment mockFragment = mock(TestBackPressWatcherFragment.class);
 		when(mockFragment.dispatchBackPress()).thenReturn(true);
 		when(mockDelegate.findCurrentFragment()).thenReturn(mockFragment);
+		// Act + Assert:
 		assertThat(activity.dispatchBackPressToFragments(), is(true));
-		verify(mockDelegate, times(1)).findCurrentFragment();
+		verify(mockDelegate).findCurrentFragment();
 		verifyNoMoreInteractions(mockDelegate);
-		verify(mockFragment, times(1)).dispatchBackPress();
+		verify(mockFragment).dispatchBackPress();
 		verifyNoMoreInteractions(mockFragment);
 	}
 
-	@Test
-	public void testDispatchBackPressToCurrentFragment() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testDispatchBackPressToCurrentFragment() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final TestBackPressWatcherFragment mockFragment = mock(TestBackPressWatcherFragment.class);
 		when(mockFragment.dispatchBackPress()).thenReturn(true);
 		when(mockDelegate.findCurrentFragment()).thenReturn(mockFragment);
+		// Act + Assert:
 		assertThat(activity.dispatchBackPressToCurrentFragment(), is(true));
-		verify(mockDelegate, times(1)).findCurrentFragment();
+		verify(mockDelegate).findCurrentFragment();
 		verifyNoMoreInteractions(mockDelegate);
-		verify(mockFragment, times(1)).dispatchBackPress();
+		verify(mockFragment).dispatchBackPress();
 		verifyNoMoreInteractions(mockFragment);
 	}
 
-	@Test
-	public void testDispatchBackPressToCurrentFragmentNotHandledByFragment() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testDispatchBackPressToCurrentFragmentNotHandledByFragment() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final TestBackPressWatcherFragment mockFragment = mock(TestBackPressWatcherFragment.class);
 		when(mockFragment.dispatchBackPress()).thenReturn(false);
 		when(mockDelegate.findCurrentFragment()).thenReturn(mockFragment);
+		// Act + Assert:
 		assertThat(activity.dispatchBackPressToCurrentFragment(), is(false));
-		verify(mockDelegate, times(1)).findCurrentFragment();
+		verify(mockDelegate).findCurrentFragment();
 		verifyNoMoreInteractions(mockDelegate);
-		verify(mockFragment, times(1)).dispatchBackPress();
+		verify(mockFragment).dispatchBackPress();
 		verifyNoMoreInteractions(mockFragment);
 	}
 
-	@Test
-	public void testDispatchBackPressToCurrentFragmentThatIsNotBackPressWatcher() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testDispatchBackPressToCurrentFragmentThatIsNotBackPressWatcher() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final TestFragment mockFragment = mock(TestFragment.class);
 		when(mockDelegate.findCurrentFragment()).thenReturn(mockFragment);
+		// Act + Assert:
 		assertThat(activity.dispatchBackPressToCurrentFragment(), is(false));
-		verify(mockDelegate, times(1)).findCurrentFragment();
+		verify(mockDelegate).findCurrentFragment();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testDispatchBackPressToCurrentFragmentWhenThereIsNone() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testDispatchBackPressToCurrentFragmentWhenThereIsNone() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		when(mockDelegate.findCurrentFragment()).thenReturn(null);
+		// Act + Assert:
 		assertThat(activity.dispatchBackPressToCurrentFragment(), is(false));
-		verify(mockDelegate, times(1)).findCurrentFragment();
+		verify(mockDelegate).findCurrentFragment();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testFindCurrentFragment() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testFindCurrentFragment() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		final Fragment mockFragment = mock(TestFragment.class);
 		when(mockDelegate.findCurrentFragment()).thenReturn(mockFragment);
+		// Act + Assert:
 		assertThat(activity.findCurrentFragment(), is(mockFragment));
-		verify(mockDelegate, times(1)).findCurrentFragment();
+		verify(mockDelegate).findCurrentFragment();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testPopFragmentsBackStack() {
-		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+	@Test public void testPopFragmentsBackStack() {
+		// Arrange:
 		final TestActivity activity = new TestActivity();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
 		activity.setContextDelegate(mockDelegate);
 		when(mockDelegate.popFragmentsBackStack()).thenReturn(true);
+		// Act + Assert:
 		assertThat(activity.popFragmentsBackStack(), is(true));
-		verify(mockDelegate, times(1)).popFragmentsBackStack();
+		verify(mockDelegate).popFragmentsBackStack();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testFinishWithNavigationalTransition() {
+	@Test public void testFinishWithNavigationalTransition() {
+		// Arrange:
 		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
-		activity.setNavigationalTransition(new BaseNavigationalTransition() {
-		});
+		activity.setNavigationalTransition(new BaseNavigationalTransition() {});
+		// Act + Assert:
 		assertThat(activity.finishWithNavigationalTransition(), is(true));
 		assertThat(activity.isFinishing(), is(true));
 	}
 
-	@Test
-	public void testFinishWithNavigationalTransitionWhenThereIsNoTransition() {
+	@Test public void testFinishWithNavigationalTransitionWhenThereIsNoTransition() {
+		// Arrange:
 		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		// Act + Assert:
 		assertThat(activity.finishWithNavigationalTransition(), is(false));
 		assertThat(activity.isFinishing(), is(true));
 	}
@@ -625,19 +727,16 @@ public final class UniversiActivityTest extends RobolectricTestCase {
 
 		boolean onBindViewsInvoked, onBindDataInvoked;
 
-		@Override
-		protected void onBindViews() {
+		@Override protected void onBindViews() {
 			super.onBindViews();
 			this.onBindViewsInvoked = true;
 		}
 
-		@Override
-		protected void onBindData() {
+		@Override protected void onBindData() {
 			super.onBindData();
 			this.onBindDataInvoked = true;
 		}
 	}
 
-	public static abstract class TestBackPressWatcherFragment extends TestFragment implements BackPressWatcher {
-	}
+	public static abstract class TestBackPressWatcherFragment extends TestFragment implements BackPressWatcher {}
 }
