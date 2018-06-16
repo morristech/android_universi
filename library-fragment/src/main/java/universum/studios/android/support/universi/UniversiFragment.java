@@ -1,23 +1,24 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2017 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2017 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License 
- * you may obtain at
- * 
- * 		http://www.apache.org/licenses/LICENSE-2.0
- * 
- * You can redistribute, modify or publish any part of the code written within this file but as it 
- * is described in the License, the software distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
- * 
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.support.universi;
 
+import android.Manifest;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -28,6 +29,7 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresPermission;
 import android.support.annotation.UiThread;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
@@ -53,13 +55,14 @@ import universum.studios.android.support.fragment.ActionBarFragment;
  * been registered, UniversiFragment will invoke {@link #onBindData()} method whenever its view
  * hierarchy is already created or waits until it is created.
  *
- * <h3>1) Permissions</h3>
+ * <h3>2) Permissions</h3>
  * This fragment class has support for a new permissions management model introduced in the
  * {@link Build.VERSION_CODES#M Marshmallow} Android version. Permissions related methods like
  * {@link #checkSelfPermission(String)} or {@link #supportRequestPermissions(String[], int)} can be
  * invoked regardless of current Android version.
  *
  * @author Martin Albedinsky
+ * @since 1.0
  */
 public abstract class UniversiFragment extends ActionBarFragment {
 
@@ -91,8 +94,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 
 		/**
 		 */
-		@Override
-		public void run() {
+		@Override public void run() {
 			requestBindDataInner();
 		}
 	};
@@ -101,7 +103,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * Delegate that is used to handle requests specific for the Universi context made upon this
 	 * fragment like showing and dismissing of dialogs.
 	 */
-	private UniversiContextDelegate mContextDelegate;
+	private UniversiContextDelegate delegate;
 
 	/*
 	 * Constructors ================================================================================
@@ -117,25 +119,26 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param delegate The delegate only for testing purpose.
 	 */
 	@VisibleForTesting void setContextDelegate(final UniversiContextDelegate delegate) {
-		this.mContextDelegate = delegate;
+		this.delegate = delegate;
 	}
 
 	/**
 	 * Ensures that the context delegate is initialized for this fragment.
 	 */
 	private void ensureContextDelegate() {
-		if (mContextDelegate == null) this.mContextDelegate = UniversiFragmentDelegate.create(this);
+		if (delegate == null) this.delegate = UniversiFragmentDelegate.create(this);
 	}
 
 	/**
 	 * Sets a controller that should be used to show and dismiss dialogs within context of this fragment.
 	 *
 	 * @param controller The desired controller. May be {@code null} to use the default one.
+	 *
 	 * @see #getDialogController()
 	 */
 	protected void setDialogController(@Nullable DialogController controller) {
 		this.ensureContextDelegate();
-		mContextDelegate.setDialogController(controller);
+		this.delegate.setDialogController(controller);
 	}
 
 	/**
@@ -145,12 +148,12 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * If not specified, instance of {@link DialogController} is instantiated by default.
 	 *
 	 * @return The dialog controller of this fragment.
+	 *
 	 * @see #setDialogController(DialogController)
 	 */
-	@NonNull
-	protected DialogController getDialogController() {
+	@NonNull protected DialogController getDialogController() {
 		this.ensureContextDelegate();
-		return mContextDelegate.getDialogController();
+		return delegate.getDialogController();
 	}
 
 	/**
@@ -163,7 +166,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 */
 	protected void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
 		this.ensureContextDelegate();
-		mContextDelegate.setDialogXmlFactory(xmlDialogsSet);
+		this.delegate.setDialogXmlFactory(xmlDialogsSet);
 	}
 
 	/**
@@ -171,38 +174,38 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * this fragment to show.
 	 *
 	 * @param factory The desired factory. May be {@code null} to remove the current one.
+	 *
 	 * @see #getDialogFactory()
 	 * @see #showDialogWithId(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	protected void setDialogFactory(@Nullable final DialogFactory factory) {
 		this.ensureContextDelegate();
-		mContextDelegate.setDialogFactory(factory);
+		this.delegate.setDialogFactory(factory);
 	}
 
 	/**
 	 * Returns the current dialog factory specified for this fragment.
 	 *
 	 * @return Dialog factory or {@code null} if no factory has been specified yet.
+	 *
 	 * @see #setDialogFactory(DialogFactory)
 	 */
-	@Nullable
-	protected DialogFactory getDialogFactory() {
+	@Nullable protected DialogFactory getDialogFactory() {
 		this.ensureContextDelegate();
-		return mContextDelegate.getDialogFactory();
+		return delegate.getDialogFactory();
 	}
 
 	/**
 	 */
-	@Override
-	public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+	@Override public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		this.ensureContextDelegate();
-		mContextDelegate.setViewCreated(true);
+		this.delegate.setViewCreated(true);
 		onBindViews(view, savedInstanceState);
 		// Check if there was requested data binding before view creation, if it was, perform binding now.
-		if (mContextDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {
-			mContextDelegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+		if (delegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {
+			this.delegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
 			onBindData();
 		}
 	}
@@ -219,11 +222,10 @@ public abstract class UniversiFragment extends ActionBarFragment {
 
 	/**
 	 */
-	@Override
-	public void onResume() {
+	@Override public void onResume() {
 		super.onResume();
 		this.ensureContextDelegate();
-		mContextDelegate.setPaused(false);
+		this.delegate.setPaused(false);
 	}
 
 	/**
@@ -248,11 +250,11 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 */
 	final void requestBindDataInner() {
 		this.ensureContextDelegate();
-		if (mContextDelegate.isViewCreated()) {
+		if (delegate.isViewCreated()) {
 			onBindData();
 			return;
 		}
-		mContextDelegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+		this.delegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
 	}
 
 	/**
@@ -261,8 +263,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * <p>
 	 * <b>This is always invoked on the UI thread.</b>
 	 */
-	@UiThread
-	protected void onBindData() {
+	@UiThread protected void onBindData() {
 		// Inheritance hierarchies may perform theirs specific data binding logic here.
 	}
 
@@ -270,14 +271,15 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * Checks whether the current active network is at this time connected or not.
 	 *
 	 * @return {@code True} if active network is connected, {@code false} otherwise.
+	 *
 	 * @see ConnectivityManager#getActiveNetworkInfo()
 	 * @see NetworkInfo#isConnected()
 	 * @see #isNetworkConnected(int)
 	 */
-	@CheckResult
-	protected boolean isActiveNetworkConnected() {
+	@RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+	@CheckResult protected boolean isActiveNetworkConnected() {
 		this.ensureContextDelegate();
-		return mContextDelegate.isActiveNetworkConnected();
+		return delegate.isActiveNetworkConnected();
 	}
 
 	/**
@@ -286,13 +288,14 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 *
 	 * @param networkType The desired network type to check for connection.
 	 * @return {@code True} if the requested network is connected, {@code false} otherwise.
+	 *
 	 * @see ConnectivityManager#getNetworkInfo(int)
 	 * @see NetworkInfo#isConnected()
 	 */
-	@CheckResult
-	protected boolean isNetworkConnected(final int networkType) {
+	@RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+	@CheckResult protected boolean isNetworkConnected(final int networkType) {
 		this.ensureContextDelegate();
-		return mContextDelegate.isNetworkConnected(networkType);
+		return delegate.isNetworkConnected(networkType);
 	}
 
 	/**
@@ -302,16 +305,13 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @return {@link android.content.pm.PackageManager#PERMISSION_GRANTED} if you have the
 	 * permission, or {@link android.content.pm.PackageManager#PERMISSION_DENIED} if not.
 	 */
-	@CheckResult
-	protected int checkSelfPermission(@NonNull final String permission) {
+	@CheckResult protected int checkSelfPermission(@NonNull final String permission) {
 		return ActivityCompat.checkSelfPermission(getActivity(), permission);
 	}
 
 	/**
 	 */
-	@Override
-	@CheckResult
-	public boolean shouldShowRequestPermissionRationale(@NonNull final String permission) {
+	@Override @CheckResult public boolean shouldShowRequestPermissionRationale(@NonNull final String permission) {
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && super.shouldShowRequestPermissionRationale(permission);
 	}
 
@@ -331,8 +331,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 
 	/**
 	 */
-	@Override
-	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+	@Override public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 	}
 
@@ -350,13 +349,14 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param options  Options for the dialog.
 	 * @return {@code True} if dialog has been shown, {@code false} if this fragment is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
+	 *
 	 * @see DialogController#newRequest(int)
 	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
 	protected boolean showDialogWithId(@IntRange(from = 0) final int dialogId, @Nullable final DialogOptions options) {
 		this.ensureContextDelegate();
-		return mContextDelegate.showDialogWithId(dialogId, options);
+		return delegate.showDialogWithId(dialogId, options);
 	}
 
 	/**
@@ -365,12 +365,13 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param dialogId Id of the desired dialog to dismiss.
 	 * @return {@code True} if dialog has been dismissed, {@code false} if this fragment is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
+	 *
 	 * @see DialogController#newRequest(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
 	protected boolean dismissDialogWithId(@IntRange(from = 0) final int dialogId) {
 		this.ensureContextDelegate();
-		return mContextDelegate.dismissDialogWithId(dialogId);
+		return delegate.dismissDialogWithId(dialogId);
 	}
 
 	/**
@@ -389,12 +390,13 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param options Options for the dialog.
 	 * @return {@code True} if dialog has been successfully inflated and shown, {@code false} if
 	 * this fragment is currently <b>paused</b> or dialog failed to be inflated.
+	 *
 	 * @see DialogXmlFactory#createDialog(int, DialogOptions)
 	 * @see #dismissXmlDialog(int)
 	 */
 	protected boolean showXmlDialog(@XmlRes final int resId, @Nullable final DialogOptions options) {
 		this.ensureContextDelegate();
-		return mContextDelegate.showXmlDialog(resId, options);
+		return delegate.showXmlDialog(resId, options);
 	}
 
 	/**
@@ -403,28 +405,27 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	 * @param resId Resource id of Xml file containing the desired dialog (its specification) to dismiss.
 	 * @return {@code True} if dialog has been dismissed, {@code false} if this fragment is currently
 	 * <b>paused</b>.
+	 *
 	 * @see #showXmlDialog(int, DialogOptions)
 	 */
 	protected boolean dismissXmlDialog(@XmlRes final int resId) {
 		this.ensureContextDelegate();
-		return mContextDelegate.dismissXmlDialog(resId);
+		return delegate.dismissXmlDialog(resId);
 	}
 
 	/**
 	 */
-	@Override
-	public void onPause() {
+	@Override public void onPause() {
 		super.onPause();
 		this.ensureContextDelegate();
-		mContextDelegate.setPaused(true);
+		this.delegate.setPaused(true);
 	}
 
 	/**
 	 */
-	@Override
-	public void onDestroyView() {
+	@Override public void onDestroyView() {
 		super.onDestroyView();
-		if (mContextDelegate != null) mContextDelegate.setViewCreated(false);
+		if (delegate != null) delegate.setViewCreated(false);
 	}
 
 	/*

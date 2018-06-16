@@ -1,10 +1,15 @@
 Change-Log
 ===============
-> Regular configuration update: _28.03.2018_
+> Regular configuration update: _01.06.2018_
 
 More **detailed changelog** for each respective version may be viewed by pressing on a desired _version's name_.
 
 ## Version 1.x ##
+
+### [1.0.5](https://github.com/universum-studios/android_universi/releases/tag/support-v1.0.5) ###
+> 16.06.2018
+
+- Small updates.
 
 ### [1.0.4](https://github.com/universum-studios/android_universi/releases/tag/support-v1.0.4) ###
 > 20.12.2017

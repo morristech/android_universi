@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2017 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2017 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License 
- * you may obtain at
- * 
- * 		http://www.apache.org/licenses/LICENSE-2.0
- * 
- * You can redistribute, modify or publish any part of the code written within this file but as it 
- * is described in the License, the software distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
- * 
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.support.universi;
 
@@ -41,6 +41,7 @@ import universum.studios.android.transition.BaseNavigationalTransition;
  * Unified interface for activities provided by the Universi framework.
  *
  * @author Martin Albedinsky
+ * @since 1.0
  */
 public interface UniversiActivityContext {
 
@@ -54,12 +55,12 @@ public interface UniversiActivityContext {
 	 * @param <D>       Type of data the loader loads.
 	 * @return Initialized or re-started loader instance or {@code null} if the specified <var>callbacks</var>
 	 * do not create loader for the specified <var>id</var>.
+	 *
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #destroyLoader(int)
 	 */
-	@Nullable
-	<D> Loader<D> startLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
+	@Nullable <D> Loader<D> startLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
 
 	/**
 	 * Initializes a loader with the specified <var>id</var> for the given <var>callbacks</var>.
@@ -70,13 +71,13 @@ public interface UniversiActivityContext {
 	 * @param <D>       Type of data the loader loads.
 	 * @return Initialized loader instance or {@code null} if the specified <var>callbacks</var> do
 	 * not create loader for the specified <var>id</var>.
+	 *
 	 * @see #startLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #destroyLoader(int)
 	 * @see LoaderManager#initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 */
-	@Nullable
-	<D> Loader<D> initLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
+	@Nullable <D> Loader<D> initLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
 
 	/**
 	 * Re-starts a loader with the specified <var>id</var> for the given <var>callbacks</var>.
@@ -87,23 +88,24 @@ public interface UniversiActivityContext {
 	 * @param <D>       Type of data the loader loads.
 	 * @return Re-started loader instance or {@code null} if the specified <var>callbacks</var> do
 	 * not create loader for the specified <var>id</var>.
+	 *
 	 * @see #startLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #destroyLoader(int)
 	 * @see LoaderManager#restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 */
-	@Nullable
-	<D> Loader<D> restartLoader(int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
+	@Nullable <D> Loader<D> restartLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
 
 	/**
 	 * Destroys a loader with the specified <var>id</var>.
 	 *
 	 * @param id Id of the desired loader to destroy.
+	 *
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see LoaderManager#destroyLoader(int)
 	 */
-	void destroyLoader(int id);
+	void destroyLoader(@IntRange(from = 0) int id);
 
 	/**
 	 * Sets a navigational transition that will be used to finish this activity context whenever
@@ -113,6 +115,7 @@ public interface UniversiActivityContext {
 	 * for this activity via {@link BaseNavigationalTransition#configureIncomingTransitions(Activity)}.
 	 *
 	 * @param transition The desired transition. May be {@code null} to clear the current one.
+	 *
 	 * @see #getNavigationalTransition()
 	 */
 	void setNavigationalTransition(@Nullable BaseNavigationalTransition transition);
@@ -121,15 +124,16 @@ public interface UniversiActivityContext {
 	 * Returns the navigational transition that will be used to finish this activity.
 	 *
 	 * @return Transition or {@code null} if no transition has been specified.
+	 *
 	 * @see #setNavigationalTransition(BaseNavigationalTransition)
 	 */
-	@Nullable
-	BaseNavigationalTransition getNavigationalTransition();
+	@Nullable BaseNavigationalTransition getNavigationalTransition();
 
 	/**
 	 * Sets a controller that should be used to show and hide fragments within context of this activity.
 	 *
 	 * @param controller The desired controller. May be {@code null} to use the default one.
+	 *
 	 * @see #getFragmentController()
 	 * @see #setFragmentFactory(FragmentFactory)
 	 */
@@ -142,15 +146,16 @@ public interface UniversiActivityContext {
 	 * If not specified, instance of {@link FragmentController} is instantiated by default.
 	 *
 	 * @return The fragment controller of this activity.
+	 *
 	 * @see #setFragmentController(FragmentController)
 	 */
-	@NonNull
-	FragmentController getFragmentController();
+	@NonNull FragmentController getFragmentController();
 
 	/**
 	 * Specifies a factory that provides fragment instances for {@link FragmentController} of his activity.
 	 *
 	 * @param factory The desired factory. May be {@code null} to remove the current one.
+	 *
 	 * @see #getFragmentFactory()
 	 * @see #setFragmentController(FragmentController)
 	 * @see #getFragmentController()
@@ -161,15 +166,16 @@ public interface UniversiActivityContext {
 	 * Returns the current fragment factory specified for this activity.
 	 *
 	 * @return Fragment factory or {@code null} if no factory has been specified yet.
+	 *
 	 * @see #setFragmentFactory(FragmentFactory)
 	 */
-	@Nullable
-	FragmentFactory getFragmentFactory();
+	@Nullable FragmentFactory getFragmentFactory();
 
 	/**
 	 * Sets a controller that should be used to show and dismiss dialogs within context of this activity.
 	 *
 	 * @param controller The desired controller. May be {@code null} to use the default one.
+	 *
 	 * @see #getDialogController()
 	 * @see #setFragmentFactory(FragmentFactory)
 	 */
@@ -182,10 +188,10 @@ public interface UniversiActivityContext {
 	 * If not specified, instance of {@link DialogController} is instantiated by default.
 	 *
 	 * @return The dialog controller of this activity.
+	 *
 	 * @see #setDialogController(DialogController)
 	 */
-	@NonNull
-	DialogController getDialogController();
+	@NonNull DialogController getDialogController();
 
 	/**
 	 * Specifies a factory that should provide dialog instances that can be parsed from an Xml file
@@ -194,6 +200,7 @@ public interface UniversiActivityContext {
 	 * @param xmlDialogsSet Resource id of the desired Xml file containing Xml dialogs that the
 	 *                      factory should provide for this activity. May be {@code 0} to remove the
 	 *                      current one.
+	 *
 	 * @see #setDialogFactory(DialogFactory)
 	 */
 	void setDialogXmlFactory(@XmlRes int xmlDialogsSet);
@@ -202,6 +209,7 @@ public interface UniversiActivityContext {
 	 * Specifies a factory that provides dialog instances for {@link DialogController} of this activity.
 	 *
 	 * @param factory The desired factory. May be {@code null} to remove the current one.
+	 *
 	 * @see #getDialogFactory()
 	 * @see #showDialogWithId(int)
 	 * @see #showDialogWithId(int, DialogOptions)
@@ -212,10 +220,10 @@ public interface UniversiActivityContext {
 	 * Returns the current dialog factory specified for this activity.
 	 *
 	 * @return Dialog factory or {@code null} if no factory has been specified yet.
+	 *
 	 * @see #setDialogFactory(DialogFactory)
 	 */
-	@Nullable
-	DialogFactory getDialogFactory();
+	@Nullable DialogFactory getDialogFactory();
 
 	/**
 	 * Same as {@link #showDialogWithId(int, DialogOptions)} with {@code null} options.
@@ -229,11 +237,12 @@ public interface UniversiActivityContext {
 	 * @param options  Options for the dialog.
 	 * @return {@code True} if dialog has been shown, {@code false} if this activity is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
+	 *
 	 * @see DialogController#newRequest(int)
 	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
-	boolean showDialogWithId(@IntRange(from = 0) int dialogId, @Nullable DialogOptions options);
+	boolean showDialogWithId(int dialogId, @Nullable DialogOptions options);
 
 	/**
 	 * Dismisses a dialog that is provided by the current dialog factory under the specified <var>dialogId</var>.
@@ -241,10 +250,11 @@ public interface UniversiActivityContext {
 	 * @param dialogId Id of the desired dialog to dismiss.
 	 * @return {@code True} if dialog has been dismissed, {@code false} if this activity is currently
 	 * <b>paused</b> or does not have its dialog factory specified.
+	 *
 	 * @see DialogController#newRequest(int)
 	 * @see #showDialogWithId(int, DialogOptions)
 	 */
-	boolean dismissDialogWithId(@IntRange(from = 0) int dialogId);
+	boolean dismissDialogWithId(int dialogId);
 
 	/**
 	 * Same as {@link #showXmlDialog(int, DialogOptions)} with {@code null} options.
@@ -260,6 +270,7 @@ public interface UniversiActivityContext {
 	 * @param options Options for the dialog.
 	 * @return {@code True} if dialog has been successfully inflated and shown, {@code false} if
 	 * this activity is currently <b>paused</b> or dialog failed to be inflated.
+	 *
 	 * @see DialogXmlFactory#createDialog(int, DialogOptions)
 	 * @see #dismissXmlDialog(int)
 	 */
@@ -271,6 +282,7 @@ public interface UniversiActivityContext {
 	 * @param resId Resource id of Xml file containing the desired dialog (its specification) to dismiss.
 	 * @return {@code True} if dialog has been dismissed, {@code false} if this activity is currently
 	 * <b>paused</b>.
+	 *
 	 * @see #showXmlDialog(int, DialogOptions)
 	 */
 	boolean dismissXmlDialog(@XmlRes int resId);
@@ -279,7 +291,9 @@ public interface UniversiActivityContext {
 	 * Checks whether the current active network is at this time connected or not.
 	 *
 	 * @return {@code True} if active network is connected, {@code false} otherwise.
+	 *
 	 * @see ConnectivityManager#getActiveNetworkInfo()
+	 *
 	 * @see NetworkInfo#isConnected()
 	 * @see #isNetworkConnected(int)
 	 */
@@ -291,6 +305,7 @@ public interface UniversiActivityContext {
 	 *
 	 * @param networkType The desired network type to check for connection.
 	 * @return {@code True} if the requested network is connected, {@code false} otherwise.
+	 *
 	 * @see ConnectivityManager#getNetworkInfo(int)
 	 * @see NetworkInfo#isConnected()
 	 */

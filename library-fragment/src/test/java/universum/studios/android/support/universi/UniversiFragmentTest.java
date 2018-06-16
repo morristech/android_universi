@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2017 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2017 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License 
- * you may obtain at
- * 
- * 		http://www.apache.org/licenses/LICENSE-2.0
- * 
- * You can redistribute, modify or publish any part of the code written within this file but as it 
- * is described in the License, the software distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
- * 
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.support.universi;
 
@@ -40,7 +40,6 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -54,268 +53,304 @@ public final class UniversiFragmentTest extends RobolectricTestCase {
 	private static final int XML_DIALOGS_SET_RESOURCE_ID = 1;
 	private static final int XML_DIALOG_RESOURCE_ID = 2;
     
-	@Test
-	public void testREQUEST_BIND_DATA_INNER() {
+	@Test public void testREQUEST_BIND_DATA_INNER() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
 		when(mockDelegate.isViewCreated()).thenReturn(true);
+		// Act:
 		fragment.REQUEST_BIND_DATA_INNER.run();
+		// Assert:
 		assertThat(fragment.onBindDataInvoked, is(true));
-		verify(mockDelegate, times(1)).isViewCreated();
+		verify(mockDelegate).isViewCreated();
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-    @Test
-	public void testSetGetDialogController() {
-	    final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
+	@Test public void testInstantiation() {
+		// Act:
+		final UniversiFragment fragment = new TestFragment();
+		// Assert:
+		assertThat(fragment.getDialogController(), is(notNullValue()));
+	}
+
+    @Test public void testDialogController() {
+	    // Arrange:
+		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 	    final DialogController mockController = mock(DialogController.class);
 	    when(mockDelegate.getDialogController()).thenReturn(mockController);
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
+	    // Act + Assert:
 	    fragment.setDialogController(mockController);
-	    verify(mockDelegate, times(1)).setDialogController(mockController);
+	    verify(mockDelegate).setDialogController(mockController);
 	    assertThat(fragment.getDialogController(), is(mockController));
-	    verify(mockDelegate, times(1)).getDialogController();
+	    verify(mockDelegate).getDialogController();
 	    verifyNoMoreInteractions(mockDelegate);
     }
 
-    @Test
-    public void testGetDialogControllerDefault() {
-	    assertThat(new TestFragment().getDialogController(), is(notNullValue()));
-    }
-
-	@Test
     @SuppressWarnings("ResultOfMethodCallIgnored")
-	public void testSetGetDialogFactory() {
-	    final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
+	@Test public void testDialogFactory() {
+	    // Arrange:
+		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 	    final DialogFactory mockFactory = mock(DialogFactory.class);
 	    when(mockDelegate.getDialogFactory()).thenReturn(mockFactory);
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
+	    // Act + Assert:
 	    fragment.setDialogFactory(mockFactory);
-	    verify(mockDelegate, times(1)).setDialogFactory(mockFactory);
+	    verify(mockDelegate).setDialogFactory(mockFactory);
 	    assertThat(fragment.getDialogFactory(), is(mockFactory));
-	    verify(mockDelegate, times(1)).getDialogFactory();
+	    verify(mockDelegate).getDialogFactory();
 	    verifyNoMoreInteractions(mockDelegate);
     }
 
-    @Test
-	public void testSetDialogXmlFactory() {
+    @Test public void testDialogXmlFactory() {
+	    // Arrange:
 	    final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
 	    final int dialogsResource = XML_DIALOGS_SET_RESOURCE_ID;
+	    // Act:
 	    fragment.setDialogXmlFactory(dialogsResource);
-	    verify(mockDelegate, times(1)).setDialogXmlFactory(dialogsResource);
+	    // Assert:
+	    verify(mockDelegate).setDialogXmlFactory(dialogsResource);
 	    verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnViewCreated() {
+	@Test public void testOnViewCreated() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
-		fragment.onViewCreated(new View(mApplication), null);
+		// Act:
+		fragment.onViewCreated(new View(application), null);
+		// Assert:
 		assertThat(fragment.onBindViewsInvoked, is(true));
-		verify(mockDelegate, times(1)).setViewCreated(true);
-		verify(mockDelegate, times(1)).isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA);
+		verify(mockDelegate).setViewCreated(true);
+		verify(mockDelegate).isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnViewCreatedWithRequestToBindData() {
+	@Test public void testOnViewCreatedWithRequestToBindData() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
 		when(mockDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)).thenReturn(true);
-		fragment.onViewCreated(new View(mApplication), null);
+		// Act:
+		fragment.onViewCreated(new View(application), null);
+		// Assert:
 		assertThat(fragment.onBindViewsInvoked, is(true));
 		assertThat(fragment.onBindDataInvoked, is(true));
-		verify(mockDelegate, times(1)).setViewCreated(true);
-		verify(mockDelegate, times(1)).isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA);
-		verify(mockDelegate, times(1)).unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+		verify(mockDelegate).setViewCreated(true);
+		verify(mockDelegate).isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA);
+		verify(mockDelegate).unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnResume() {
+	@Test public void testOnResume() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
+		// Act:
 		fragment.onResume();
-		verify(mockDelegate, times(1)).setPaused(false);
+		// Assert:
+		verify(mockDelegate).setPaused(false);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-    @Test
-	public void testRequestBindData() throws Throwable {
-	    final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
+    @Test public void testRequestBindData() {
+	    // Arrange:
+		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
 	    when(mockDelegate.isViewCreated()).thenReturn(false);
 	    fragment.requestBindData();
+	    // Act + Assert:
 	    assertThat(fragment.onBindDataInvoked, is(false));
-	    verify(mockDelegate, times(1)).isViewCreated();
-	    verify(mockDelegate, times(1)).registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+	    verify(mockDelegate).isViewCreated();
+	    verify(mockDelegate).registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
 	    verifyNoMoreInteractions(mockDelegate);
     }
 
-    @Test
-	public void testRequestBindDataWhenViewIsCreated() throws Throwable {
-	    final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
+    @Test public void testRequestBindDataWhenViewIsCreated() {
+	    // Arrange:
+		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
 	    when(mockDelegate.isViewCreated()).thenReturn(true);
 	    fragment.requestBindData();
+	    // Act + Assert:
 	    assertThat(fragment.onBindDataInvoked, is(true));
-	    verify(mockDelegate, times(1)).isViewCreated();
+	    verify(mockDelegate).isViewCreated();
 	    verifyNoMoreInteractions(mockDelegate);
     }
 
-    @Test
-	public void testIsActiveNetworkConnected() {
-	    final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
+    @Test public void testIsActiveNetworkConnected() {
+	    // Arrange:
+		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
+	    // Act + Assert:
 	    assertThat(fragment.isActiveNetworkConnected(), is(false));
-	    verify(mockDelegate, times(1)).isActiveNetworkConnected();
+	    verify(mockDelegate).isActiveNetworkConnected();
 	    verifyNoMoreInteractions(mockDelegate);
     }
 
-    @Test
-	public void testIsNetworkConnected() {
-	    final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
+    @Test public void testIsNetworkConnected() {
+	    // Arrange:
+		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 	    final TestFragment fragment = new TestFragment();
 	    fragment.setContextDelegate(mockDelegate);
+	    // Act + (Assert:
 	    assertThat(fragment.isNetworkConnected(ConnectivityManager.TYPE_MOBILE), is(false));
-	    verify(mockDelegate, times(1)).isNetworkConnected(ConnectivityManager.TYPE_MOBILE);
+	    verify(mockDelegate).isNetworkConnected(ConnectivityManager.TYPE_MOBILE);
 	    verifyNoMoreInteractions(mockDelegate);
     }
 
-	@Test
-	public void testCheckSelfPermission() {}
+	@Test public void testCheckSelfPermission() {}
 
-	@Test
-	public void testShouldShowRequestPermissionRationale() {
-		assertThat(new TestFragment().shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE), is(false));
+	@Test public void testShouldShowRequestPermissionRationale() {
+		// Arrange:
+		final UniversiFragment fragment = new TestFragment();
+		// Act + Assert:
+		assertThat(fragment.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE), is(false));
 	}
 
-	@Test
-	public void testSupportRequestPermissions() {}
+	@Test public void testSupportRequestPermissions() {}
 
-	@Test
 	@Config(sdk = Build.VERSION_CODES.M)
-	public void testOnRequestPermissionsResult() {
+	@Test public void testOnRequestPermissionsResult() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
+		// Act:
 		fragment.onRequestPermissionsResult(1, new String[0], new int[0]);
+		// Assert:
 		verifyZeroInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testShowDialogWithId() {
+	@Test public void testShowDialogWithId() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
+		// Act:
 		fragment.showDialogWithId(1);
-		verify(mockDelegate, times(1)).showDialogWithId(eq(1), (DialogOptions) isNull());
+		// Assert:
+		verify(mockDelegate).showDialogWithId(eq(1), (DialogOptions) isNull());
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testShowDialogWithIdAndOptions() {
+	@Test public void testShowDialogWithIdAndOptions() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
 		final DialogOptions mockOptions = mock(DialogOptions.class);
+		// Act:
 		fragment.showDialogWithId(1, mockOptions);
-		verify(mockDelegate, times(1)).showDialogWithId(1, mockOptions);
+		// Assert:
+		verify(mockDelegate).showDialogWithId(1, mockOptions);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testDismissDialogWithId() {
+	@Test public void testDismissDialogWithId() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
+		// Act:
 		fragment.dismissDialogWithId(1);
-		verify(mockDelegate, times(1)).dismissDialogWithId(1);
+		// Assert:
+		verify(mockDelegate).dismissDialogWithId(1);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testShowXmlDialog() {
+	@Test public void testShowXmlDialog() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
 		final int dialogResource = XML_DIALOG_RESOURCE_ID;
+		// Act:
 		fragment.showXmlDialog(dialogResource);
-		verify(mockDelegate, times(1)).showXmlDialog(eq(dialogResource), (DialogOptions) isNull());
+		// Assert:
+		verify(mockDelegate).showXmlDialog(eq(dialogResource), (DialogOptions) isNull());
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testShowXmlDialogWithOptions() {
+	@Test public void testShowXmlDialogWithOptions() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
 		final int dialogResource = XML_DIALOG_RESOURCE_ID;
 		final DialogOptions mockOptions = mock(DialogOptions.class);
+		// Act:
 		fragment.showXmlDialog(dialogResource, mockOptions);
-		verify(mockDelegate, times(1)).showXmlDialog(dialogResource, mockOptions);
+		// Assert:
+		verify(mockDelegate).showXmlDialog(dialogResource, mockOptions);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testDismissXmlDialog() {
+	@Test public void testDismissXmlDialog() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
 		final int dialogResource = XML_DIALOG_RESOURCE_ID;
+		// Act:
 		fragment.dismissXmlDialog(dialogResource);
-		verify(mockDelegate, times(1)).dismissXmlDialog(dialogResource);
+		// Assert:
+		verify(mockDelegate).dismissXmlDialog(dialogResource);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnPause() {
+	@Test public void testOnPause() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
+		// Act:
 		fragment.onPause();
-		verify(mockDelegate, times(1)).setPaused(true);
+		// Assert:
+		verify(mockDelegate).setPaused(true);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnDestroyView() {
+	@Test public void testOnDestroyView() {
+		// Arrange:
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
+		// Act:
 		fragment.onDestroyView();
-		verify(mockDelegate, times(1)).setViewCreated(false);
+		// Assert:
+		verify(mockDelegate).setViewCreated(false);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
-	@Test
-	public void testOnDestroyViewWithoutContextDelegateInitialized() {
-		new TestFragment().onDestroyView();
+	@Test public void testOnDestroyViewWithoutContextDelegateInitialized() {
+		// Arrange:
+		final UniversiFragment fragment = new TestFragment();
+		// Act:
+		fragment.onDestroyView();
 	}
 
 	public static final class TestFragment extends UniversiFragment {
 
 		boolean onBindViewsInvoked, onBindDataInvoked;
 
-		@Override
-		protected void onBindViews(@NonNull View rootView, @Nullable Bundle savedInstanceState) {
+		@Override protected void onBindViews(@NonNull final View rootView, @Nullable final Bundle savedInstanceState) {
 			super.onBindViews(rootView, savedInstanceState);
 			this.onBindViewsInvoked = true;
 		}
 
-		@Override
-		protected void onBindData() {
+		@Override protected void onBindData() {
 			super.onBindData();
 			this.onBindDataInvoked = true;
 		}
