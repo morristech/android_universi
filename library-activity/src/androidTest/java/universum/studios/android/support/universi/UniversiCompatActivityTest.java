@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2017 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2017 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License 
- * you may obtain at
- * 
- * 		http://www.apache.org/licenses/LICENSE-2.0
- * 
- * You can redistribute, modify or publish any part of the code written within this file but as it 
- * is described in the License, the software distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
- * 
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.support.universi;
 
@@ -26,6 +26,7 @@ import android.support.test.annotation.UiThreadTest;
 import android.support.test.rule.ActivityTestRule;
 import android.view.Menu;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -48,68 +49,75 @@ import static org.mockito.Mockito.verifyZeroInteractions;
  */
 public final class UniversiCompatActivityTest extends InstrumentedTestCase {
     
-	@Rule
-	public ActivityTestRule<TestActivity> ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
+	@Rule public ActivityTestRule<TestActivity> ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
 
-	@Override
-	public void beforeTest() throws Exception {
+	@Override public void beforeTest() throws Exception {
 		super.beforeTest();
 		// Ensure that we have always annotations processing enabled.
 		FragmentAnnotations.setEnabled(true);
 	}
 
-	@Test
-	public void testOnCreateOptionsMenu() {
+	@Test public void testOnCreateOptionsMenu() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
 		final Menu mockMenu = mock(Menu.class);
+		// Act:
 		activity.onCreateOptionsMenu(mockMenu);
+		// Assert:
 		verifyZeroInteractions(mockMenu);
 	}
 
-	@Test
-	public void testGetFragmentControllerDefault() {
-		assertThat(ACTIVITY_RULE.getActivity().getFragmentController(), is(notNullValue()));
+	@Test public void testGetFragmentControllerDefault() {
+		// Arrange:
+		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act + Assert:
+		assertThat(activity.getFragmentController(), is(notNullValue()));
 	}
 
-	// todo: @Test
-	public void testRequestBindDataFromBackgroundThread() throws Throwable {
+	@Ignore @Test public void testRequestBindDataFromBackgroundThread() throws Throwable {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act:
 		activity.requestBindData();
 		Thread.sleep(350);
+		// Assert:
 		// fixme: this assertion does not pass
 		assertThat(activity.onBindDataInvoked, is(true));
 	}
 
-	@Test
-	public void testCheckSelfPermission() {
+	@Test public void testCheckSelfPermission() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act + Assert:
 		assertThat(
 				activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE),
 				is(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
-						mContext.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) :
+						context.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) :
 						PackageManager.PERMISSION_GRANTED
 				)
 		);
 	}
 
-	@Test
-	@UiThreadTest
-	public void testShouldShowRequestPermissionRationale() {
+	@Test @UiThreadTest public void testShouldShowRequestPermissionRationale() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act + Assert:
 		assertThat(activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE), is(false));
 	}
 
-	@Test
-	public void testFinishWithNavigationalTransition() {
+	@Test public void testFinishWithNavigationalTransition() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
 		activity.setNavigationalTransition(new BaseNavigationalTransition() {});
+		// Act + Assert:
 		assertThat(activity.finishWithNavigationalTransition(), is(true));
 		assertThat(activity.isFinishing(), is(true));
 	}
 
-	@Test
-	public void testFinishWithNavigationalTransitionWhenThereIsNoTransition() {
+	@Test public void testFinishWithNavigationalTransitionWhenThereIsNoTransition() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act + Assert:
 		assertThat(activity.finishWithNavigationalTransition(), is(false));
 		assertThat(activity.isFinishing(), is(true));
 	}
@@ -123,19 +131,16 @@ public final class UniversiCompatActivityTest extends InstrumentedTestCase {
 
 		boolean onBindViewsInvoked, onBindDataInvoked;
 
-		@Override
-		protected void onBindViews() {
+		@Override protected void onBindViews() {
 			super.onBindViews();
 			this.onBindViewsInvoked = true;
 		}
 
-		@Override
-		protected void onBindData() {
+		@Override protected void onBindData() {
 			super.onBindData();
 			this.onBindDataInvoked = true;
 		}
 	}
 
-	public static abstract class TestBackPressWatcherFragment extends TestFragment implements BackPressWatcher {
-	}
+	public static abstract class TestBackPressWatcherFragment extends TestFragment implements BackPressWatcher {}
 }

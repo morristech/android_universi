@@ -10,8 +10,8 @@ This module contains `Fragment` implementation providing features of the **Unive
 
     implementation "universum.studios.android.support:support-universi-fragment:${DESIRED_VERSION}@aar"
 
-## Components ##
+## Elements ##
 
-Below are listed some of **primary components** that are available in this module:
+Below are listed some of **primary elements** that are available in this module:
 
 - [UniversiFragment](https://github.com/universum-studios/android_universi/blob/support-master/library-fragment/src/main/java/universum/studios/android/support/universi/UniversiFragment.java)
