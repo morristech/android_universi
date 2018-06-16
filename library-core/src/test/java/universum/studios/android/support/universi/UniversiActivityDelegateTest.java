@@ -31,7 +31,6 @@ import org.junit.Test;
 import universum.studios.android.support.fragment.manage.FragmentController;
 import universum.studios.android.support.fragment.manage.FragmentFactory;
 import universum.studios.android.support.test.local.RobolectricTestCase;
-import universum.studios.android.support.test.local.TestActivity;
 import universum.studios.android.support.test.local.TestFragment;
 import universum.studios.android.transition.BaseNavigationalTransition;
 
@@ -53,7 +52,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	@Test public void testInstantiation() {
 		// Act:
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		// Act:
 		assertThat(delegate.context, Is.<Context>is(mockActivity));
@@ -61,7 +60,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	@Test public void testInstantiateDialogController() {
 		// Arrange:
-		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mock(Activity.class));
+		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mock(FragmentActivity.class));
 		// Act + Assert:
 		assertThat(delegate.instantiateDialogController(), is(notNullValue()));
 	}
@@ -73,7 +72,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 		final LoaderManager mockLoaderManager = mock(LoaderManager.class);
 		when(mockLoaderManager.initLoader(1, null, mockCallbacks)).thenReturn(mockLoader);
 		when(mockLoaderManager.getLoader(1)).thenReturn(null);
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		when(mockActivity.getSupportLoaderManager()).thenReturn(mockLoaderManager);
 		when(mockCallbacks.onCreateLoader(1, null)).thenReturn(mockLoader);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
@@ -93,7 +92,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 		final LoaderManager mockLoaderManager = mock(LoaderManager.class);
 		when(mockLoaderManager.restartLoader(1, null, mockCallbacks)).thenReturn(mockLoader);
 		when(mockLoaderManager.getLoader(1)).thenReturn(mockLoader);
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		when(mockActivity.getSupportLoaderManager()).thenReturn(mockLoaderManager);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		// Act:
@@ -107,7 +106,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 	@SuppressWarnings("unchecked")
 	@Test public void testDestroyLoader() {
 		// Arrange:
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		final LoaderManager mockLoaderManager = mock(LoaderManager.class);
 		when(mockActivity.getSupportLoaderManager()).thenReturn(mockLoaderManager);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
@@ -120,7 +119,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	@Test public void testNavigationalTransition() {
 		// Arrange:
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		final BaseNavigationalTransition mockTransition = mock(BaseNavigationalTransition.class);
 		// Act + Assert:
@@ -131,7 +130,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	@Test public void testSetNullNavigationalTransition() {
 		// Arrange:
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		// Act:
 		delegate.setNavigationalTransition(null);
@@ -141,7 +140,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	@Test public void testFinishWithNavigationalTransition() {
 		// Arrange:
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		final BaseNavigationalTransition mockTransition = mock(BaseNavigationalTransition.class);
 		delegate.setNavigationalTransition(mockTransition);
@@ -151,7 +150,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	@Test public void testFinishWithNavigationalTransitionWithoutAttachedTransition() {
 		// Arrange:
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		// Act + Assert:
 		assertThat(delegate.finishWithNavigationalTransition(), is(false));
@@ -159,7 +158,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	@Test public void testFragmentController() {
 		// Arrange:
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		when(mockActivity.getSupportFragmentManager()).thenReturn(mock(FragmentManager.class));
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		final FragmentFactory mockFactory = mock(FragmentFactory.class);
@@ -174,7 +173,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	@Test public void testSetNullFragmentController() {
 		// Arrange:
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		when(mockActivity.getSupportFragmentManager()).thenReturn(mock(FragmentManager.class));
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		// Act:
@@ -185,7 +184,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 
 	@Test public void testFragmentFactory() {
 		// Arrange:
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		when(mockActivity.getSupportFragmentManager()).thenReturn(mock(FragmentManager.class));
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		final FragmentFactory mockFactory = mock(FragmentFactory.class);
@@ -200,7 +199,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 		final FragmentController mockController = mock(FragmentController.class);
 		final Fragment mockFragment = mock(TestFragment.class);
 		when(mockController.findCurrentFragment()).thenReturn(mockFragment);
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		delegate.setFragmentController(mockController);
 		// Act + Assert:
@@ -211,7 +210,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 		// Arrange:
 		final FragmentManager mockManager = mock(FragmentManager.class);
 		when(mockManager.getBackStackEntryCount()).thenReturn(1);
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		when(mockActivity.getSupportFragmentManager()).thenReturn(mockManager);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		// Act + Assert:
@@ -222,7 +221,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 		// Arrange:
 		final FragmentManager mockManager = mock(FragmentManager.class);
 		when(mockManager.getBackStackEntryCount()).thenReturn(1);
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		when(mockActivity.getSupportFragmentManager()).thenReturn(mockManager);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		// Act + Assert:
@@ -236,7 +235,7 @@ public final class UniversiActivityDelegateTest extends RobolectricTestCase {
 		// Arrange:
 		final FragmentManager mockManager = mock(FragmentManager.class);
 		when(mockManager.getBackStackEntryCount()).thenReturn(0);
-		final Activity mockActivity = mock(Activity.class);
+		final FragmentActivity mockActivity = mock(FragmentActivity.class);
 		when(mockActivity.getSupportFragmentManager()).thenReturn(mockManager);
 		final UniversiActivityDelegate delegate = new UniversiActivityDelegate(mockActivity);
 		// Act + Assert:

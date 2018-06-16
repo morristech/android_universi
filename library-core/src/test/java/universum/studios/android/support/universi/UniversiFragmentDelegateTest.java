@@ -22,7 +22,7 @@ import android.support.v4.app.Fragment;
 
 import org.junit.Test;
 
-import universum.studios.android.dialog.manage.DialogController;
+import universum.studios.android.support.dialog.manage.DialogController;
 import universum.studios.android.support.test.local.RobolectricTestCase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
