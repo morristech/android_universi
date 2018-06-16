@@ -4,4 +4,5 @@ Release patch.
 
 ### Changes ###
 
-- Small updates and improvements.
+- Updated **Copyright**, **code style**, **test style**.
+- Removed deprecated elements and methods from previous version.
