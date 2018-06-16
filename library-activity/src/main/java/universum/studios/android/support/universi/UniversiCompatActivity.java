@@ -1,23 +1,24 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2017 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2017 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License 
- * you may obtain at
- * 
- * 		http://www.apache.org/licenses/LICENSE-2.0
- * 
- * You can redistribute, modify or publish any part of the code written within this file but as it 
- * is described in the License, the software distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
- * 
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.support.universi;
 
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresPermission;
 import android.support.annotation.UiThread;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
@@ -56,6 +58,8 @@ import universum.studios.android.transition.BaseNavigationalTransition;
  * as {@link UniversiActivity}.
  *
  * @author Martin Albedinsky
+ * @since 1.0
+ *
  * @see UniversiFragment
  */
 public abstract class UniversiCompatActivity extends AppCompatActivity implements UniversiActivityContext {
@@ -88,8 +92,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 		/**
 		 */
-		@Override
-		public void run() {
+		@Override public void run() {
 			requestBindDataInner();
 		}
 	};
@@ -98,13 +101,13 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * Handler responsible for processing of all annotations of this class and also for handling all
 	 * annotations related operations for this class.
 	 */
-	final ActionBarFragmentAnnotationHandler mAnnotationHandler;
+	final ActionBarFragmentAnnotationHandler annotationHandler;
 
 	/**
 	 * Delegate that is used to handle requests specific for the Universi context made upon this activity
 	 * like showing and dismissing of dialogs or showing and hiding of fragments.
 	 */
-	private UniversiActivityDelegate mContextDelegate;
+	private UniversiActivityDelegate delegate;
 
 	/*
 	 * Constructors ================================================================================
@@ -117,7 +120,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	public UniversiCompatActivity() {
 		super();
-		this.mAnnotationHandler = onCreateAnnotationHandler();
+		this.annotationHandler = onCreateAnnotationHandler();
 	}
 
 	/*
@@ -140,10 +143,9 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @return Annotations handler specific for this class.
 	 * @throws IllegalStateException If annotations processing is not enabled for the Fragments library.
 	 */
-	@NonNull
-	protected ActionBarFragmentAnnotationHandler getAnnotationHandler() {
+	@NonNull protected ActionBarFragmentAnnotationHandler getAnnotationHandler() {
 		FragmentAnnotations.checkIfEnabledOrThrow();
-		return mAnnotationHandler;
+		return annotationHandler;
 	}
 
 	/**
@@ -152,23 +154,22 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @param delegate The delegate only for testing purpose.
 	 */
 	@VisibleForTesting void setContextDelegate(final UniversiActivityDelegate delegate) {
-		this.mContextDelegate = delegate;
+		this.delegate = delegate;
 	}
 
 	/**
 	 * Ensures that the context delegate is initialized for this fragment.
 	 */
 	private void ensureContextDelegate() {
-		if (mContextDelegate == null) this.mContextDelegate = UniversiActivityDelegate.create(this);
+		if (delegate == null) this.delegate = UniversiActivityDelegate.create(this);
 	}
 
 	/**
 	 */
-	@Override
-	protected void onCreate(@Nullable final Bundle savedInstanceState) {
+	@Override protected void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (mAnnotationHandler != null) {
-			final int viewResource = mAnnotationHandler.getContentViewResource(-1);
+		if (annotationHandler != null) {
+			final int viewResource = annotationHandler.getContentViewResource(-1);
 			if (viewResource != -1) {
 				setContentView(viewResource);
 			}
@@ -177,59 +178,62 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
-	@Nullable
-	@Override
-	public <D> Loader<D> startLoader(final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
+	@Override @Nullable public <D> Loader<D> startLoader(
+			@IntRange(from = 0) final int id,
+			@Nullable final Bundle params,
+			@NonNull final LoaderManager.LoaderCallbacks<D> callbacks
+	) {
 		this.ensureContextDelegate();
-		return mContextDelegate.startLoader(id, params, callbacks);
+		return delegate.startLoader(id, params, callbacks);
 	}
 
 	/**
 	 */
-	@Nullable
-	@Override
-	public <D> Loader<D> initLoader(final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
+	@Override @Nullable public <D> Loader<D> initLoader(
+			@IntRange(from = 0) final int id,
+			@Nullable final Bundle params,
+			@NonNull final LoaderManager.LoaderCallbacks<D> callbacks
+	) {
 		this.ensureContextDelegate();
-		return mContextDelegate.initLoader(id, params, callbacks);
+		return delegate.initLoader(id, params, callbacks);
 	}
 
 	/**
 	 */
-	@Nullable
-	@Override
-	public <D> Loader<D> restartLoader(final int id, @Nullable final Bundle params, @NonNull final LoaderManager.LoaderCallbacks<D> callbacks) {
+	@Override @Nullable public <D> Loader<D> restartLoader(
+			@IntRange(from = 0) final int id,
+			@Nullable final Bundle params,
+			@NonNull final LoaderManager.LoaderCallbacks<D> callbacks
+	) {
 		this.ensureContextDelegate();
-		return mContextDelegate.restartLoader(id, params, callbacks);
+		return delegate.restartLoader(id, params, callbacks);
 	}
 
 	/**
 	 */
-	@Override
-	public void destroyLoader(final int id) {
+	@Override public void destroyLoader(@IntRange(from = 0) final int id) {
 		this.ensureContextDelegate();
-		mContextDelegate.destroyLoader(id);
+		this.delegate.destroyLoader(id);
 	}
 
 	/**
 	 */
-	@Override
-	public void onContentChanged() {
+	@Override public void onContentChanged() {
 		super.onContentChanged();
 		this.ensureContextDelegate();
-		mContextDelegate.setViewCreated(true);
+		this.delegate.setViewCreated(true);
 		this.configureActionBar(getSupportActionBar());
 		onBindViews();
 		// Check if there was requested data binding before view creation, if it was, perform binding now.
-		if (mContextDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {
-			mContextDelegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+		if (delegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)) {
+			this.delegate.unregisterRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
 			onBindData();
 		}
 	}
 
 	/**
 	 */
-	@Override
-	public void setSupportActionBar(@Nullable final Toolbar toolbar) {
+	@Override public void setSupportActionBar(@Nullable final Toolbar toolbar) {
 		super.setSupportActionBar(toolbar);
 		this.configureActionBar(getSupportActionBar());
 	}
@@ -239,8 +243,10 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * annotation (if presented).
 	 */
 	private void configureActionBar(final ActionBar actionBar) {
-		if (actionBar == null || mAnnotationHandler == null) return;
-		mAnnotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));
+		if (actionBar == null || annotationHandler == null) {
+			return;
+		}
+		this.annotationHandler.configureActionBar(ActionBarDelegate.create(this, actionBar));
 	}
 
 	/**
@@ -253,19 +259,18 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
-	@Override
-	public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
-		if (mAnnotationHandler == null || !mAnnotationHandler.hasOptionsMenu()) {
+	@Override public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
+		if (annotationHandler == null || !annotationHandler.hasOptionsMenu()) {
 			return false;
 		}
-		final int menuResource = mAnnotationHandler.getOptionsMenuResource(-1);
+		final int menuResource = annotationHandler.getOptionsMenuResource(-1);
 		if (menuResource == -1) {
 			return super.onCreateOptionsMenu(menu);
 		}
-		if (mAnnotationHandler.shouldClearOptionsMenu()) {
+		if (annotationHandler.shouldClearOptionsMenu()) {
 			menu.clear();
 		}
-		switch (mAnnotationHandler.getOptionsMenuFlags(0)) {
+		switch (annotationHandler.getOptionsMenuFlags(0)) {
 			case MenuOptions.IGNORE_SUPER:
 				getMenuInflater().inflate(menuResource, menu);
 				break;
@@ -284,95 +289,79 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
-	@Override
-	public void setNavigationalTransition(@Nullable final BaseNavigationalTransition transition) {
+	@Override public void setNavigationalTransition(@Nullable final BaseNavigationalTransition transition) {
 		this.ensureContextDelegate();
-		mContextDelegate.setNavigationalTransition(transition);
+		this.delegate.setNavigationalTransition(transition);
 	}
 
 	/**
 	 */
-	@Override
-	@Nullable
-	public BaseNavigationalTransition getNavigationalTransition() {
+	@Override @Nullable public BaseNavigationalTransition getNavigationalTransition() {
 		this.ensureContextDelegate();
-		return mContextDelegate.getNavigationalTransition();
+		return delegate.getNavigationalTransition();
 	}
 
 	/**
 	 */
-	@Override
-	@NonNull
-	public FragmentController getFragmentController() {
+	@Override @NonNull public FragmentController getFragmentController() {
 		this.ensureContextDelegate();
-		return mContextDelegate.getFragmentController();
+		return delegate.getFragmentController();
 	}
 
 	/**
 	 */
-	@Override
-	public void setFragmentController(@Nullable final FragmentController controller) {
+	@Override public void setFragmentController(@Nullable final FragmentController controller) {
 		this.ensureContextDelegate();
-		mContextDelegate.setFragmentController(controller);
+		this.delegate.setFragmentController(controller);
 	}
 
 	/**
 	 */
-	@Override
-	public void setFragmentFactory(@Nullable final FragmentFactory factory) {
+	@Override public void setFragmentFactory(@Nullable final FragmentFactory factory) {
 		this.ensureContextDelegate();
-		mContextDelegate.setFragmentFactory(factory);
+		this.delegate.setFragmentFactory(factory);
 	}
 
 	/**
 	 */
-	@Override
-	@Nullable
-	public FragmentFactory getFragmentFactory() {
+	@Override @Nullable public FragmentFactory getFragmentFactory() {
 		this.ensureContextDelegate();
-		return mContextDelegate.getFragmentFactory();
+		return delegate.getFragmentFactory();
 	}
 
 	/**
 	 */
-	@Override
-	public void setDialogController(@Nullable final DialogController controller) {
+	@Override public void setDialogController(@Nullable final DialogController controller) {
 		this.ensureContextDelegate();
-		mContextDelegate.setDialogController(controller);
+		this.delegate.setDialogController(controller);
 	}
 
 	/**
 	 */
-	@Override
-	@NonNull
-	public DialogController getDialogController() {
+	@Override @NonNull public DialogController getDialogController() {
 		this.ensureContextDelegate();
-		return mContextDelegate.getDialogController();
+		return delegate.getDialogController();
 	}
 
 	/**
 	 */
-	@Override
-	public void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
+	@Override public void setDialogXmlFactory(@XmlRes final int xmlDialogsSet) {
 		this.ensureContextDelegate();
-		mContextDelegate.setDialogXmlFactory(xmlDialogsSet);
+		this.delegate.setDialogXmlFactory(xmlDialogsSet);
 	}
 
 	/**
 	 */
-	@Override
-	public void setDialogFactory(@Nullable final DialogFactory factory) {
+	@Override public void setDialogFactory(@Nullable final DialogFactory factory) {
 		this.ensureContextDelegate();
-		mContextDelegate.setDialogFactory(factory);
+		this.delegate.setDialogFactory(factory);
 	}
 
 	/**
 	 */
-	@Override
-	@Nullable
-	public DialogFactory getDialogFactory() {
+	@Override @Nullable public DialogFactory getDialogFactory() {
 		this.ensureContextDelegate();
-		return mContextDelegate.getDialogFactory();
+		return delegate.getDialogFactory();
 	}
 
 	/**
@@ -397,11 +386,11 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	final void requestBindDataInner() {
 		this.ensureContextDelegate();
-		if (mContextDelegate.isViewCreated()) {
+		if (delegate.isViewCreated()) {
 			onBindData();
 			return;
 		}
-		mContextDelegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
+		this.delegate.registerRequest(UniversiContextDelegate.REQUEST_BIND_DATA);
 	}
 
 	/**
@@ -410,42 +399,37 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * <p>
 	 * <b>This is always invoked on the UI thread.</b>
 	 */
-	@UiThread
-	protected void onBindData() {
+	@UiThread protected void onBindData() {
 		// Inheritance hierarchies may perform theirs specific data binding logic here.
 	}
 
 	/**
 	 */
-	@Override
-	protected void onResume() {
+	@Override protected void onResume() {
 		super.onResume();
 		this.ensureContextDelegate();
-		mContextDelegate.setPaused(false);
+		this.delegate.setPaused(false);
 	}
 
 	/**
 	 */
-	@CheckResult
-	@Override
-	public boolean isActiveNetworkConnected() {
+	@RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+	@Override @CheckResult public boolean isActiveNetworkConnected() {
 		this.ensureContextDelegate();
-		return mContextDelegate.isActiveNetworkConnected();
+		return delegate.isActiveNetworkConnected();
 	}
 
 	/**
 	 */
-	@CheckResult
-	@Override
-	public boolean isNetworkConnected(final int networkType) {
+	@RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+	@Override @CheckResult public boolean isNetworkConnected(final int networkType) {
 		this.ensureContextDelegate();
-		return mContextDelegate.isNetworkConnected(networkType);
+		return delegate.isNetworkConnected(networkType);
 	}
 
 	/**
 	 */
-	@Override
-	public int checkSelfPermission(@NonNull final String permission) {
+	@Override public int checkSelfPermission(@NonNull final String permission) {
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
 				super.checkSelfPermission(permission) :
 				PackageManager.PERMISSION_GRANTED;
@@ -453,8 +437,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
-	@Override
-	public boolean shouldShowRequestPermissionRationale(@NonNull final String permission) {
+	@Override public boolean shouldShowRequestPermissionRationale(@NonNull final String permission) {
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && super.shouldShowRequestPermissionRationale(permission);
 	}
 
@@ -468,67 +451,58 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @param requestCode Code to identify this request in {@link #onRequestPermissionsResult(int, String[], int[])}.
 	 */
 	public void supportRequestPermissions(@NonNull final String[] permissions, final int requestCode) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-			requestPermissions(permissions, requestCode);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) requestPermissions(permissions, requestCode);
 	}
 
 	/**
 	 */
-	@Override
-	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+	@Override public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 	}
 
 	/**
 	 */
-	@Override
-	public boolean showDialogWithId(final int dialogId) {
+	@Override public boolean showDialogWithId(final int dialogId) {
 		return showDialogWithId(dialogId, null);
 	}
 
 	/**
 	 */
-	@Override
-	public boolean showDialogWithId(@IntRange(from = 0) final int dialogId, @Nullable final DialogOptions options) {
+	@Override public boolean showDialogWithId(final int dialogId, @Nullable final DialogOptions options) {
 		this.ensureContextDelegate();
-		return mContextDelegate.showDialogWithId(dialogId, options);
+		return delegate.showDialogWithId(dialogId, options);
 	}
 
 	/**
 	 */
-	@Override
-	public boolean dismissDialogWithId(@IntRange(from = 0) final int dialogId) {
+	@Override public boolean dismissDialogWithId(final int dialogId) {
 		this.ensureContextDelegate();
-		return mContextDelegate.dismissDialogWithId(dialogId);
+		return delegate.dismissDialogWithId(dialogId);
 	}
 
 	/**
 	 */
-	@Override
-	public boolean showXmlDialog(@XmlRes final int resId) {
+	@Override public boolean showXmlDialog(@XmlRes final int resId) {
 		return showXmlDialog(resId, null);
 	}
 
 	/**
 	 */
-	@Override
-	public boolean showXmlDialog(@XmlRes final int resId, @Nullable final DialogOptions options) {
+	@Override public boolean showXmlDialog(@XmlRes final int resId, @Nullable final DialogOptions options) {
 		this.ensureContextDelegate();
-		return mContextDelegate.showXmlDialog(resId, options);
+		return delegate.showXmlDialog(resId, options);
 	}
 
 	/**
 	 */
-	@Override
-	public boolean dismissXmlDialog(@XmlRes final int resId) {
+	@Override public boolean dismissXmlDialog(@XmlRes final int resId) {
 		this.ensureContextDelegate();
-		return mContextDelegate.dismissXmlDialog(resId);
+		return delegate.dismissXmlDialog(resId);
 	}
 
 	/**
 	 */
-	@Override
-	public void onBackPressed() {
+	@Override public void onBackPressed() {
 		if (!onBackPress()) finishWithNavigationalTransition();
 	}
 
@@ -544,7 +518,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	protected boolean onBackPress() {
 		this.ensureContextDelegate();
-		return !mContextDelegate.isPaused() && (dispatchBackPressToFragments() || popFragmentsBackStack());
+		return !delegate.isPaused() && (dispatchBackPressToFragments() || popFragmentsBackStack());
 	}
 
 	/**
@@ -584,10 +558,9 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @return Current fragment of this activity (that is at this time visible), or {@code null} if
 	 * there is no fragment presented within fragment container of this activity at all.
 	 */
-	@Nullable
-	protected Fragment findCurrentFragment() {
+	@Nullable protected Fragment findCurrentFragment() {
 		this.ensureContextDelegate();
-		return mContextDelegate.findCurrentFragment();
+		return delegate.findCurrentFragment();
 	}
 
 	/**
@@ -598,24 +571,22 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 */
 	protected boolean popFragmentsBackStack() {
 		this.ensureContextDelegate();
-		return mContextDelegate.popFragmentsBackStack();
+		return delegate.popFragmentsBackStack();
 	}
 
 	/**
 	 */
-	@Override
-	protected void onPause() {
+	@Override protected void onPause() {
 		super.onPause();
 		this.ensureContextDelegate();
-		mContextDelegate.setPaused(true);
+		this.delegate.setPaused(true);
 	}
 
 	/**
 	 */
-	@Override
-	public boolean finishWithNavigationalTransition() {
+	@Override public boolean finishWithNavigationalTransition() {
 		this.ensureContextDelegate();
-		if (mContextDelegate.finishWithNavigationalTransition()) {
+		if (delegate.finishWithNavigationalTransition()) {
 			return true;
 		}
 		supportFinishAfterTransition();
@@ -624,10 +595,9 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
-	@Override
-	protected void onDestroy() {
+	@Override protected void onDestroy() {
 		super.onDestroy();
-		if (mContextDelegate != null) mContextDelegate.setViewCreated(false);
+		if (delegate != null) delegate.setViewCreated(false);
 	}
 
 

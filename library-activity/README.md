@@ -11,9 +11,9 @@ of the **Universi** context.
 
     implementation "universum.studios.android.support:support-universi-activity:${DESIRED_VERSION}@aar"
 
-## Components ##
+## Elements ##
 
-Below are listed some of **primary components** that are available in this module:
+Below are listed some of **primary elements** that are available in this module:
 
 - [UniversiActivity](https://github.com/universum-studios/android_universi/blob/support-master/library-activity/src/main/java/universum/studios/android/support/universi/UniversiActivity.java)
 - [UniversiCompatActivity](https://github.com/universum-studios/android_universi/blob/support-master/library-activity/src/main/java/universum/studios/android/support/universi/UniversiCompatActivity.java)
