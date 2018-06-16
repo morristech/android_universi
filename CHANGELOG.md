@@ -7,7 +7,7 @@ More **detailed changelog** for each respective version may be viewed by pressin
 ## Version 1.x ##
 
 ### [1.0.5](https://github.com/universum-studios/android_universi/releases/tag/v1.0.5) ###
-> --.06.2018
+> 16.06.2018
 
 - Small updates.
 - Removed deprecated elements and methods from previous version.
