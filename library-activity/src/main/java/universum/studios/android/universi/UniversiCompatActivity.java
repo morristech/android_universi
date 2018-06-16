@@ -449,8 +449,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	 * @param requestCode Code to identify this request in {@link #onRequestPermissionsResult(int, String[], int[])}.
 	 */
 	public void supportRequestPermissions(@NonNull final String[] permissions, final int requestCode) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-			requestPermissions(permissions, requestCode);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) requestPermissions(permissions, requestCode);
 	}
 
 	/**

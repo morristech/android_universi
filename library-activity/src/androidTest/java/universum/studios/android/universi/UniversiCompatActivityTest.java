@@ -26,6 +26,7 @@ import android.support.test.annotation.UiThreadTest;
 import android.support.test.rule.ActivityTestRule;
 import android.view.Menu;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -48,41 +49,46 @@ import static org.mockito.Mockito.verifyZeroInteractions;
  */
 public final class UniversiCompatActivityTest extends InstrumentedTestCase {
     
-	@Rule
-	public ActivityTestRule<TestActivity> ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
+	@Rule public ActivityTestRule<TestActivity> ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
 
-	@Override
-	public void beforeTest() throws Exception {
+	@Override public void beforeTest() throws Exception {
 		super.beforeTest();
 		// Ensure that we have always annotations processing enabled.
 		FragmentAnnotations.setEnabled(true);
 	}
 
-	@Test
-	public void testOnCreateOptionsMenu() {
+	@Test public void testOnCreateOptionsMenu() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
 		final Menu mockMenu = mock(Menu.class);
+		// Act:
 		activity.onCreateOptionsMenu(mockMenu);
+		// Assert:
 		verifyZeroInteractions(mockMenu);
 	}
 
-	@Test
-	public void testGetFragmentControllerDefault() {
-		assertThat(ACTIVITY_RULE.getActivity().getFragmentController(), is(notNullValue()));
+	@Test public void testGetFragmentControllerDefault() {
+		// Arrange:
+		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act + Assert:
+		assertThat(activity.getFragmentController(), is(notNullValue()));
 	}
 
-	// todo: @Test
-	public void testRequestBindDataFromBackgroundThread() throws Throwable {
+	@Ignore @Test public void testRequestBindDataFromBackgroundThread() throws Throwable {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act:
 		activity.requestBindData();
 		Thread.sleep(350);
+		// Assert:
 		// fixme: this assertion does not pass
 		assertThat(activity.onBindDataInvoked, is(true));
 	}
 
-	@Test
-	public void testCheckSelfPermission() {
+	@Test public void testCheckSelfPermission() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act + Assert:
 		assertThat(
 				activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE),
 				is(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
@@ -92,24 +98,26 @@ public final class UniversiCompatActivityTest extends InstrumentedTestCase {
 		);
 	}
 
-	@Test
-	@UiThreadTest
-	public void testShouldShowRequestPermissionRationale() {
+	@Test @UiThreadTest public void testShouldShowRequestPermissionRationale() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act + Assert:
 		assertThat(activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE), is(false));
 	}
 
-	@Test
-	public void testFinishWithNavigationalTransition() {
+	@Test public void testFinishWithNavigationalTransition() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
 		activity.setNavigationalTransition(new BaseNavigationalTransition() {});
+		// Act + Assert:
 		assertThat(activity.finishWithNavigationalTransition(), is(true));
 		assertThat(activity.isFinishing(), is(true));
 	}
 
-	@Test
-	public void testFinishWithNavigationalTransitionWhenThereIsNoTransition() {
+	@Test public void testFinishWithNavigationalTransitionWhenThereIsNoTransition() {
+		// Arrange:
 		final TestActivity activity = ACTIVITY_RULE.getActivity();
+		// Act + Assert:
 		assertThat(activity.finishWithNavigationalTransition(), is(false));
 		assertThat(activity.isFinishing(), is(true));
 	}
@@ -123,19 +131,16 @@ public final class UniversiCompatActivityTest extends InstrumentedTestCase {
 
 		boolean onBindViewsInvoked, onBindDataInvoked;
 
-		@Override
-		protected void onBindViews() {
+		@Override protected void onBindViews() {
 			super.onBindViews();
 			this.onBindViewsInvoked = true;
 		}
 
-		@Override
-		protected void onBindData() {
+		@Override protected void onBindData() {
 			super.onBindData();
 			this.onBindDataInvoked = true;
 		}
 	}
 
-	public static abstract class TestBackPressWatcherFragment extends TestFragment implements BackPressWatcher {
-	}
+	public static abstract class TestBackPressWatcherFragment extends TestFragment implements BackPressWatcher {}
 }
