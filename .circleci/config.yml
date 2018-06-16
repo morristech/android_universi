@@ -110,6 +110,7 @@ workflows:
             branches:
               only:
                 - /^release.*$/
+                - /^support-release.*$/
       - deploy:
           context: android-universum
           requires:
