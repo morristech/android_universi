@@ -59,7 +59,7 @@ public final class UniversiContextDelegateTest extends RobolectricTestCase {
     
 	@Test
 	public void testInstantiation() {
-		assertThat(new TestDelegate(mApplication).mContext, Is.<Context>is(mApplication));
+		assertThat(new TestDelegate(application).mContext, Is.<Context>is(application));
 	}
 
     @Test
@@ -146,7 +146,7 @@ public final class UniversiContextDelegateTest extends RobolectricTestCase {
 
 	@Test
 	public void testShowDialogWithIdWithoutDialogFactoryAttached() {
-		assertThat(new TestDelegate(mApplication).showDialogWithId(1, null), is(false));
+		assertThat(new TestDelegate(application).showDialogWithId(1, null), is(false));
 	}
 
 	@Test
@@ -196,7 +196,7 @@ public final class UniversiContextDelegateTest extends RobolectricTestCase {
 
 	@Test
 	public void testDismissDialogWithIdWithoutDialogFactoryAttached() {
-		assertThat(new TestDelegate(mApplication).dismissDialogWithId(1), is(false));
+		assertThat(new TestDelegate(application).dismissDialogWithId(1), is(false));
 	}
 
 	@Test
@@ -329,7 +329,7 @@ public final class UniversiContextDelegateTest extends RobolectricTestCase {
 
 	@Test
 	public void testSetIsViewCreated() {
-		final UniversiContextDelegate delegate = new TestDelegate(mApplication);
+		final UniversiContextDelegate delegate = new TestDelegate(application);
 		delegate.setViewCreated(true);
 		assertThat(delegate.isViewCreated(), is(true));
 		delegate.setViewCreated(false);
@@ -338,12 +338,12 @@ public final class UniversiContextDelegateTest extends RobolectricTestCase {
 
 	@Test
 	public void testIsViewCreatedDefault() {
-		assertThat(new TestDelegate(mApplication).isViewCreated(), is(false));
+		assertThat(new TestDelegate(application).isViewCreated(), is(false));
 	}
 
 	@Test
 	public void testSetIsPaused() {
-		final UniversiContextDelegate delegate = new TestDelegate(mApplication);
+		final UniversiContextDelegate delegate = new TestDelegate(application);
 		delegate.setPaused(true);
 		assertThat(delegate.isPaused(), is(true));
 		delegate.setPaused(false);
@@ -352,19 +352,19 @@ public final class UniversiContextDelegateTest extends RobolectricTestCase {
 
 	@Test
 	public void testIsPausedDefault() {
-		assertThat(new TestDelegate(mApplication).isPaused(), is(false));
+		assertThat(new TestDelegate(application).isPaused(), is(false));
 	}
 
 	@Test
 	public void testRegisterRequest() {
-		final UniversiContextDelegate delegate = new TestDelegate(mApplication);
+		final UniversiContextDelegate delegate = new TestDelegate(application);
 		delegate.registerRequest(0x00000001);
 		assertThat(delegate.isRequestRegistered(0x00000001), is(true));
 	}
 
 	@Test
 	public void testUnregisterRequest() {
-		final UniversiContextDelegate delegate = new TestDelegate(mApplication);
+		final UniversiContextDelegate delegate = new TestDelegate(application);
 		delegate.registerRequest(0x00000001);
 		delegate.unregisterRequest(0x00000001);
 		assertThat(delegate.isRequestRegistered(0x00000001), is(false));

@@ -116,7 +116,7 @@ public final class UniversiFragmentTest extends RobolectricTestCase {
 		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
-		fragment.onViewCreated(new View(mApplication), null);
+		fragment.onViewCreated(new View(application), null);
 		assertThat(fragment.onBindViewsInvoked, is(true));
 		verify(mockDelegate, times(1)).setViewCreated(true);
 		verify(mockDelegate, times(1)).isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA);
@@ -129,7 +129,7 @@ public final class UniversiFragmentTest extends RobolectricTestCase {
 		final TestFragment fragment = new TestFragment();
 		fragment.setContextDelegate(mockDelegate);
 		when(mockDelegate.isRequestRegistered(UniversiContextDelegate.REQUEST_BIND_DATA)).thenReturn(true);
-		fragment.onViewCreated(new View(mApplication), null);
+		fragment.onViewCreated(new View(application), null);
 		assertThat(fragment.onBindViewsInvoked, is(true));
 		assertThat(fragment.onBindDataInvoked, is(true));
 		verify(mockDelegate, times(1)).setViewCreated(true);

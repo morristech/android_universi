@@ -327,7 +327,7 @@ public final class UniversiActivityTest extends RobolectricTestCase {
 		assertThat(
 				activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE),
 				is(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
-						mApplication.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) :
+						application.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Process.myPid(), Process.myUid()) :
 						PackageManager.PERMISSION_GRANTED
 				)
 		);
