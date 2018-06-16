@@ -22,7 +22,7 @@ Download the latest **[release](https://github.com/universum-studios/android_uni
 
 ## Modules ##
 
-This library may be used via **separate [modules](https://github.com/universum-studios/android_fragments/blob/support-master/MODULES.md)**
+This library may be used via **separate [modules](https://github.com/universum-studios/android_universi/blob/support-master/MODULES.md)**
 in order to depend only on desired _parts of the library's code base_ what ultimately results in **fewer dependencies**.
 
 ## Compatibility ##
@@ -42,7 +42,7 @@ Supported down to the **Android [API Level 14](http://developer.android.com/abou
 - [`universum.studios.android.support:support-dialogs-core`](https://github.com/universum-studios/android_dialogs/blob/support-master/MODULES.md)
 - [`universum.studios.android.support:support-dialogs-manage`](https://github.com/universum-studios/android_dialogs/blob/support-master/MODULES.md)
 
-## [License](https://github.com/universum-studios/android_fragments/blob/support-master/LICENSE.md) ##
+## [License](https://github.com/universum-studios/android_universi/blob/support-master/LICENSE.md) ##
 
 **Copyright 2018 Universum Studios**
 
