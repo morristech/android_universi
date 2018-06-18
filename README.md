@@ -7,7 +7,7 @@ Android Universi
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universi-green.svg?style=flat)](https://android-arsenal.com/details/1/5412)
 [![Android](https://img.shields.io/badge/android-8.1-blue.svg)](https://developer.android.com/about/versions/oreo/android-8.1.html)
 
-Simple universal library for the Android platform providing components that may be used as base for Activities and Fragments in Android applications.
+Simple universal library for the Android platform providing elements that may be used as base for Activities and Fragments in Android applications.
 
 For more information please visit the **[Wiki](https://github.com/universum-studios/android_universi/wiki)**.
 

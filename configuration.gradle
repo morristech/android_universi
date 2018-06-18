@@ -49,7 +49,7 @@ def pomConfig = [
         packaging : 'pom',
         project   : [
                 name           : 'Android Universi',
-                description    : 'Simple universal library for the Android platform providing components that may be used as base for Activities and Fragments in Android applications.',
+                description    : 'Simple universal library for the Android platform providing elements that may be used as base for Activities and Fragments in Android applications.',
                 url            : "https://github.com/${githubConfig.owner}/${githubConfig.repository}",
                 inceptionYear  : '2017',
                 issueManagement: [
