@@ -20,8 +20,8 @@
 def libraryConfig = [
         name   : 'universi',
         version: [
-                production : '1.0.5',
-                development: '1.0.5'
+                production : '1.0.6',
+                development: '1.0.6'
         ]
 ]
 
