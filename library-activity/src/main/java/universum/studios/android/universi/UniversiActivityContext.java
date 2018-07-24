@@ -20,6 +20,7 @@ package universum.studios.android.universi;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.arch.lifecycle.LiveData;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -46,6 +47,8 @@ import universum.studios.android.transition.BaseNavigationalTransition;
 public interface UniversiActivityContext {
 
 	/**
+	 * <b>This method has been deprecated and will be removed in 1.1.0 version.</b>
+	 * <p>
 	 * Starts a loader with the specified <var>id</var>. If there was already started loader with the
 	 * same id before, such a loader will be <b>re-started</b>, otherwise new loader will be <b>initialized</b>.
 	 *
@@ -59,10 +62,15 @@ public interface UniversiActivityContext {
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #destroyLoader(int)
+	 *
+	 * @deprecated Use {@code getLoaderManager()} directly or preferably {@link LiveData} instead.
 	 */
+	@Deprecated
 	@Nullable <D> Loader<D> startLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
 
 	/**
+	 * <b>This method has been deprecated and will be removed in 1.1.0 version.</b>
+	 * <p>
 	 * Initializes a loader with the specified <var>id</var> for the given <var>callbacks</var>.
 	 *
 	 * @param id        Id of the desired loader to init.
@@ -76,10 +84,15 @@ public interface UniversiActivityContext {
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #destroyLoader(int)
 	 * @see LoaderManager#initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 *
+	 * @deprecated Use {@code getLoaderManager()} directly or preferably {@link LiveData} instead.
 	 */
+	@Deprecated
 	@Nullable <D> Loader<D> initLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
 
 	/**
+	 * <b>This method has been deprecated and will be removed in 1.1.0 version.</b>
+	 * <p>
 	 * Re-starts a loader with the specified <var>id</var> for the given <var>callbacks</var>.
 	 *
 	 * @param id        Id of the desired loader to re-start.
@@ -93,10 +106,15 @@ public interface UniversiActivityContext {
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #destroyLoader(int)
 	 * @see LoaderManager#restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
+	 *
+	 * @deprecated Use {@code getLoaderManager()} directly or preferably {@link LiveData} instead.
 	 */
+	@Deprecated
 	@Nullable <D> Loader<D> restartLoader(@IntRange(from = 0) int id, @Nullable Bundle params, @NonNull LoaderManager.LoaderCallbacks<D> callbacks);
 
 	/**
+	 * <b>This method has been deprecated and will be removed in 1.1.0 version.</b>
+	 * <p>
 	 * Destroys a loader with the specified <var>id</var>.
 	 *
 	 * @param id Id of the desired loader to destroy.
@@ -104,7 +122,10 @@ public interface UniversiActivityContext {
 	 * @see #initLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see #restartLoader(int, Bundle, LoaderManager.LoaderCallbacks)
 	 * @see LoaderManager#destroyLoader(int)
+	 *
+	 * @deprecated Use {@code getLoaderManager()} directly or preferably {@link LiveData} instead.
 	 */
+	@Deprecated
 	void destroyLoader(@IntRange(from = 0) int id);
 
 	/**
