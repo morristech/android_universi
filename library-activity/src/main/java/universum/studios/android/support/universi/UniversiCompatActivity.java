@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.PersistableBundle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -178,6 +179,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
+	@Deprecated
 	@Override @Nullable public <D> Loader<D> startLoader(
 			@IntRange(from = 0) final int id,
 			@Nullable final Bundle params,
@@ -189,6 +191,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
+	@Deprecated
 	@Override @Nullable public <D> Loader<D> initLoader(
 			@IntRange(from = 0) final int id,
 			@Nullable final Bundle params,
@@ -200,6 +203,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
+	@Deprecated
 	@Override @Nullable public <D> Loader<D> restartLoader(
 			@IntRange(from = 0) final int id,
 			@Nullable final Bundle params,
@@ -211,6 +215,7 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
+	@Deprecated
 	@Override public void destroyLoader(@IntRange(from = 0) final int id) {
 		this.ensureContextDelegate();
 		this.delegate.destroyLoader(id);
@@ -572,6 +577,22 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 	protected boolean popFragmentsBackStack() {
 		this.ensureContextDelegate();
 		return delegate.popFragmentsBackStack();
+	}
+
+	/**
+	 */
+	@Override protected void onSaveInstanceState(@NonNull final Bundle outState) {
+		super.onSaveInstanceState(outState);
+		this.ensureContextDelegate();
+		this.delegate.setStateSaved(true);
+	}
+
+	/**
+	 */
+	@Override public void onSaveInstanceState(@NonNull final Bundle outState, @NonNull final PersistableBundle outPersistentState) {
+		super.onSaveInstanceState(outState, outPersistentState);
+		this.ensureContextDelegate();
+		this.delegate.setStateSaved(true);
 	}
 
 	/**

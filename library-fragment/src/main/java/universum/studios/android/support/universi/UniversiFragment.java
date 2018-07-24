@@ -225,6 +225,7 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	@Override public void onResume() {
 		super.onResume();
 		this.ensureContextDelegate();
+		this.delegate.setStateSaved(false);
 		this.delegate.setPaused(false);
 	}
 
@@ -411,6 +412,14 @@ public abstract class UniversiFragment extends ActionBarFragment {
 	protected boolean dismissXmlDialog(@XmlRes final int resId) {
 		this.ensureContextDelegate();
 		return delegate.dismissXmlDialog(resId);
+	}
+
+	/**
+	 */
+	@Override public void onSaveInstanceState(@NonNull final Bundle outState) {
+		super.onSaveInstanceState(outState);
+		this.ensureContextDelegate();
+		this.delegate.setStateSaved(true);
 	}
 
 	/**
