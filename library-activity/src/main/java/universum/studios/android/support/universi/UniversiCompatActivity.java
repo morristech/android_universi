@@ -581,16 +581,16 @@ public abstract class UniversiCompatActivity extends AppCompatActivity implement
 
 	/**
 	 */
-	@Override protected void onSaveInstanceState(@NonNull final Bundle outState) {
-		super.onSaveInstanceState(outState);
+	@Override protected void onSaveInstanceState(@NonNull final Bundle state) {
+		super.onSaveInstanceState(state);
 		this.ensureContextDelegate();
 		this.delegate.setStateSaved(true);
 	}
 
 	/**
 	 */
-	@Override public void onSaveInstanceState(@NonNull final Bundle outState, @NonNull final PersistableBundle outPersistentState) {
-		super.onSaveInstanceState(outState, outPersistentState);
+	@Override public void onSaveInstanceState(@NonNull final Bundle state, @NonNull final PersistableBundle persistentState) {
+		super.onSaveInstanceState(state, persistentState);
 		this.ensureContextDelegate();
 		this.delegate.setStateSaved(true);
 	}
