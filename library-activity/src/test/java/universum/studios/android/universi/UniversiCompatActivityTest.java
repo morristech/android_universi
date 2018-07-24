@@ -23,9 +23,13 @@ import android.app.LoaderManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.view.Menu;
 
+import org.junit.Ignore;
 import org.junit.Test;
+import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 
 import universum.studios.android.dialog.DialogOptions;
@@ -624,6 +628,49 @@ public final class UniversiCompatActivityTest extends RobolectricTestCase {
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
+	@Ignore("Due to android.content.res.Resources$NotFoundException: Resource ID #0x7f16011e.")
+	@Test public void testOnSaveInstanceState() {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		activity.setContextDelegate(mockDelegate);
+		final Bundle savedState = new Bundle();
+		// Act:
+		activity.onSaveInstanceState(savedState);
+		// Assert:
+		verify(mockDelegate).setStateSaved(true);
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Config(sdk = Build.VERSION_CODES.LOLLIPOP)
+	@Ignore("Due to android.content.res.Resources$NotFoundException: Resource ID #0x7f16011e.")
+	@Test public void testOnSaveInstanceStatePersistable() {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		activity.setContextDelegate(mockDelegate);
+		final Bundle savedState = new Bundle();
+		final PersistableBundle savedStatePersistable = new PersistableBundle();
+		// Act:
+		activity.onSaveInstanceState(savedState, savedStatePersistable);
+		// Assert:
+		verify(mockDelegate, times(2)).setStateSaved(true);
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Ignore("Due to android.content.res.Resources$NotFoundException: Resource ID #0x7f16011e.")
+	@Test public void testPause() {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		activity.setContextDelegate(mockDelegate);
+		// Act:
+		activity.onPause();
+		// Assert:
+		verify(mockDelegate).setPaused(true);
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
 	@ActionBarOptions(
 			homeAsUp = ActionBarOptions.HOME_AS_UP_ENABLED,
 			homeAsUpIndicator = android.R.drawable.ic_delete
@@ -632,6 +679,11 @@ public final class UniversiCompatActivityTest extends RobolectricTestCase {
 	public static final class TestActivity extends UniversiCompatActivity {
 
 		boolean onBindViewsInvoked, onBindDataInvoked;
+
+		@Override protected void onCreate(@Nullable final Bundle savedInstanceState) {
+			setTheme(R.style.Theme_AppCompat_Light_DarkActionBar);
+			super.onCreate(savedInstanceState);
+		}
 
 		@Override protected void onBindViews() {
 			super.onBindViews();

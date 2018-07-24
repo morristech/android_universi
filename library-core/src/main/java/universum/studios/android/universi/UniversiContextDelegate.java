@@ -94,9 +94,14 @@ public abstract class UniversiContextDelegate {
 	private static final int PFLAG_VIEW_CREATED = 0x00000001;
 
 	/**
+	 * Flag indicating whether state for the wrapped context has been already saved or not.
+	 */
+	private static final int PFLAG_STATE_SAVED = 0x00000001 << 1;
+
+	/**
 	 * Flag indicating whether the wrapped context is paused or not.
 	 */
-	private static final int PFLAG_PAUSED = 0x00000001 << 1;
+	private static final int PFLAG_PAUSED = 0x00000001 << 2;
 
 	/*
 	 * Interface ===================================================================================
@@ -250,14 +255,15 @@ public abstract class UniversiContextDelegate {
 	 * @param dialogId Id of the desired dialog to show.
 	 * @param options  Options for the dialog.
 	 * @return {@code True} if dialog has been shown, {@code false} if context that uses this delegate
-	 * is currently <b>paused</b> or does not have its dialog factory specified.
+	 * is currently <b>paused</b> or its <b>state has been already saved</b> or does not have its dialog
+	 * factory specified.
 	 *
 	 * @see DialogController#newRequest(int)
 	 * @see #setDialogFactory(DialogFactory)
 	 * @see #dismissDialogWithId(int)
 	 */
 	public boolean showDialogWithId(@IntRange(from = 0) final int dialogId, @Nullable final DialogOptions options) {
-		if (hasPrivateFlag(PFLAG_PAUSED) || dialogFactory == null) {
+		if (hasPrivateFlag(PFLAG_STATE_SAVED | PFLAG_PAUSED) || dialogFactory == null) {
 			return false;
 		}
 		this.ensureDialogController();
@@ -279,7 +285,7 @@ public abstract class UniversiContextDelegate {
 			return false;
 		}
 		this.ensureDialogController();
-		return dialogController.newRequest(dialogId).intent(DialogRequest.DISMISS).execute() != null;
+		return dialogController.newRequest(dialogId).intent(DialogRequest.DISMISS).allowStateLoss(true).execute() != null;
 	}
 
 	/**
@@ -290,13 +296,14 @@ public abstract class UniversiContextDelegate {
 	 * @param resId   Resource id of Xml file containing the desired dialog (its specification) to show.
 	 * @param options Options for the dialog.
 	 * @return {@code True} if dialog has been successfully inflated and shown, {@code false} if
-	 * context that uses this delegate is currently <b>paused</b> or dialog failed to be inflated.
+	 * context that uses this delegate is currently <b>paused</b> or its <b>state has been already saved</b>
+	 * or dialog failed to be inflated.
 	 *
 	 * @see DialogXmlFactory#createDialog(int, DialogOptions)
 	 * @see #dismissXmlDialog(int)
 	 */
 	public boolean showXmlDialog(@XmlRes final int resId, @Nullable final DialogOptions options) {
-		if (hasPrivateFlag(PFLAG_PAUSED)) {
+		if (hasPrivateFlag(PFLAG_STATE_SAVED | PFLAG_PAUSED)) {
 			return false;
 		}
 		final DialogXmlFactory dialogFactory = accessDialogXmlFactory();
@@ -323,7 +330,10 @@ public abstract class UniversiContextDelegate {
 		}
 		this.ensureDialogController();
 		final Fragment fragment = dialogController.getFragmentManager().findFragmentByTag(accessDialogXmlFactory().createDialogTag(resId));
-		return fragment instanceof DialogFragment && dialogController.newRequest((DialogFragment) fragment).intent(DialogRequest.DISMISS).execute() != null;
+		return fragment instanceof DialogFragment && dialogController.newRequest((DialogFragment) fragment)
+				.intent(DialogRequest.DISMISS)
+				.allowStateLoss(true)
+				.execute() != null;
 	}
 
 	/**
@@ -387,7 +397,7 @@ public abstract class UniversiContextDelegate {
 	}
 
 	/**
-	 * Sets a boolean flag indicating whether a view hierarchy of the related context is created or not.
+	 * Sets a boolean flag indicating whether a view hierarchy of the associated context is created or not.
 	 *
 	 * @param created {@code True} if view hierarchy is created, {@code false} otherwise.
 	 *
@@ -398,7 +408,7 @@ public abstract class UniversiContextDelegate {
 	}
 
 	/**
-	 * Returns the boolean flag indicating whether view hierarchy of the related context is created
+	 * Returns the boolean flag indicating whether view hierarchy of the associated context is created
 	 * or not.
 	 *
 	 * @return {@code True} if view is created, {@code false} otherwise.
@@ -410,11 +420,36 @@ public abstract class UniversiContextDelegate {
 	}
 
 	/**
-	 * Sets a boolean flag indicating whether the related context has been paused or not.
+	 * Sets a boolean flag indicating whether state of the associated context has been saved or not.
+	 *
+	 * @param saved {@code True} if state has been saved, {@code false} otherwise.
+	 *
+	 * @see #isStateSaved()
+	 */
+	public void setStateSaved(final boolean saved) {
+		this.updatePrivateFlags(PFLAG_STATE_SAVED, saved);
+	}
+
+	/**
+	 * Returns the boolean flag indicating whether state of the associated context has been already
+	 * saved or not.
+	 * <p>
+	 * This should be {@code true} after state of context is saved and before that context is resumed.
+	 *
+	 * @return {@code True} if state has been saved, {@code false} otherwise.
+	 *
+	 * @see #setStateSaved(boolean)
+	 */
+	public boolean isStateSaved() {
+		return hasPrivateFlag(PFLAG_STATE_SAVED);
+	}
+
+	/**
+	 * Sets a boolean flag indicating whether the associated context has been paused or not.
 	 *
 	 * @param paused {@code True} if context is paused, {@code false} otherwise.
 	 *
-	 * @see #isPaused()
+	 * @see #isPaused() ()
 	 */
 	public void setPaused(final boolean paused) {
 		this.updatePrivateFlags(PFLAG_PAUSED, paused);
@@ -422,6 +457,8 @@ public abstract class UniversiContextDelegate {
 
 	/**
 	 * Returns the boolean flag indicating whether the related context is paused or not.
+	 * <p>
+	 * This should be {@code true} after context is paused and before it is again resumed.
 	 *
 	 * @return {@code True} if context is paused, {@code false} otherwise.
 	 *
