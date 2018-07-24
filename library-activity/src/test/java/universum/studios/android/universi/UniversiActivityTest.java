@@ -25,6 +25,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.os.Process;
 import android.view.Menu;
 
@@ -319,6 +320,7 @@ public final class UniversiActivityTest extends RobolectricTestCase {
 		// Act:
 		activity.onResume();
 		// Assert:
+		verify(mockDelegate).setStateSaved(false);
 		verify(mockDelegate).setPaused(false);
 		verifyNoMoreInteractions(mockDelegate);
 	}
@@ -698,6 +700,46 @@ public final class UniversiActivityTest extends RobolectricTestCase {
 		// Act + Assert:
 		assertThat(activity.popFragmentsBackStack(), is(true));
 		verify(mockDelegate).popFragmentsBackStack();
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Test public void testOnSaveInstanceState() {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		activity.setContextDelegate(mockDelegate);
+		final Bundle savedState = new Bundle();
+		// Act:
+		activity.onSaveInstanceState(savedState);
+		// Assert:
+		verify(mockDelegate).setStateSaved(true);
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Config(sdk = Build.VERSION_CODES.LOLLIPOP)
+	@Test public void testOnSaveInstanceStatePersistable() {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		activity.setContextDelegate(mockDelegate);
+		final Bundle savedState = new Bundle();
+		final PersistableBundle savedStatePersistable = new PersistableBundle();
+		// Act:
+		activity.onSaveInstanceState(savedState, savedStatePersistable);
+		// Assert:
+		verify(mockDelegate, times(2)).setStateSaved(true);
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Test public void testPause() {
+		// Arrange:
+		final TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		final UniversiActivityDelegate mockDelegate = mock(UniversiActivityDelegate.class);
+		activity.setContextDelegate(mockDelegate);
+		// Act:
+		activity.onPause();
+		// Assert:
+		verify(mockDelegate).setPaused(true);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 

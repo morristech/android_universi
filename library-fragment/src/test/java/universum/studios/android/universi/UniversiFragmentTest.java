@@ -157,6 +157,7 @@ public final class UniversiFragmentTest extends RobolectricTestCase {
 		// Act:
 		fragment.onResume();
 		// Assert:
+		verify(mockDelegate).setStateSaved(false);
 		verify(mockDelegate).setPaused(false);
 		verifyNoMoreInteractions(mockDelegate);
 	}
@@ -307,6 +308,19 @@ public final class UniversiFragmentTest extends RobolectricTestCase {
 		fragment.dismissXmlDialog(dialogResource);
 		// Assert:
 		verify(mockDelegate).dismissXmlDialog(dialogResource);
+		verifyNoMoreInteractions(mockDelegate);
+	}
+
+	@Test public void testOnSaveInstanceState() {
+		// Arrange:
+		final UniversiContextDelegate mockDelegate = mock(UniversiContextDelegate.class);
+		final TestFragment fragment = new TestFragment();
+		fragment.setContextDelegate(mockDelegate);
+		final Bundle savedState = new Bundle();
+		// Act:
+		fragment.onSaveInstanceState(savedState);
+		// Assert:
+		verify(mockDelegate).setStateSaved(true);
 		verifyNoMoreInteractions(mockDelegate);
 	}
 
