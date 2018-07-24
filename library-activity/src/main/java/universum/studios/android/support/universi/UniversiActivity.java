@@ -25,10 +25,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.PersistableBundle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.RequiresPermission;
 import android.support.annotation.UiThread;
 import android.support.annotation.VisibleForTesting;
@@ -183,6 +185,16 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	}
 
 	/**
+	 * Returns the context delegate created by this activity or specified via {@link #setContextDelegate(UniversiActivityDelegate)}.
+	 *
+	 * @return This activity's context delegate.
+	 */
+	@VisibleForTesting UniversiActivityDelegate getContextDelegate() {
+		this.ensureContextDelegate();
+		return delegate;
+	}
+
+	/**
 	 */
 	@Override protected void onCreate(@Nullable final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -196,6 +208,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 
 	/**
 	 */
+	@Deprecated
 	@Override @Nullable public <D> Loader<D> startLoader(
 			@IntRange(from = 0) final int id,
 			@Nullable final Bundle params,
@@ -207,6 +220,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 
 	/**
 	 */
+	@Deprecated
 	@Override @Nullable public <D> Loader<D> initLoader(
 			@IntRange(from = 0) final int id,
 			@Nullable final Bundle params,
@@ -218,6 +232,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 
 	/**
 	 */
+	@Deprecated
 	@Override @Nullable public <D> Loader<D> restartLoader(
 			@IntRange(from = 0) final int id,
 			@Nullable final Bundle params,
@@ -229,6 +244,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 
 	/**
 	 */
+	@Deprecated
 	@Override public void destroyLoader(@IntRange(from = 0) final int id) {
 		this.ensureContextDelegate();
 		this.delegate.destroyLoader(id);
@@ -426,6 +442,7 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	@Override protected void onResume() {
 		super.onResume();
 		this.ensureContextDelegate();
+		this.delegate.setStateSaved(false);
 		this.delegate.setPaused(false);
 	}
 
@@ -592,6 +609,23 @@ public abstract class UniversiActivity extends FragmentActivity implements Unive
 	protected boolean popFragmentsBackStack() {
 		this.ensureContextDelegate();
 		return delegate.popFragmentsBackStack();
+	}
+
+	/**
+	 */
+	@Override protected void onSaveInstanceState(@NonNull final Bundle state) {
+		super.onSaveInstanceState(state);
+		this.ensureContextDelegate();
+		this.delegate.setStateSaved(true);
+	}
+
+	/**
+	 */
+	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+	@Override public void onSaveInstanceState(@NonNull final Bundle state, @NonNull final PersistableBundle persistentState) {
+		super.onSaveInstanceState(state, persistentState);
+		this.ensureContextDelegate();
+		this.delegate.setStateSaved(true);
 	}
 
 	/**
