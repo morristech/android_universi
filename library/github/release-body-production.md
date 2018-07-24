@@ -4,5 +4,4 @@ Release patch.
 
 ### Changes ###
 
-- Updated **Copyright**, **code style**, **test style**.
-- Removed deprecated elements and methods from previous version.
+- Deprecated `LoaderManager` related methods in `UniversiActivity`, `UniversiCompatActivity` and `UniversiFragment`.

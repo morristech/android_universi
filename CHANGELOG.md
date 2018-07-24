@@ -6,10 +6,10 @@ More **detailed changelog** for each respective version may be viewed by pressin
 
 ## Version 1.x ##
 
-### 1.0.6 ###
-> upcoming
+### [1.0.6](https://github.com/universum-studios/android_universi/releases/tag/v1.0.6) ###
+> 24.07.2018
 
-- TODO
+- Small updates.
 
 ### [1.0.5](https://github.com/universum-studios/android_universi/releases/tag/v1.0.5) ###
 > 16.06.2018
