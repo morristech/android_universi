@@ -416,8 +416,8 @@ public abstract class UniversiFragment extends ActionBarFragment {
 
 	/**
 	 */
-	@Override public void onSaveInstanceState(@NonNull final Bundle outState) {
-		super.onSaveInstanceState(outState);
+	@Override public void onSaveInstanceState(@NonNull final Bundle state) {
+		super.onSaveInstanceState(state);
 		this.ensureContextDelegate();
 		this.delegate.setStateSaved(true);
 	}
